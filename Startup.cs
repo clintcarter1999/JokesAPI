@@ -23,7 +23,10 @@ namespace JokesAPI
         public void ConfigureServices(IServiceCollection services)
         {
             //services.AddDbContext<JokesContext>(opt =>  opt.UseInMemoryDatabase("JokesList"));
-            services.AddDbContext<JokesContext>(option => option.UseSqlServer(@"Data Source=CCARTERDEV\SETBASE;Initial Catalog=JokesDb;Trusted_Connection=True;"));
+          //  services.AddDbContext<JokesContext>(option => option.UseSqlServer(@"Data Source=CCARTERDEV\SETBASE;Initial Catalog=JokesDb;Trusted_Connection=True;"));
+            services.AddDbContext<JokesContext>(option => option.UseSqlite(@"Data Source=JokesDB.db"));
+
+
             services.AddControllers();
         }
 

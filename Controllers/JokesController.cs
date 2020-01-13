@@ -57,6 +57,8 @@ namespace JokesAPI.Controllers
             catch (Exception ex)
             {
                 _log.LogError(ex, "Exception in GetJokeItems");
+
+                return BadRequest("Exception occurred getting jokes due to exception: " + ex.Message);
             }
 
             return Ok(jokes);
@@ -90,6 +92,8 @@ namespace JokesAPI.Controllers
             catch (Exception ex)
             {
                 _log.LogError(ex, "Exception getting joke Id = {JokeId}", id.ToString());
+
+                return BadRequest("Exception occurred getting joke id: " + id.ToString() + "\r\n" + ex.Message);
             }
 
             return Ok(joke);
@@ -145,7 +149,8 @@ namespace JokesAPI.Controllers
                 else
                 {
                     _log.LogError("throwing from PutJokeItem for Id = {JokeId}", id.ToString());
-                    throw;
+
+                    return BadRequest("Updating Jokes DB faied due to this exception: " + dbEx.Message);
                 }
             }
 
@@ -177,7 +182,7 @@ namespace JokesAPI.Controllers
             {
                 _log.LogError(ex, "PostJokeItem threw an exeption");
 
-                // should I throw or return a failed status code here?
+                return BadRequest("PostJokeItem failed due to exception: " + ex.Message);
             }
 
             return CreatedAtAction(nameof(GetJokeItem), new { id = jokeItem.Id }, jokeItem);
@@ -216,6 +221,8 @@ namespace JokesAPI.Controllers
             catch (Exception ex)
             {
                 _log.LogError(ex, "Exception deleting a joke.id = {JokeId}", id.ToString());
+
+                return BadRequest("Unable to delete Joke Id = " + id.ToString() + "\r\n" + ex.Message);
             }
 
             return Ok(joke);
@@ -223,7 +230,9 @@ namespace JokesAPI.Controllers
 
         private bool JokeItemExists(long id)
         {
-            //911 add logging and exception handling
+            if (_jokesContext.JokeItems == null) //911 If this table doesn't exist we have bigger problems. 
+                return false;
+
             return _jokesContext.JokeItems.Any(e => e.Id == id);
         }
 
@@ -255,7 +264,7 @@ namespace JokesAPI.Controllers
             {
                 _log.LogError(ex, "Unknown Exception inside PagingJoke {currentPageNumber}, {currentPageSize}", currentPageNumber, currentPageSize);
 
-                throw ;
+                return BadRequest("Unable to get page of Jokes due to exception: " + ex.Message);
             }
 
             _log.LogInformation("Returning {Count} Jokes", list.Count<JokeItem>());
@@ -283,7 +292,7 @@ namespace JokesAPI.Controllers
             {
                 _log.LogError(ex, "Exception searching for {SearchText} Jokes Database", text);
 
-                throw;
+                return BadRequest("Unable to Search the Jokes DB due to this exception: " + ex.Message);
             }
 
             _log.LogInformation("{SearchText} was found {count} times", text, list.Count<JokeItem>());

@@ -24,7 +24,6 @@ namespace JokesAPI
 
                 CreateHostBuilder(args).Build().Run();
 
-                Log.Information("Successfully started the Jokes REST API");
             }
             catch (Exception ex1)
             {
