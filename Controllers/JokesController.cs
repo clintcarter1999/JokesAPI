@@ -298,5 +298,91 @@ namespace JokesAPI.Controllers
             _log.LogInformation("{SearchText} was found {count} times", text, list.Count<JokeItem>());
             return Ok(list);
         }
+
+        [HttpGet("[action]")]
+        public async Task<ActionResult<JokeItem>> Random()
+        {
+
+            ActionResult<JokeItem> joke = null;
+
+            int id = -1;
+
+            try
+            {
+                int max = _jokesContext.JokeItems.Count<JokeItem>();
+
+                if (max == 0)
+                {
+                    _log.LogWarning("No Jokes are in the Jokes DB.  Random joke generator cannot return a joke");
+
+                    return NoContent();
+                }
+
+                Random rand = new Random();
+
+                bool done = false;
+                int retryAttemptsAllowed = 10;
+                int retryAttempt = 1;
+
+                //
+                // C.Carter 1/13/2020
+                //
+                // DESIGN DECISION:
+                //   This loop is not deterministic if we have items in the DB.
+                //   We could return without a joke if we continue selecting non-existant ids in the table (user deleted them?)
+                //   Better would be to create a list of the top N jokes in a List<T> collection
+                //   and create a randome index into that.
+                //
+                // KNOWLEDGE GAP:
+                //   How to select top 100 jokes using async methods
+                //
+                // FOR NOW:
+                //   I have a simple While !done loop with a retry gate to make sure we at least get a product
+                //   into the market.  The likely hood of wholes in our table is low and days off market
+                //   potentially mean loss of marketshare.
+                //
+
+                while (!done)
+                {
+                    id = rand.Next(1, max);
+
+                    joke = await _jokesContext.JokeItems.FindAsync((long)id);
+
+                    if (joke.Value == null)
+                    {
+                        if (retryAttempt > 10)
+                        {
+                            // Tried N times and failed to find a joke.  The Ids must not exist. 
+                            // 911: Design Decision: Perhaps select the Top 100, put those in a list, and index the List randomly?
+
+                            done = true;
+                            
+                            _log.LogInformation("We were unable to find a random joke after {RetryAttempts} attempts", retryAttemptsAllowed);
+
+                            return NotFound();
+                        }
+                        else
+                        {
+                            _log.LogInformation("The Random Id of = {JokeId} was not found DB. Retrying {Attempt} of {MaxAttempts} ", id, retryAttempt, retryAttemptsAllowed);
+                            
+                            retryAttempt++;
+                        }
+                    }
+                    else
+                        done = true; // joke was found
+                }
+
+            }
+            catch (Exception ex)
+            {
+                _log.LogError(ex, "Exception retrieving a random joke");
+
+                return BadRequest("Unable to retrieve a random Joke: " + ex.Message);
+            }
+
+            _log.LogInformation("Random Joke.Id = {JokeId} is being returned",  id);
+
+            return Ok(joke);
+        }
     }
 }
