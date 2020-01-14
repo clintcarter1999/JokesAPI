@@ -37,16 +37,18 @@ There were several knowledge gaps starting this project as well as a learning cu
 Challenge accepted!
 
     **NOTE**: I am going to dig into these topics in detail the sections below.  
-    Skip to the Getting Started Section belowyou are more concered with "how" 
+    Skip to the Getting Started Section below if you are more concered with "how" 
     rather than "why".
 
  - **Learning Curve**
-I have 15+years of C# experience including Microsoft Web Services. However, I had just a few days of .Net Core experience.  I have 1 to 1.5 weeks to provide a deliverable.  I need to move the ball every day with limited resource (time).  Here is a glympse of how I approached this learning curve.  
+I have 15+years of C# experience including Microsoft Web Services. However, I had just a few days of .Net Core experience.  I have 1 to 1.5 weeks to provide a deliverable.  Therefore, I need to move the ball every day with a very limited resource (time).  Here is a glympse of how I approached this learning curve.  
   
 	I created a list of "must learn" topics and prioritized them as:
 	 
 	 **Urgent + Important** = Do this before anything else
+
 	 **Important + Not Urgent** = Important but can wait for Urgent tasks
+
 	 **Not Important** = Anything classified like this gives me permission to say "No" on focus on U+I
  
   - **TOPICS TO LEARN**
@@ -62,6 +64,7 @@ I have 15+years of C# experience including Microsoft Web Services. However, I ha
 		  - Potential Bottlenecks
 			  - SQLite is not a distributed DB
 			  - ????
+			  NOTE: Microsoft's distributed caching looks promising
 	  - Best Practices for .Net Core RESTful API
 	  - Best Practices for Async based RESTful API 
 	  - Best Practices for testing API Controllers, Model
@@ -70,13 +73,13 @@ I have 15+years of C# experience including Microsoft Web Services. However, I ha
 	  - Learning GitHub - I have used many source control providers.  GitHub is new for me.
 
 ## Design Decisions and Knowlege Gaps
-I brain stormed all the knowledge gaps I had at the start of the project.  Then I prioritized and set out closing them before making a final decisions on how to support scalability, logging, validation, testing, and maintenance.
+I brain stormed all the knowledge gaps I had at the start of the project.  Then I prioritized and set out closing them before making a final decisions on how to support scalability, logging, validation, testing, and maintenance.  There are always "unknown-unknowns" especially when rushing a design like this project.  I am adding them to the list as I come to them.
 
 ## Scalability Considerations
-We have to think both vertically (same server) as well as horizontally (services distributed across multiple servers) with regard to scalability.   Studying this helped me decide to use the async/await design pattern for my RESTful API.
+We have to think about scalability both vertically (same server) as well as horizontally (services distributed across multiple servers).   Studying this helped me decide to use the async/await design pattern for my RESTful API.
 
 ### *Vertical Scaling*
-ASP.Net Core's asynchronous capability lend well to scaling vertically on the same server.  The asyc/await design allows the application to make effective use of the handles/threads available.  The .Net Core Async design allows applications to make us of increasing resources (adding hard-drive space, memory, cpu, cache).
+ASP.Net Core's asynchronous capability lends well to scaling vertically on the same server.  The asyc/await design allows the application to make effective use of the handles/threads available.  The .Net Core Async design allows applications to make us of increasing resources (adding hard-drive space, memory, cpu, cache).
 
 ### *Horizontal Scaling*
 The stateless architecture of RESTful API lend well to scaling horizontally across multiple servers.  Client information is not stored on the server.  It just receives a single requests and provides a single response.  The issue here is the database.  SQLite is not distributed.
@@ -88,7 +91,7 @@ If you are reading this then I did not have time to tackle this topic yet.  Howe
 
 ## Logging Consideration
 I decided to use Serilog because it uses structured logging.  It also supports "enrichers" which provides the ability to add information (such as requestor info) or improve the understandability (perhaps of stack traces).  For now, I am logging to a structured viewer called Seq by Datalust.
-Question: Is Seq my best choice?  I'm not sure.  
+Serilog updates Seq in batches to minimize logging performance bottlenecks.  
 
 Useful articles: 
 	https://stackify.com/nlog-vs-log4net-vs-serilog/
@@ -97,7 +100,7 @@ Useful articles:
 	[https://nblumhardt.com/2019/10/serilog-in-aspnetcore-3/](https://nblumhardt.com/2019/10/serilog-in-aspnetcore-3/)
 
 ## Testing Considerations
-Manual testing using Postman is useful for quick testing of API.  However, it doesn't fit in the continuous integration pipeline.  My goal is to understand the new Microsoft.AspNetCore.Mvc.Testing package.  
+Manual testing using Postman and Swagger are useful for quick testing of API.  However, it doesn't fit in the continuous integration pipeline.  My goal is to understand the new Microsoft.AspNetCore.Mvc.Testing package.  
 
 Quick Exerpt of the article referenced below:
 *"...The release of ASP.NET Core 2.1 introduced a handy new package in  [Microsoft.AspNetCore.Mvc.Testing](https://blogs.msdn.microsoft.com/webdev/2018/03/05/asp-net-core-2-1-0-preview1-functional-testing-of-mvc-applications). Its primary goal is streamlining end-to-end MVC and Web API testing by hosting the full web stack (database included) in memory while providing a client to test "from the outside in" by issuing http requests to our application.
@@ -107,6 +110,7 @@ Useful article:
 [ Painless Integration Testing with ASP.NET Core Web API](https://fullstackmark.com/post/20/painless-integration-testing-with-aspnet-core-web-api)
 
 //TODO: Implement automated tsting
+
 //TODO: Provide a link to my Postman collection
 
 ## Authorization
@@ -132,7 +136,7 @@ What things you need to install the software and how to install them:
  - **Visual Studio 2019 Community Edition**
    This is a free installation - [https://visualstudio.microsoft.com/downloads/](https://visualstudio.microsoft.com/downloads/)
 - Get the latest code from my Repo Here and open that in Visual Studio 2019 Community Edition
-- Next, you need to install several packages for the Entity Framework, Sqlite, Serilog, and Seq.
+- Next, you need to install several packages (for Entity Framework, Sqlite, Serilog, and Seq).
 
 	I used the Visual Studio NuGet Package Manager to install:
  - **Entity Framework** - 
@@ -142,13 +146,18 @@ What things you need to install the software and how to install them:
  
  - **Serilog** - This page has a great getting started with Serilog in Visual Studio
  [https://github.com/serilog/serilog/wiki/Getting-Started](https://github.com/serilog/serilog/wiki/Getting-Started)
+
 	 Note: I used the Visual Studio NuGet Package Manager to install:
 	 Serilog.AspNetCore (3.2.0
 	 Serilog.Formmating.Compact (1.1.0)
 	 Serilog.Sinks.Seq (4.0.0) 
  
+ Next, you'll need to install the Seq Structured Logging Server
+
  - **Seq Structured Logging Server** (5.1)  [https://datalust.co/seq/](https://datalust.co/seq/)
  
+  Next, you'll need to install Sqlite 
+
   - **Sqlite for Windows**.  Here is a tutorial on that: [https://www.sqlitetutorial.net/download-install-sqlite/](https://www.sqlitetutorial.net/download-install-sqlite/)
  *Note: You need to set a System Environment Variable for Sqlite3 to the folder where you place the Sqlite files.*
 ```
