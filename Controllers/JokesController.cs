@@ -230,14 +230,14 @@ namespace JokesAPI.Controllers
 
         private bool JokeItemExists(long id)
         {
-            if (_jokesContext.JokeItems == null) //911 If this table doesn't exist we have bigger problems. 
+            if (_jokesContext.JokeItems == null)
                 return false;
 
             return _jokesContext.JokeItems.Any(e => e.Id == id);
         }
 
         [HttpGet("[action]")]
-        public IActionResult PagingJoke(int? pageNumber, int? pageSize)
+        public async Task<ActionResult<JokeItem>> PagingJoke(int? pageNumber, int? pageSize)
         {
             // 911 - Can JokeItems be null? Perhaps if the DB is empty????
 
@@ -254,11 +254,11 @@ namespace JokesAPI.Controllers
 
             _log.LogInformation("Returning currentPageNumber = {currentPageNumber}, pageSize {currentPageSize}", currentPageNumber, currentPageSize);
 
-            IQueryable<JokeItem> list = null;
+            List<JokeItem> list = null;
 
             try
             {
-                list = jokes.Skip((currentPageNumber - 1) * currentPageSize).Take(currentPageSize);
+                list = await jokes.Skip((currentPageNumber - 1) * currentPageSize).Take(currentPageSize).ToListAsync();
             }
             catch (Exception ex)
             {
@@ -273,20 +273,20 @@ namespace JokesAPI.Controllers
         }
 
         [HttpGet("[action]")]
-        public IActionResult SearchJokes(string text)
+        public async Task<ActionResult<JokeItem>> SearchJokes(string text)
         {
             //911 add logging and exception handling
 
             if (text == null)
                 return NotFound("Parameter 1: text, was not found and is needed to perform a search");
 
-            IQueryable<JokeItem> list = null;
+            List<JokeItem> jokes = null;
 
             try
             {
                 _log.LogInformation("Searching for Jokes containing {SearchText}", text);
 
-                list = _jokesContext.JokeItems.Where(j => j.Joke.Contains(text));
+                jokes = await _jokesContext.JokeItems.Where(j => j.Joke.Contains(text)).ToListAsync();
             }
             catch (Exception ex)
             {
@@ -295,8 +295,9 @@ namespace JokesAPI.Controllers
                 return BadRequest("Unable to Search the Jokes DB due to this exception: " + ex.Message);
             }
 
-            _log.LogInformation("{SearchText} was found {count} times", text, list.Count<JokeItem>());
-            return Ok(list);
+            _log.LogInformation("{SearchText} was found {count} times", text, jokes.Count<JokeItem>());
+           
+            return Ok(jokes);
         }
 
         [HttpGet("[action]")]
