@@ -1,4 +1,5 @@
-﻿# Jokes ASP.NET REST API Project
+﻿
+# Jokes ASP.NET REST API Project
 
 A RESTful API that allows users to anonymously create & read jokes.
 
@@ -28,7 +29,7 @@ Develop a RESTful API that allows users to anonymously create & read jokes.
  #### Bonus
  
  - Docker-ize your application
- - Add the ability to filter/search jokes
+ - Add the ability to filter/search jokes - Note: This was easy. However, my current implementation needs refactoring.
  - Authorization
 
 ## Learning Curve Management
@@ -49,7 +50,7 @@ I have 15+years of C# experience including Microsoft Web Services. However, I ha
 
 	 **Important + Not Urgent** = Important but can wait for Urgent tasks
 
-	 **Not Important** = Anything classified like this gives me permission to say "No" on focus on U+I
+	 **Not Important** = Let's tentatively schedule this to discuss in two weeks if your problem has not been resolved :)
  
   - **TOPICS TO LEARN**
 	  - How to create a RESTful API in .Net Core.   
@@ -220,6 +221,15 @@ This project is licensed under the MIT License - see the  [LICENSE.md](https://g
 	 - Async Best Design Practices, 
 	 - Robert Glazer's book [Elevate by Robert Glazer](https://www.amazon.com/Elevate-Beyond-Limits-Success-Yourself/dp/1492691488/ref=sr_1_1?crid=3TFVPOMG2U6MV&keywords=elevate%20by%20robert%20glazer&qid=1579027201&sprefix=Elevate%20by%20Rober,aps,154&sr=8-1) for heping me win the morning (get more done!)
 -   StackEdit.io for providing a cool online GitHub readme markup editor.
+
+## Thanks
+I found several great 'Dad' jokes during this project. 
+
+My 3 favorites:
+
+"How do you catch a UNIQUE rabbit?  Unique up on him!"
+"How do you catch a TAME rabbit? Tame way, unique up on him!"
+'What do you call a nose without a body? Nobody Nose!'
 
 
 ![Picture of Clint Carter ](https://media-exp2.licdn.com/dms/image/C4E03AQGN2o3h3XtNAg/profile-displayphoto-shrink_200_200/0?e=1584576000&v=beta&t=fOdGtATS_XFihlBXQ6BU8WYYT5Gmo31O_jx2zeNrxi8)
