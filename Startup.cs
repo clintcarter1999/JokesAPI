@@ -6,7 +6,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models; 
 using JokesAPI.Models;
+
 
 namespace JokesAPI
 {
@@ -28,6 +30,14 @@ namespace JokesAPI
 
 
             services.AddControllers();
+
+            //// Register the Swagger generator, defining 1 or more Swagger documents
+            //services.AddSwagger();
+
+            services.AddSwaggerGen((options) =>
+            {
+                options.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -50,10 +60,20 @@ namespace JokesAPI
 
             app.UseAuthorization();
 
+            app.UseSwagger();
+
+            app.UseSwaggerUI(c =>
+           {
+               c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+           });
+
+            //app.UseCustomSwagger();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
+
 
         }
 

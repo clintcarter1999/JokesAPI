@@ -27,6 +27,10 @@ namespace JokesAPI.Controllers
             
         }
 
+        /// <summary>
+        /// GetJokeItems returns all jokes in the database.
+        /// </summary>
+        /// <returns>A list of Jokes</returns>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<JokeItem>>> GetJokeItems()
         {
@@ -65,8 +69,13 @@ namespace JokesAPI.Controllers
         }
 
 
-        // GET: api/JokeItems/5
-        [HttpGet("{id}")]
+        /// <summary>
+        /// GetJokeItem returns a specific joke associated with the supplied id
+        /// </summary>
+        /// <param name="id">Id of a joke in the Jokes database</param>
+        /// <returns>StatusCodes.Status200OK if the joke is found, NotFound if the Joke does not exist, BadRequest on exception</returns>
+        [Route("{id}")]
+        [HttpGet]
         public async Task<ActionResult<JokeItem>> GetJokeItem(long? id)
         {
             JokeItem joke = null;
@@ -99,10 +108,17 @@ namespace JokesAPI.Controllers
             return Ok(joke);
         }
 
+        /// <summary>
+        /// PutJokeItem allows the client to modify an existing Joke
+        /// </summary>
+        /// <param name="id">Id of the joke in the Jokes table</param>
+        /// <param name="jokeItem">A JokeItem object</param>
+        /// <returns>StatusCodes.Status200OK (success), BadRequest (bad data or exception), or NotFound (if the Id does not exist)</returns>
         // PUT: api/JokeItems/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
-        [HttpPut("{id}")]
+        [Route("{id}")]
+        [HttpPut]
         public async Task<IActionResult> PutJokeItem(long? id, JokeItem jokeItem)
         {
             if (id == null)
@@ -157,6 +173,11 @@ namespace JokesAPI.Controllers
             return NoContent();
         }
 
+        /// <summary>
+        /// PostJokeItem allows the user to add jokes to the Jokes Database
+        /// </summary>
+        /// <param name="jokeItem">JSON Representing a JokeItem Model</param>
+        /// <returns>Success = StatusCodes.Status200OK or BadRequest if unsuccessful</returns>
         // POST: api/JokeItems
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
@@ -188,8 +209,15 @@ namespace JokesAPI.Controllers
             return CreatedAtAction(nameof(GetJokeItem), new { id = jokeItem.Id }, jokeItem);
         }
 
-        // DELETE: api/JokeItems/5
-        [HttpDelete("{id}")]
+
+        /// <summary>
+        /// DeleteJokeItem provides the ability to delete a joke from the datbase.
+        /// </summary>
+        /// <param name="id">Id of the Joke in the Jokes table</param>
+        /// <returns>If successfully deleted this method returns StatusCodes.Status200OK. 
+        /// Otherwise it returns a BadRequest status code.</returns>
+        [Route("{id}")]
+        [HttpDelete]
         public async Task<ActionResult<JokeItem>> DeleteJokeItem(long? id)
         {
             JokeItem joke = null;
@@ -211,9 +239,9 @@ namespace JokesAPI.Controllers
                 }
 
                 _log.LogInformation("Removing Joke Id = {JokeId}", id.ToString());
-
+                
                 _jokesContext.JokeItems.Remove(joke);
-
+                
                 await _jokesContext.SaveChangesAsync();
 
                 _log.LogInformation("Joke Id = {JokeId} deleted successfully", id.ToString());
@@ -236,7 +264,14 @@ namespace JokesAPI.Controllers
             return _jokesContext.JokeItems.Any(e => e.Id == id);
         }
 
-        [HttpGet("[action]")]
+        /// <summary>
+        /// PagingJoke provides a mechanism for paging through the span of jokes.
+        /// </summary>
+        /// <param name="pageNumber">Defines wich page number as the start</param>
+        /// <param name="pageSize">Defines how many items appear on a page</param>
+        /// <returns>A specified number of jokes on the requested page</returns>
+        [Route("[action]")]
+        [HttpGet]
         public async Task<ActionResult<JokeItem>> PagingJoke(int? pageNumber, int? pageSize)
         {
             // 911 - Can JokeItems be null? Perhaps if the DB is empty????
@@ -272,7 +307,16 @@ namespace JokesAPI.Controllers
             return Ok(list);
         }
 
-        [HttpGet("[action]")]
+        /// <summary>
+        /// SearchJokes provides the ability to search for jokes that 'contain' the search text.
+     
+        /// Future Plans: Extend this to look for 'StartsWith', 'Contains', or 'EndsWidth'.
+        /// 
+        /// </summary>
+        /// <param name="text">The text you are searching for in the jokes database.</param>
+        /// <returns>Any joke that 'Contains" the search text value</returns>
+        [Route("[action]")]
+        [HttpGet]
         public async Task<ActionResult<JokeItem>> SearchJokes(string text)
         {
             //911 add logging and exception handling
@@ -300,7 +344,12 @@ namespace JokesAPI.Controllers
             return Ok(jokes);
         }
 
-        [HttpGet("[action]")]
+        /// <summary>
+        /// The Random API returns a random joke from the Jokes Database.
+        /// </summary>
+        /// <returns>A single joke from the jokes database</returns>
+        [Route("[action]")]
+        [HttpGet]
         public async Task<ActionResult<JokeItem>> Random()
         {
 

@@ -140,5 +140,11 @@ C:\Users\Administrator\source\repos\JokesAPI\bin\Debug\netcoreapp3.1\Serilog.Sin
 C:\Users\Administrator\source\repos\JokesAPI\bin\Debug\netcoreapp3.1\Serilog.Sinks.File.dll
 C:\Users\Administrator\source\repos\JokesAPI\bin\Debug\netcoreapp3.1\Serilog.Sinks.PeriodicBatching.dll
 C:\Users\Administrator\source\repos\JokesAPI\bin\Debug\netcoreapp3.1\Serilog.Sinks.Seq.dll
-C:\Users\Administrator\source\repos\JokesAPI\obj\Debug\netcoreapp3.1\JokesAPI.MvcApplicationPartsAssemblyInfo.cache
 C:\Users\Administrator\source\repos\JokesAPI\obj\Debug\netcoreapp3.1\JokesAPI.csprojAssemblyReference.cache
+C:\Users\Administrator\source\repos\JokesAPI\bin\Debug\netcoreapp3.1\Microsoft.OpenApi.dll
+C:\Users\Administrator\source\repos\JokesAPI\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.Swagger.dll
+C:\Users\Administrator\source\repos\JokesAPI\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.SwaggerGen.dll
+C:\Users\Administrator\source\repos\JokesAPI\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.SwaggerUI.dll
+C:\Users\Administrator\source\repos\JokesAPI\obj\Debug\netcoreapp3.1\JokesAPI.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\Administrator\source\repos\JokesAPI\obj\Debug\netcoreapp3.1\JokesAPI.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\Administrator\source\repos\JokesAPI\bin\Debug\netcoreapp3.1\JokesAPI.Views.dll
