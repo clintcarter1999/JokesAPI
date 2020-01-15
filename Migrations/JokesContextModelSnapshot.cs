@@ -31,7 +31,7 @@ namespace JokesAPI.Migrations
                     b.ToTable("JokeItems");
                 });
 
-            modelBuilder.Entity("JokesAPI.Models.User", b =>
+            modelBuilder.Entity("JokesAPI.Models.UserInfo", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -51,6 +51,10 @@ namespace JokesAPI.Migrations
                         .HasColumnType("TEXT")
                         .HasMaxLength(64);
 
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("UserName")
                         .IsRequired()
                         .HasColumnType("TEXT")
@@ -58,7 +62,7 @@ namespace JokesAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("User");
+                    b.ToTable("UserInfo");
                 });
 #pragma warning restore 612, 618
         }

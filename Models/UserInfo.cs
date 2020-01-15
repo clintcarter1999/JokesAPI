@@ -2,7 +2,7 @@
 
 namespace JokesAPI.Models
 {
-    public class User
+    public class UserInfo
     {
         [Required(ErrorMessage = "Please provide a valid Id for the User")]
         public long Id { get; set; }
@@ -22,6 +22,9 @@ namespace JokesAPI.Models
         [Required(ErrorMessage = "A valid email address is required")]
         [EmailAddress]
         public string Email { get; set; }
+
+        [Required(ErrorMessage = "A password is RequiredAttribute")]
+        public string Password { get; set; }
 
     }
 }
