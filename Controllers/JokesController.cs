@@ -30,6 +30,8 @@ namespace JokesAPI.Controllers
         /// <summary>
         /// GetJokeItems returns all jokes in the database.
         /// </summary>
+        /// <remarks>This returns all jokes. This is fine while the database is small.
+        /// Consider using PageJokes as the data grow to maximize client responsiveness for the user</remarks>
         /// <returns>A list of Jokes</returns>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<JokeItem>>> GetJokeItems()
@@ -309,9 +311,7 @@ namespace JokesAPI.Controllers
 
         /// <summary>
         /// SearchJokes provides the ability to search for jokes that 'contain' the search text.
-     
         /// Future Plans: Extend this to look for 'StartsWith', 'Contains', or 'EndsWidth'.
-        /// 
         /// </summary>
         /// <param name="text">The text you are searching for in the jokes database.</param>
         /// <returns>Any joke that 'Contains" the search text value</returns>

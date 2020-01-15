@@ -1,4 +1,3 @@
-
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -6,8 +5,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.OpenApi.Models; 
 using JokesAPI.Models;
+using JokesAPI.Middleware;
 
 
 namespace JokesAPI
@@ -24,20 +23,22 @@ namespace JokesAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // This is interesting.  I was able to easily swap out data repositories using Entity Framework.
+            // InMemory, then I switched to SqlServer, then to SqlList.
+            // I was able to swap out data store types and not have to retool the API.
+            // Nice.
+
             //services.AddDbContext<JokesContext>(opt =>  opt.UseInMemoryDatabase("JokesList"));
-          //  services.AddDbContext<JokesContext>(option => option.UseSqlServer(@"Data Source=CCARTERDEV\SETBASE;Initial Catalog=JokesDb;Trusted_Connection=True;"));
-            services.AddDbContext<JokesContext>(option => option.UseSqlite(@"Data Source=JokesDB.db"));
+            //  services.AddDbContext<JokesContext>(option => option.UseSqlServer(@"Data Source=CCARTERDEV\SETBASE;Initial Catalog=JokesDb;Trusted_Connection=True;"));
 
-
+            var connection = Configuration.GetConnectionString("JokesDatabase");
+            services.AddDbContext<JokesContext>(option => option.UseSqlite(connection));
+            
             services.AddControllers();
 
-            //// Register the Swagger generator, defining 1 or more Swagger documents
-            //services.AddSwagger();
+            //// Register the Swagger API Documentation generator
+            services.AddSwagger();
 
-            services.AddSwaggerGen((options) =>
-            {
-                options.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
-            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -60,14 +61,7 @@ namespace JokesAPI
 
             app.UseAuthorization();
 
-            app.UseSwagger();
-
-            app.UseSwaggerUI(c =>
-           {
-               c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
-           });
-
-            //app.UseCustomSwagger();
+            app.UseCustomSwagger();
 
             app.UseEndpoints(endpoints =>
             {

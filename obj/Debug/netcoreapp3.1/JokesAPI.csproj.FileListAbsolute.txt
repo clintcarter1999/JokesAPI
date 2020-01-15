@@ -145,6 +145,14 @@ C:\Users\Administrator\source\repos\JokesAPI\bin\Debug\netcoreapp3.1\Microsoft.O
 C:\Users\Administrator\source\repos\JokesAPI\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.Swagger.dll
 C:\Users\Administrator\source\repos\JokesAPI\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.SwaggerGen.dll
 C:\Users\Administrator\source\repos\JokesAPI\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.SwaggerUI.dll
+C:\Users\Administrator\source\repos\JokesAPI\bin\Debug\netcoreapp3.1\JokesAPI.Views.dll
+C:\Users\Administrator\source\repos\JokesAPI\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\Users\Administrator\source\repos\JokesAPI\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.Logging.dll
+C:\Users\Administrator\source\repos\JokesAPI\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.Tokens.dll
+C:\Users\Administrator\source\repos\JokesAPI\bin\Debug\netcoreapp3.1\System.IdentityModel.Tokens.Jwt.dll
+C:\Users\Administrator\source\repos\JokesAPI\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\Administrator\source\repos\JokesAPI\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.Protocols.dll
+C:\Users\Administrator\source\repos\JokesAPI\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
 C:\Users\Administrator\source\repos\JokesAPI\obj\Debug\netcoreapp3.1\JokesAPI.MvcApplicationPartsAssemblyInfo.cs
 C:\Users\Administrator\source\repos\JokesAPI\obj\Debug\netcoreapp3.1\JokesAPI.MvcApplicationPartsAssemblyInfo.cache
-C:\Users\Administrator\source\repos\JokesAPI\bin\Debug\netcoreapp3.1\JokesAPI.Views.dll
+C:\Users\Administrator\source\repos\JokesAPI\bin\Debug\netcoreapp3.1\JokesAPI.xml
