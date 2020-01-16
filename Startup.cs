@@ -1,17 +1,16 @@
+using System.Text;
+using JokesAPI.Middleware;
+using JokesAPI.Models;
+// authentication namespaces
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Microsoft.EntityFrameworkCore;
-using JokesAPI.Models;
-using JokesAPI.Middleware;
-
-// authentication namespaces
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using System.Text;
 
 
 namespace JokesAPI
@@ -30,11 +29,11 @@ namespace JokesAPI
         {
             var connection = Configuration.GetConnectionString("JokesDatabase");
             services.AddDbContext<JokesContext>(option => option.UseSqlite(connection));
-            
+
             services.AddControllers();
 
-            services.AddCors(options => 
-            { 
+            services.AddCors(options =>
+            {
                 options.AddPolicy("CorsPolicy", builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader().AllowCredentials().Build());
             });
 
@@ -54,7 +53,7 @@ namespace JokesAPI
 
                 });
 
-            
+
             services.AddMvc();
 
             services.AddSwagger();

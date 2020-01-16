@@ -4,7 +4,6 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
-using System.Threading.Tasks;
 using JokesAPI.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -103,7 +102,7 @@ namespace JokesAPI.Controllers
 
             try
             {
-                
+
                 List<UserInfo> newUser = _jokesContext.UserInfo.Where<UserInfo>(x => x.UserName == login.UserName && x.Password == login.Password).ToList();
 
                 if (newUser.Count != 0)
@@ -121,7 +120,7 @@ namespace JokesAPI.Controllers
             return user;
 
         }
-        
+
         /// <summary>
         /// Welcome the new login...just here for testing
         /// </summary>

@@ -2,16 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+using JokesAPI.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using JokesAPI.Models;
 using Microsoft.Extensions.Logging;
-using Microsoft.AspNetCore.Authorization;
 
 namespace JokesAPI.Controllers
 {
-    
+
     [Route("api/jokes")]
     [ApiController]
     public class JokesController : ControllerBase
@@ -26,7 +25,7 @@ namespace JokesAPI.Controllers
             _log.LogInformation("Jokes Controller CTOR");
 
             _jokesContext = context;
-            
+
         }
 
         /// <summary>
@@ -38,19 +37,19 @@ namespace JokesAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<JokeItem>>> GetJokeItems()
         {
-            if (_jokesContext.JokeItems  == null)
+            if (_jokesContext.JokeItems == null)
                 return Ok("The Jokie Jar is empty. Sorry folks");
 
             List<JokeItem> jokes = null;
 
             try
             {
-                
+
                 if (_jokesContext.JokeItems == null)
                 {
                     _log.LogWarning("There are no JokeItems. Returning empty");
 
-                    return NotFound("There are no jokes in the database"); 
+                    return NotFound("There are no jokes in the database");
                 }
 
                 _log.LogDebug("Building the list of jokes to return...");
@@ -146,7 +145,7 @@ namespace JokesAPI.Controllers
 
             if (id != jokeItem.Id)
             {
-                 _log.LogWarning("The Id and JokeItem.Id must match.  id: {JokeId} != JokeItem.Id: {JokeItemId}", id.ToString(), jokeItem.Id.ToString());
+                _log.LogWarning("The Id and JokeItem.Id must match.  id: {JokeId} != JokeItem.Id: {JokeItemId}", id.ToString(), jokeItem.Id.ToString());
 
                 return BadRequest("The Id and JokeItem.Id must match");
             }
@@ -248,9 +247,9 @@ namespace JokesAPI.Controllers
                 }
 
                 _log.LogInformation("Removing Joke Id = {JokeId}", id.ToString());
-                
+
                 _jokesContext.JokeItems.Remove(joke);
-                
+
                 await _jokesContext.SaveChangesAsync();
 
                 _log.LogInformation("Joke Id = {JokeId} deleted successfully", id.ToString());
@@ -334,7 +333,7 @@ namespace JokesAPI.Controllers
                 _log.LogInformation("Searching for Jokes containing {SearchText}", text);
 
                 jokes = await _jokesContext.JokeItems.Where(j => j.Joke.Contains(text)).ToListAsync();
-               
+
             }
             catch (Exception ex)
             {
@@ -344,7 +343,7 @@ namespace JokesAPI.Controllers
             }
 
             _log.LogInformation("{SearchText} was found {count} times", text, jokes.Count<JokeItem>());
-           
+
             return Ok(jokes);
         }
 
@@ -409,7 +408,7 @@ namespace JokesAPI.Controllers
                             // 911: Design Decision: Perhaps select the Top 100, put those in a list, and index the List randomly?
 
                             done = true;
-                            
+
                             _log.LogInformation("We were unable to find a random joke after {RetryAttempts} attempts", retryAttemptsAllowed);
 
                             return NotFound();
@@ -417,7 +416,7 @@ namespace JokesAPI.Controllers
                         else
                         {
                             _log.LogInformation("The Random Id of = {JokeId} was not found DB. Retrying {Attempt} of {MaxAttempts} ", id, retryAttempt, retryAttemptsAllowed);
-                            
+
                             retryAttempt++;
                         }
                     }
@@ -433,7 +432,7 @@ namespace JokesAPI.Controllers
                 return BadRequest("Unable to retrieve a random Joke: " + ex.Message);
             }
 
-            _log.LogInformation("Random Joke.Id = {JokeId} is being returned",  id);
+            _log.LogInformation("Random Joke.Id = {JokeId} is being returned", id);
 
             return Ok(joke);
         }
