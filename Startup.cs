@@ -54,6 +54,7 @@ namespace JokesAPI
 
                 });
 
+            
             services.AddMvc();
 
             services.AddSwagger();
@@ -81,6 +82,8 @@ namespace JokesAPI
             app.UseAuthentication();
 
             app.UseAuthorization();
+
+            app.UseMiddleware<RequestResponseLoggingMiddleware>();
 
             app.UseCustomSwagger();
 
