@@ -7,77 +7,73 @@ A RESTful API that allows users to anonymously create & read jokes.
 Develop a RESTful API that allows users to anonymously create & read jokes.
 
 ### Requirements and Considerations
+I would define these as the stakeholder's customer interests.  Each had design decisions impacting the release of phase 1 of this project. There are trade-offs that I cannot make without further information.  I would push back to get more information.
 
- - Build the web application in C#, .NET Core
- - Considere Scalability 
-	 - How would your application:
-		 - handle 2 million Jokes?
+ - **Build the web application in C#, .NET Core**
+ - ***Considere Scalability*** 
+	 - *How would your application:*
+		 - handle 2 million Jokes?  
+			 - **Pushback**: 
+					 - How do we measure what is "acceptable?"
+						 - Size of Database (potential cost of storing)
+						 - Responsiveness of API against such a large store? What is the acceptable range of time for each given API?  Ex: Retrieve joke by id: [0, 1] second?
+						 - 
 		 - a slow connection speed?
+			 - **Pushback**: 
+					 - What approach do we want to take here?
+						 - Keep retrying the same command N number of times?
+						 - Fail after the first time?
+						 - Thoughts? Ideas?  
 		 - a spike in requests?
- - Design and create RESTful endpoints (CRUD)
-	 - Keep in mind things such as:
+ - ***Design and create RESTful endpoints (CRUD)***
+	 - **Keep in mind things such as:**
 		 - Route urls
 		 - Parameters needed
 		 - Model Validation
-		 - Testability / Logging
+		 - Testability
+		 - Logging
+			 -  **NOTE**: 
+					 - *I have years of experience supporting enterprise software. This has taught me to be a defensive developer by logging as much information as possible/allowed.  This affects performance slightly.  However, it allows our company to provide search logs and provide solutions for customers faster.  Lots of logging.*
 		 - Error Handling
-	 - Add an endpoint to retrieve a random joke
- - Store Jokes in a Memory or SQLite database
+	 - **Add an endpoint to retrieve a random joke**
+		 - ***Note**: My current implementation needs refactoring.  It does not handle holes (deleted jokes). I need to build a contiguous list and randomly select from that.  I have a retry/fail pattern that will make X number of attempts before giving up.*
+ - **Store Jokes in a Memory or SQLite database**
 	 - Pre-population of Joke Data
- - Provide Swagger documentation
- - Submit the deliverable as a Github repository, including documentation on how to run your application.
- #### Bonus
+ - **Provide Swagger documentation**
  
- - Docker-ize your application
- - Add the ability to filter/search jokes - Note: This was easy. However, my current implementation needs refactoring.
- - Authorization
+ **
 
-## Learning Curve Management
+## Bonus
+ - Docker-ize your application - (*Todo*)
+ - Add the ability to filter/search jokes - (*done*)
+ - Authorization (on modify data routes) - (*done*)
+
+
+## Learning Curve & Challenges
 There were several knowledge gaps starting this project as well as a learning curve.  I have 1-1.5 weeks to provide a working deliverable.  The project should also represent of my use of good design principles, OOP methodologies, best practices, and and long term vision (scalability, readability, maintainability).  
 
 Challenge accepted!
 
-    **NOTE**: I am going to dig into these topics in detail the sections below.  
-    Skip to the Getting Started Section below if you are more concered with "how" 
-    rather than "why".
+## **Learning Curve**
+I have 15+years of C# experience. However, I had just a few days of .Net Core experience.  I have 1 to 1.5 weeks to provide a deliverable.  Therefore, I need to move the ball every day with a very limited resource (time).  We are working on a release which is requiring extensive time into the evenings. So I scheduled 5am-7:30am to work on this project.  Win the morning = Win the Day :)  Plus it was pretty fun so Win-Win.
 
- - **Learning Curve**
-I have 15+years of C# experience including Microsoft Web Services. However, I had just a few days of .Net Core experience.  I have 1 to 1.5 weeks to provide a deliverable.  Therefore, I need to move the ball every day with a very limited resource (time).  Here is a glympse of how I approached this learning curve.  
+Here is a glympse of how I approached this learning curve.  
+I brain stored all knowledge gaps and then prioritized them according to the following priority:
   
-	I created a list of "must learn" topics and prioritized them as:
-	 
-	 **Urgent + Important** = Do this before anything else
-
-	 **Important + Not Urgent** = Important but can wait for Urgent tasks
-
-	 **Not Important** = Let's tentatively schedule this to discuss in two weeks if your problem has not been resolved :)
- 
-  - **TOPICS TO LEARN**
-	  - How to create a RESTful API in .Net Core.   
-	  - Model Validation
-	  - Using the .Net Package Manager to create Migrations to alter the Database and its tables.
-	  - Logging in .Net Core taking into consideration scalability, performance, usability/structured
-	  - Using SQLite in .Net Core
-	  - Error handling in .Net Core for RESTful services
-	  - Scalability Best Practices with .Net Core - Vertical, Horizontal
-		  - Vertical - Writing code that takes advantages of server resources (Async)
-		  - Horizontal - Ability to scale the API across multiple servers (Stateless)
-		  - Potential Bottlenecks
-			  - SQLite is not a distributed DB
-			  - ????
-			  NOTE: Microsoft's distributed caching looks promising
-	  - Best Practices for .Net Core RESTful API
-	  - Best Practices for Async based RESTful API 
-	  - Best Practices for testing API Controllers, Model
-	  - Best Practices for automated testing of .Net Core applications
-	  - Learning about Middleware
-	  - Learning GitHub - I have used many source control providers.  GitHub is new for me.
+| **Urgent + Important**  		|  Do this before anything else |
+| **Important + Not Urgent**	| Important but can wait for Urgent tasks |
+| **Not Important**				  	| Let's tentatively schedule this to discuss in two weeks if your problem has not been resolved :) |
 
 ## Design Decisions and Knowlege Gaps
-I brain stormed all the knowledge gaps I had at the start of the project.  Then I prioritized and set out closing them before making a final decisions on how to support scalability, logging, validation, testing, and maintenance.  There are always "unknown-unknowns" especially when rushing a design like this project.  I am adding them to the list as I come to them.
+I brain stormed all the knowledge gaps I had at the start of the project.  Then I prioritized and set out closing them before making a final decisions to make sure my decisions satisfy the stakeholder's customer interests.  There are always "unknown-unknowns" especially when rushing a design like this project.  I am adding them to the list as I come to them.
+
+I typically take a more collaborative approach.  This includes communicating with all stakeholders to define measurable customer interests, discover the knowledge gaps, and setting measurable goals, and working towards the vision and expected product/service.  Stakeholders : customers, product owners, project managers, software leads, other developers, quality assurance/testing, release/build management, etc.
 
 ## Scalability Considerations
 We have to think about scalability both vertically (same server) as well as horizontally (services distributed across multiple servers).   Studying this helped me decide to use the async/await design pattern for my RESTful API.
+
+This is an amazing video explaining how .Net provides scalability via async. 
+[Best Practices for Buliding Async APIs with ASP.Net Core](https://www.youtube.com/watch?v=_T3kvAxAPpQ)
 
 ### *Vertical Scaling*
 ASP.Net Core's asynchronous capability lends well to scaling vertically on the same server.  The asyc/await design allows the application to make effective use of the handles/threads available.  The .Net Core Async design allows applications to make us of increasing resources (adding hard-drive space, memory, cpu, cache).
@@ -114,11 +110,8 @@ Useful article:
 
 //TODO: Provide a link to my Postman collection
 
-## Authorization
-Not sure what I will chose. Saving this for last:
-	
-***Auth0*** - I have some experience with Auth0 in JavaScript 
-***Microsoft Identity*** - I am interested in learning about this so I can  make a better design decision
+## Authentication / Authorization
+I used Java Web Token based authentication. I did not focus on authorization (roles).
 
 Useful article:
 [https://docs.microsoft.com/en-us/aspnet/core/security/authentication/identity?view=aspnetcore-3.1&tabs=visual-studio](https://docs.microsoft.com/en-us/aspnet/core/security/authentication/identity?view=aspnetcore-3.1&tabs=visual-studio)
@@ -140,23 +133,28 @@ What things you need to install the software and how to install them:
 - Next, you need to install several packages (for Entity Framework, Sqlite, Serilog, and Seq).
 
 	I used the Visual Studio NuGet Package Manager to install:
- - **Entity Framework** - 
- Microsoft.EntityFrameworkCore.InMemory (3.1.0) 
- Microsoft.EntityFrameworkCore.Sqlite (3.1.0)
- Microsoft.EntityFrameworkCore.Tools (3.1.0)
- 
- - **Serilog** - This page has a great getting started with Serilog in Visual Studio
- [https://github.com/serilog/serilog/wiki/Getting-Started](https://github.com/serilog/serilog/wiki/Getting-Started)
-
-	 Note: I used the Visual Studio NuGet Package Manager to install:
-	 Serilog.AspNetCore (3.2.0
+	 Microsoft.AspNetCore.Authentication.JwtBearer(3.1.1)
+	 Microsoft.EntityFrameworkCore.Sqlite (3.1.0)
+	 Microsoft.EntityFrameworkCore.Tools (3.1.0)
+	 Microsoft.IdentityModel.Tokens (5.6.0)
+	 Serilog.AspNetCore (3.2.0)
 	 Serilog.Formmating.Compact (1.1.0)
 	 Serilog.Sinks.Seq (4.0.0) 
+	 Swashbuckle.AspNetCore (5.0.0)
+	 Swashbuckle.AspNetCore.Swagger (5.0.0)
+	 Swashbuckle.AspNetCore.SwaggerGen (5.0.0)
+	 Swashbuckle.AspNetCore.SwaggerUI (5.0.0)
+	 System.IdentityModel.Tokens.Jwt (5.6.0)
+
+**LOGGING SETUP**
+ The packages for Serilog is listed above.
  
  Next, you'll need to install the Seq Structured Logging Server
 
  - **Seq Structured Logging Server** (5.1)  [https://datalust.co/seq/](https://datalust.co/seq/)
  
+**SQLite Database**
+
   Next, you'll need to install Sqlite 
 
   - **Sqlite for Windows**.  Here is a tutorial on that: [https://www.sqlitetutorial.net/download-install-sqlite/](https://www.sqlitetutorial.net/download-install-sqlite/)
@@ -170,20 +168,6 @@ Explain how to run the automated tests for this system
 
 ### Break down into end to end tests
 
-Explain what these tests test and why
-```
-Give an example
-
-```
-
-### And coding style tests
-
-Explain what these tests test and why
-
-```
-Give an example
-
-```
 
 ## Deployment
 
@@ -211,7 +195,7 @@ This project is licensed under the MIT License - see the  [LICENSE.md](https://g
 ## Acknowledgments
 
  -   Hat tip to BorrowWorks for providing this very fun coding assignment.
- - Laurie Sutherlin ([https://www.linkedin.com/in/laurie-sutherlin-95814132/](https://www.linkedin.com/in/laurie-sutherlin-95814132/)) (*Technology Business Development Manager at System Soft Technologies*).  Laurie makes a personal investment before matching talent with opportunities by taking the time to truly understand what you bring to the table as far as hard AND soft skills.  
+ - Laurie Sutherlin ([https://www.linkedin.com/in/laurie-sutherlin-95814132/](https://www.linkedin.com/in/laurie-sutherlin-95814132/)) (*Technology Business Development Manager at System Soft Technologies*).  Laurie makes a personal investment in learning as much about the resource before matching them with opportunities.  I feel that she is working "with" both sides.  
 
  -   Thanks to all the people who have taken time to produce excellent articles, blocks, tutorials, and videos for 
 	 - ASP.Net Core 3.0 REST API with a Sqlite DB, 
@@ -223,7 +207,9 @@ This project is licensed under the MIT License - see the  [LICENSE.md](https://g
 -   StackEdit.io for providing a cool online GitHub readme markup editor.
 
 ## Thanks
-I found several great 'Dad' jokes during this project. 
+I am thankful the chance to dig into learning ASP.Net Core RESTful API.  I recently finished a core on React.js where we used async/promises in a similar manner.  I definitely preferred ASP.Net Core's strongly typed compiled environment over JavaScript/Node.js.  However, I also really enjoyed learning JavaScript.  JavaScript ES6+ is getting pretty powerful!
+
+I added several great 'Dad' jokes during this project!!
 
 My 3 favorites:
 
@@ -233,4 +219,4 @@ My 3 favorites:
 
 
 ![Picture of Clint Carter ](https://media-exp2.licdn.com/dms/image/C4E03AQGN2o3h3XtNAg/profile-displayphoto-shrink_200_200/0?e=1584576000&v=beta&t=fOdGtATS_XFihlBXQ6BU8WYYT5Gmo31O_jx2zeNrxi8)
-Clint Carter is a Senior .Net Full-Stack Developer.  He has over 20 years of experience of exceeding expectations and delivering quality software in multiple industries (Oil & Gas, Telcom, Medical, Engineering Design, Software Developer Tools (Visual Basic IDE Power Tools)).  He likes to have fun solving hard problems, continous learning, and making a difference/helping people.  
+Clint Carter is a Senior .Net Full-Stack Developer.  Over 20 years of experience of exceeding expectations and delivering quality software in multiple industries (Oil & Gas, Telcom, Medical, Engineering Design, Software Developer Tools (Visual Basic IDE Power Tools)).  I love solving hard problems, continous learning, and making a difference/helping people.  

@@ -18,7 +18,7 @@ namespace JokesAPI.Middleware
                     Title = "Jokes API",
                     Version = "v1",
                     Description = "A simple example ASP.NET Core RESTful API application implementing a Jokes Database. " +
-                    "The source code is found on my Github at [http://www.github.com/clintcarter1999/jokesAPI](http://www.github.com/clintcarter1999)",
+                    "The source code is found on my Github at [http://www.github.com/clintcarter1999/jokesAPI](http://www.github.com/clintcarter1999/jokesAPI)",
 
                     Contact = new OpenApiContact
                     {
