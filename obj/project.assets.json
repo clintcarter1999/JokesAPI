@@ -9538,6 +9538,7 @@
       "Microsoft.EntityFrameworkCore.Sqlite >= 3.1.0",
       "Microsoft.EntityFrameworkCore.Tools >= 3.1.0",
       "Microsoft.Extensions.Logging.Debug >= 3.1.0",
+      "Microsoft.IdentityModel.Tokens >= 5.6.0",
       "Microsoft.VisualStudio.Azure.Containers.Tools.Targets >= 1.9.10",
       "Microsoft.VisualStudio.Web.CodeGeneration.Design >= 3.1.0",
       "Serilog.AspNetCore >= 3.2.0",
@@ -9619,6 +9620,10 @@
           "Microsoft.Extensions.Logging.Debug": {
             "target": "Package",
             "version": "[3.1.0, )"
+          },
+          "Microsoft.IdentityModel.Tokens": {
+            "target": "Package",
+            "version": "[5.6.0, )"
           },
           "Microsoft.VisualStudio.Azure.Containers.Tools.Targets": {
             "target": "Package",

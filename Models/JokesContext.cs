@@ -13,5 +13,6 @@ namespace JokesAPI.Models
         public DbSet<JokeItem> JokeItems { get; set; }
 
         public DbSet<JokesAPI.Models.UserInfo> UserInfo { get; set; }
+   
     }
 }

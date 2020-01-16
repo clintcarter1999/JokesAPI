@@ -23,6 +23,7 @@
             <summary>
             PutJokeItem allows the client to modify an existing Joke
             </summary>
+            <remarks>This API is restricted.  Users must be authenticated via the Login API</remarks>
             <param name="id">Id of the joke in the Jokes table</param>
             <param name="jokeItem">A JokeItem object</param>
             <returns>StatusCodes.Status200OK (success), BadRequest (bad data or exception), or NotFound (if the Id does not exist)</returns>
@@ -31,6 +32,7 @@
             <summary>
             PostJokeItem allows the user to add jokes to the Jokes Database
             </summary>
+            <remarks>This API is restricted.  Users must be authenticated via the Login API</remarks>
             <param name="jokeItem">JSON Representing a JokeItem Model</param>
             <returns>Success = StatusCodes.Status200OK or BadRequest if unsuccessful</returns>
         </member>
@@ -39,6 +41,7 @@
             DeleteJokeItem provides the ability to delete a joke from the datbase.
             </summary>
             <param name="id">Id of the Joke in the Jokes table</param>
+            <remarks>This API is restricted.  Users must be authenticated via the Login API</remarks>
             <returns>If successfully deleted this method returns StatusCodes.Status200OK. 
             Otherwise it returns a BadRequest status code.</returns>
         </member>
@@ -63,6 +66,34 @@
             The Random API returns a random joke from the Jokes Database.
             </summary>
             <returns>A single joke from the jokes database</returns>
+        </member>
+        <member name="M:JokesAPI.Controllers.LoginController.Login(System.String,System.String)">
+            <summary>
+            Logs the user in and returns a JWT Java Web Token
+            </summary>
+            <param name="username">name of an existing user</param>
+            <param name="password"></param>
+            <returns>JWT Web Token if the user exists</returns>
+        </member>
+        <member name="M:JokesAPI.Controllers.LoginController.GenerateJSONWebToken(JokesAPI.Models.UserAuth)">
+            <summary>
+            Generates the JWT for a given UserAuth object
+            </summary>
+            <param name="user">A UserAuth object used to generate the JWT</param>
+            <returns>A JWT Security Token</returns>
+        </member>
+        <member name="M:JokesAPI.Controllers.LoginController.AuthenticateUser(JokesAPI.Models.UserAuth)">
+            <summary>
+            Authenticates the user
+            </summary>
+            <param name="login">A UserAuth object containing the UserName and Password</param>
+            <returns>UserAuth object</returns>
+        </member>
+        <member name="M:JokesAPI.Controllers.LoginController.Post">
+            <summary>
+            Welcome the new login
+            </summary>
+            <returns></returns>
         </member>
     </members>
 </doc>

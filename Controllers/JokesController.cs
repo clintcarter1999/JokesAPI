@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using JokesAPI.Models;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Authorization;
 
 namespace JokesAPI.Controllers
 {
+    
     [Route("api/jokes")]
     [ApiController]
     public class JokesController : ControllerBase
@@ -37,7 +39,7 @@ namespace JokesAPI.Controllers
         public async Task<ActionResult<IEnumerable<JokeItem>>> GetJokeItems()
         {
             if (_jokesContext.JokeItems  == null)
-                return Ok("The Jokie Jar is empty. Sorry folks"); // 911 Should I return Ok? It's not a failure
+                return Ok("The Jokie Jar is empty. Sorry folks");
 
             List<JokeItem> jokes = null;
 
@@ -48,7 +50,7 @@ namespace JokesAPI.Controllers
                 {
                     _log.LogWarning("There are no JokeItems. Returning empty");
 
-                    return NotFound("There are no jokes in the database"); // 911 Is NotFound appropriate?
+                    return NotFound("There are no jokes in the database"); 
                 }
 
                 _log.LogDebug("Building the list of jokes to return...");
@@ -113,12 +115,15 @@ namespace JokesAPI.Controllers
         /// <summary>
         /// PutJokeItem allows the client to modify an existing Joke
         /// </summary>
+        /// <remarks>This API is restricted.  Users must be authenticated via the Login API</remarks>
         /// <param name="id">Id of the joke in the Jokes table</param>
         /// <param name="jokeItem">A JokeItem object</param>
         /// <returns>StatusCodes.Status200OK (success), BadRequest (bad data or exception), or NotFound (if the Id does not exist)</returns>
         // PUT: api/JokeItems/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
+
+        [Authorize]
         [Route("{id}")]
         [HttpPut]
         public async Task<IActionResult> PutJokeItem(long? id, JokeItem jokeItem)
@@ -178,18 +183,18 @@ namespace JokesAPI.Controllers
         /// <summary>
         /// PostJokeItem allows the user to add jokes to the Jokes Database
         /// </summary>
+        /// <remarks>This API is restricted.  Users must be authenticated via the Login API</remarks>
         /// <param name="jokeItem">JSON Representing a JokeItem Model</param>
         /// <returns>Success = StatusCodes.Status200OK or BadRequest if unsuccessful</returns>
         // POST: api/JokeItems
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPost]
+        [Authorize]
         public async Task<ActionResult<JokeItem>> PostJokeItem(JokeItem jokeItem)
         {
             try
             {
-                //911 Do I need to test jokeItem for null. Let's test this..
-
                 _log.LogInformation("Post JokeItem.Id = {JokeId}", jokeItem.Id.ToString());
 
                 if (!_jokesContext.JokeItems.Contains<JokeItem>(jokeItem))
@@ -216,8 +221,10 @@ namespace JokesAPI.Controllers
         /// DeleteJokeItem provides the ability to delete a joke from the datbase.
         /// </summary>
         /// <param name="id">Id of the Joke in the Jokes table</param>
+        /// <remarks>This API is restricted.  Users must be authenticated via the Login API</remarks>
         /// <returns>If successfully deleted this method returns StatusCodes.Status200OK. 
         /// Otherwise it returns a BadRequest status code.</returns>
+        [Authorize]
         [Route("{id}")]
         [HttpDelete]
         public async Task<ActionResult<JokeItem>> DeleteJokeItem(long? id)
@@ -276,8 +283,6 @@ namespace JokesAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<JokeItem>> PagingJoke(int? pageNumber, int? pageSize)
         {
-            // 911 - Can JokeItems be null? Perhaps if the DB is empty????
-
             var jokes = _jokesContext.JokeItems;
 
             if (pageNumber == null)
@@ -319,8 +324,6 @@ namespace JokesAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<JokeItem>> SearchJokes(string text)
         {
-            //911 add logging and exception handling
-
             if (text == null)
                 return NotFound("Parameter 1: text, was not found and is needed to perform a search");
 
@@ -331,6 +334,7 @@ namespace JokesAPI.Controllers
                 _log.LogInformation("Searching for Jokes containing {SearchText}", text);
 
                 jokes = await _jokesContext.JokeItems.Where(j => j.Joke.Contains(text)).ToListAsync();
+               
             }
             catch (Exception ex)
             {
@@ -352,7 +356,6 @@ namespace JokesAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<JokeItem>> Random()
         {
-
             ActionResult<JokeItem> joke = null;
 
             int id = -1;

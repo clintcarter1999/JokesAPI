@@ -8,6 +8,11 @@ using Microsoft.EntityFrameworkCore;
 using JokesAPI.Models;
 using JokesAPI.Middleware;
 
+// authentication namespaces
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+
 
 namespace JokesAPI
 {
@@ -23,20 +28,34 @@ namespace JokesAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            // This is interesting.  I was able to easily swap out data repositories using Entity Framework.
-            // InMemory, then I switched to SqlServer, then to SqlList.
-            // I was able to swap out data store types and not have to retool the API.
-            // Nice.
-
-            //services.AddDbContext<JokesContext>(opt =>  opt.UseInMemoryDatabase("JokesList"));
-            //  services.AddDbContext<JokesContext>(option => option.UseSqlServer(@"Data Source=CCARTERDEV\SETBASE;Initial Catalog=JokesDb;Trusted_Connection=True;"));
-
             var connection = Configuration.GetConnectionString("JokesDatabase");
             services.AddDbContext<JokesContext>(option => option.UseSqlite(connection));
             
             services.AddControllers();
 
-            //// Register the Swagger API Documentation generator
+            services.AddCors(options => 
+            { 
+                options.AddPolicy("CorsPolicy", builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader().AllowCredentials().Build());
+            });
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
+                        ValidIssuer = Configuration["Jwt:Issuer"],
+                        ValidAudience = Configuration["Jwt:Issuer"],
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]))
+                    };
+
+                });
+
+            services.AddMvc();
+
             services.AddSwagger();
 
         }
@@ -58,6 +77,8 @@ namespace JokesAPI
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 

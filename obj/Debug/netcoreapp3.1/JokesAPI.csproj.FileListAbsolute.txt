@@ -153,6 +153,6 @@ C:\Users\Administrator\source\repos\JokesAPI\bin\Debug\netcoreapp3.1\System.Iden
 C:\Users\Administrator\source\repos\JokesAPI\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Authentication.JwtBearer.dll
 C:\Users\Administrator\source\repos\JokesAPI\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.Protocols.dll
 C:\Users\Administrator\source\repos\JokesAPI\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+C:\Users\Administrator\source\repos\JokesAPI\bin\Debug\netcoreapp3.1\JokesAPI.xml
 C:\Users\Administrator\source\repos\JokesAPI\obj\Debug\netcoreapp3.1\JokesAPI.MvcApplicationPartsAssemblyInfo.cs
 C:\Users\Administrator\source\repos\JokesAPI\obj\Debug\netcoreapp3.1\JokesAPI.MvcApplicationPartsAssemblyInfo.cache
-C:\Users\Administrator\source\repos\JokesAPI\bin\Debug\netcoreapp3.1\JokesAPI.xml
