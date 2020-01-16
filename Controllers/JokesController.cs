@@ -121,7 +121,6 @@ namespace JokesAPI.Controllers
         // PUT: api/JokeItems/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
-
         [Authorize]
         [Route("{id}")]
         [HttpPut]
@@ -175,8 +174,8 @@ namespace JokesAPI.Controllers
                     return BadRequest("Updating Jokes DB faied due to this exception: " + dbEx.Message);
                 }
             }
-
-            return NoContent();
+            
+            return Ok("Joke.Id = " + id.ToString() + " updated successfully");
         }
 
         /// <summary>
@@ -188,8 +187,8 @@ namespace JokesAPI.Controllers
         // POST: api/JokeItems
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
-        [HttpPost]
         [Authorize]
+        [HttpPost]
         public async Task<ActionResult<JokeItem>> PostJokeItem(JokeItem jokeItem)
         {
             try
@@ -215,7 +214,7 @@ namespace JokesAPI.Controllers
             return CreatedAtAction(nameof(GetJokeItem), new { id = jokeItem.Id }, jokeItem);
         }
 
-
+ 
         /// <summary>
         /// DeleteJokeItem provides the ability to delete a joke from the datbase.
         /// </summary>
@@ -261,7 +260,7 @@ namespace JokesAPI.Controllers
                 return BadRequest("Unable to delete Joke Id = " + id.ToString() + "\r\n" + ex.Message);
             }
 
-            return Ok(joke);
+            return Ok("Joke.Id = " + joke.Id + " was successfully deleted");
         }
 
         private bool JokeItemExists(long id)

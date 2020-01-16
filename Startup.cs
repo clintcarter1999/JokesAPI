@@ -30,12 +30,14 @@ namespace JokesAPI
             var connection = Configuration.GetConnectionString("JokesDatabase");
             services.AddDbContext<JokesContext>(option => option.UseSqlite(connection));
 
-            services.AddControllers();
-
+            //TODO: I need to research Cors this further.  
+            // https://thecodebuzz.com/enable-cors-asp-net-core/
             services.AddCors(options =>
             {
                 options.AddPolicy("CorsPolicy", builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader().AllowCredentials().Build());
             });
+
+            services.AddControllers();
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
@@ -82,7 +84,14 @@ namespace JokesAPI
 
             app.UseAuthorization();
 
-            app.UseMiddleware<RequestResponseLoggingMiddleware>();
+            // C.Carter 1/16/2020
+            //
+            // Something in this middleware was causing my authorization to not work.
+            // Commented out for now. At least that is my best guess.  It was the last thing I added.
+            // Auth stopped working...even taking [Authorize] attributes off the put was causing
+            // problems with the POST/PUT.  Will work on adding back after committing a working 
+            // copy of the API.
+            // app.UseMiddleware<RequestResponseLoggingMiddleware>();
 
             app.UseCustomSwagger();
 
