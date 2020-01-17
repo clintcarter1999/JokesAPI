@@ -191,6 +191,8 @@ namespace JokesAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<JokeItem>> PostJokeItem(JokeItem jokeItem)
         {
+            // I would prefer to use an Identity column so that the user does not have to pass an id.
+            
             try
             {
                 _log.LogInformation("Post JokeItem.Id = {JokeId}", jokeItem.Id.ToString());
@@ -214,8 +216,7 @@ namespace JokesAPI.Controllers
             return CreatedAtAction(nameof(GetJokeItem), new { id = jokeItem.Id }, jokeItem);
         }
 
- 
-        /// <summary>
+         /// <summary>
         /// DeleteJokeItem provides the ability to delete a joke from the datbase.
         /// </summary>
         /// <param name="id">Id of the Joke in the Jokes table</param>

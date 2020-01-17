@@ -40,7 +40,7 @@ I have 15+years of C# experience. However, I had just a few days of .Net Core ex
 ## Design Decisions and Knowlege Gaps
 I typically take a more collaborative approach.  This includes communicating with all stakeholders to define measurable customer interests, discover the knowledge gaps, setting measurable goals, and working towards the vision of the expected product/service.  ***Stakeholders :*** *customers, product owners, project managers, software leads, other developers, quality assurance/testing, release/build management, etc.*
 
-My knowledge gaps mostly revolved around .Net Core.  However, there were questions how to measure success on a few of the items:
+My knowledge gaps mostly revolved around .Net Core.  However, there were questions on how to measure success on a few of the items:
 
  - **how to handle 2 million Jokes?**  
 	 - **Pushback**:  How do we measure what is "acceptable?"
@@ -171,13 +171,17 @@ There's probably a way better way to make this happen.  For now, I am simply cli
 Currently there are no automated tests for this project.  I am using Postman to test the API.
 There are a ton of tutorials on how to use Postman.  I assume the reviewers of this project are familiar.  You can also test from the Swagger page that comes up by default as the landing page.
 
-Here is a link to my Postman Collection.  [Postman Collection of API Tests](!%5BPOSTUsingTokenVariable%5D%28https://user-images.githubusercontent.com/5245897/72574277-11996b00-388e-11ea-84cc-630badf977ee.png%29)  Open Postman, then click on that link to install it into your Postman application.  Note that you may have to change the Port
+You can download a copy of Postman here: [Postman Download](https://www.getpostman.com/downloads/)
+
+**Postman Collection**
+Here is a link to my Postman Collection.  [Postman Collection of API Tests](!%5BPOSTUsingTokenVariable%5D%28https://user-images.githubusercontent.com/5245897/72574277-11996b00-388e-11ea-84cc-630badf977ee.png%29)  
+
+To Use That Link: *Open Postman, then click on that link to install it into your Postman application.  Note that you may have to change the Port...more on that below...*
 
 NOTE: This collection provides login, user management, and bad data validation.
 
 **POSTMan Environment Variables**
-I HIGHLY suggest you learn about using Environment Variables inside Postman if you are not familiar.
-This will allow you to login, get the web token, save it to a environment variable {{token}}, and use that {{token}} variable in the authentication of other API calls without having to copy/paste the token string (which changes with each login session).
+I HIGHLY suggest you learn about using Environment Variables inside Postman if you are not familiar.  Environment variables allow you to run the login, get the web token, save it to a environment variable {{token}}, and then use that {{token}} variable in the authentication of other API calls without having to copy/paste the token string (which changes with each login session).
 
 Here is a good article on how to make that happen:  [# Using Postman Environment Variables & Auth Tokens](https://medium.com/@codebyjeff/using-postman-environment-variables-auth-tokens-ea9c4fe9d3d7)
 
