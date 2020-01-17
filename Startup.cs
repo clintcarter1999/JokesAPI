@@ -1,7 +1,6 @@
 using System.Text;
 using JokesAPI.Middleware;
 using JokesAPI.Models;
-// authentication namespaces
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
