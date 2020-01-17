@@ -22,16 +22,11 @@ I would define these as the stakeholder's customer interests.  Each had design d
 		 - Model Validation
 		 - Testability
 		 - Logging
-			 -  **NOTE**: 
-					 - *I have years of experience supporting enterprise software. This has taught me to be a defensive developer by logging as much information as possible/allowed.  This affects performance slightly.  However, it allows our company to provide search logs and provide solutions for customers faster.  Lots of logging.*
 		 - Error Handling
 	 - **Add an endpoint to retrieve a random joke**
-		 - ***Note**: My current implementation needs refactoring.  It does not handle holes (deleted jokes). I need to build a contiguous list and randomly select from that.  I have a retry/fail pattern that will make X number of attempts before giving up.*
  - **Store Jokes in a Memory or SQLite database**
 	 - Pre-population of Joke Data
  - **Provide Swagger documentation**
- 
- **
 
 ## Bonus
  - Docker-ize your application - (*Todo*)
@@ -86,8 +81,14 @@ Useful articles:
 	[https://docs.datalust.co/docs/using-serilog](https://docs.datalust.co/docs/using-serilog)
 	[https://nblumhardt.com/2019/10/serilog-in-aspnetcore-3/](https://nblumhardt.com/2019/10/serilog-in-aspnetcore-3/)
 
+**NOTE**: 
+*I have years of experience supporting enterprise software. This has taught me to be a defensive logger.  I like to log as much potentially helpful information as possible/allowed without degrading performance where possible.  However, it also allows our company to provide solutions for customers faster.*
+
+## Localization Consideration
+I used a lot of hard-coded strings in this example.  It is not localizable at this point.
+
 ## Testing Considerations
-Manual testing using Postman and Swagger are useful for quick testing of API.  However, it doesn't fit in the continuous integration pipeline.  My goal is to understand the new Microsoft.AspNetCore.Mvc.Testing package.  That will have to wait as I am out of time for this first release.  It's now in the backlog :(
+I used Postman and Swagger for manual testing of the API.  My goal is to understand the new Microsoft.AspNetCore.Mvc.Testing package which would fit into the CI/CD pipeline.  That will have to wait...I am out of time for this first release.  It's now in the backlog :(
 
 Quick Exerpt of the article referenced below:
 *"...The release of ASP.NET Core 2.1 introduced a handy new package in  [Microsoft.AspNetCore.Mvc.Testing](https://blogs.msdn.microsoft.com/webdev/2018/03/05/asp-net-core-2-1-0-preview1-functional-testing-of-mvc-applications). Its primary goal is streamlining end-to-end MVC and Web API testing by hosting the full web stack (database included) in memory while providing a client to test "from the outside in" by issuing http requests to our application.
@@ -95,10 +96,6 @@ Having this test host available means, we can write tests that look and execute 
 
 Useful article:
 [ Painless Integration Testing with ASP.NET Core Web API](https://fullstackmark.com/post/20/painless-integration-testing-with-aspnet-core-web-api)
-
-//TODO: Implement automated tsting
-
-//TODO: Provide a link to my Postman collection
 
 ## Authentication / Authorization
 I used Java Web Token based authentication. I did not focus on authorization (roles).  In fact, there's not even a logout.  Not proud of it but at least I have something to demo.
