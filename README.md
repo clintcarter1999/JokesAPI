@@ -108,7 +108,7 @@ Having this test host available means, we can write tests that look and execute 
 Useful article:
 [ Painless Integration Testing with ASP.NET Core Web API](https://fullstackmark.com/post/20/painless-integration-testing-with-aspnet-core-web-api)
 
-**Knowledge Gap:** *I need to research and implement automated testing.*
+**Knowledge Gap:** *I need to research and implement automated testing. *
 
 ## Authentication / Authorization
 I used Java Web Token based authentication. I did not focus on authorization (roles).  In fact, there's not even a logout.  Not proud of it but at least I have something to demo.
