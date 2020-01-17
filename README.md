@@ -40,10 +40,12 @@ I have 15+years of C# experience. However, I had just a few days of .Net Core ex
 ## Design Decisions and Knowlege Gaps
 I typically take a more collaborative approach.  This includes communicating with all stakeholders to define measurable customer interests, discover the knowledge gaps, setting measurable goals, and working towards the vision of the expected product/service.  ***Stakeholders :*** *customers, product owners, project managers, software leads, other developers, quality assurance/testing, release/build management, etc.*
 
-My knowledge gaps mostly revolved around .Net Core.  However, there were questions on how to measure success on a few of the items:
+My knowledge gaps mostly revolved around .Net Core and Docker.  There was a lot to learn.
+
+However, there were questions on how to measure success on a few of the items:
 
  - **how to handle 2 million Jokes?**  
-	 - **Pushback**:  How do we measure what is "acceptable?"
+	 - **Pushback**:  How do we measure success? what is "acceptable?"
 				 - Size of Database (potential cost of storing)?
 				 - Type of Database (SQLite vs __________?)
 				 - Responsiveness? (what is acceptable to the client?)
@@ -53,7 +55,15 @@ My knowledge gaps mostly revolved around .Net Core.  However, there were questio
 				- Keep retrying the same command N number of times?
 				- Fail after the first time and let the user know there is an issue with the network?
 				- Thoughts? Ideas?  
+				
+**Knowledge Gap**: I did not directly address slow connections or request spikes...at least not purposefully.  More research is needed to understand solutions and how to setup the testing.
 
+Useful Articles:
+[ASP.Net Core Performance Best Practices](https://docs.microsoft.com/en-us/aspnet/core/performance/performance-best-practices?view=aspnetcore-3.1)
+[Reducing Latency by Pre-building Singletons in Asp.Net Core](https://andrewlock.net/reducing-latency-by-pre-building-singletons-in-asp-net-core/)
+[Maximizing .Net Core API Performance](https://medium.com/asos-techblog/maximising-net-core-api-performance-11ad883436c)
+[ASP.Net Core Load/Stress Testing](https://docs.microsoft.com/en-us/aspnet/core/test/load-tests?view=aspnetcore-3.1)
+[Top 7 .Net Application Performance Problems](https://www.eginnovations.com/blog/top-7-net-application-performance-problems/)
 ## Scalability Considerations
 I am thinking about scalability both vertically (same server) as well as horizontally (services distributed across multiple servers).   Studying this helped me decide to use the async/await design pattern for my RESTful API.
 
@@ -69,7 +79,8 @@ The stateless architecture of RESTful API lend well to scaling horizontally acro
 ### *Distributed Cache*
 I came across an interesting url with regard to distributed cache in .Net Core applications.  My quick glimpse of the information shows some powerful ability to add scalability.  Here is the article:
  [https://docs.microsoft.com/en-us/aspnet/core/performance/caching/distributed?view=aspnetcore-3.1](https://docs.microsoft.com/en-us/aspnet/core/performance/caching/distributed?view=aspnetcore-3.1)
-I did not have time to tackle this topic yet.  However, I consider it important in the design.
+
+**Knowledge Gap:** *I did not have time to research and implement distributed caching.  However, I consider it important in the design.*
 
 ## Logging Consideration
 I decided to use Serilog and log it to a structured logging service (Seq by Datalust).  
@@ -82,7 +93,7 @@ Useful articles:
 	[https://nblumhardt.com/2019/10/serilog-in-aspnetcore-3/](https://nblumhardt.com/2019/10/serilog-in-aspnetcore-3/)
 
 **NOTE**: 
-*I have years of experience supporting enterprise software. This has taught me to be a defensive logger.  I like to log as much potentially helpful information as possible/allowed without degrading performance where possible.  However, it also allows our company to provide solutions for customers faster.*
+*I have years of experience supporting enterprise software. This has taught me to be a defensive logger.  I like to log as much potentially helpful information without degrading performance where possible.  This allows our company to more quickly provide solutions for customers.*
 
 ## Localization Consideration
 I used a lot of hard-coded strings in this example.  It is not localizable at this point.
@@ -239,7 +250,6 @@ I added several great 'Dad' jokes to my 'act' during this project!!
 How do you catch a UNIQUE rabbit?  *Unique up on him!*
 How do you catch a TAME rabbit? **Tame way, unique up on him!*
 What do you call a nose without a body? *Nobody Nose!* 
-
 
 ![Picture of Clint Carter ](https://media-exp2.licdn.com/dms/image/C4E03AQGN2o3h3XtNAg/profile-displayphoto-shrink_200_200/0?e=1584576000&v=beta&t=fOdGtATS_XFihlBXQ6BU8WYYT5Gmo31O_jx2zeNrxi8)
 Clint Carter is a Senior .Net Full-Stack Developer.  Over 20 years of experience of exceeding expectations and delivering quality software in multiple industries (Oil & Gas, Telcom, Medical, Engineering Design, Software Developer Tools (Visual Basic IDE Power Tools)).  I love solving hard problems, continous learning, and making a difference/helping people.  
