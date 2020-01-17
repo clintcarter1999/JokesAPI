@@ -75,6 +75,9 @@ namespace JokesAPI
                 app.UseHsts();
             }
 
+            // Handles non-success status codes with empty body
+            app.UseStatusCodePagesWithReExecute("/errors/{0}");
+
             app.UseHttpsRedirection();
 
             app.UseRouting();

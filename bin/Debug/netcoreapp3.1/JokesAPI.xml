@@ -23,9 +23,21 @@
             <summary>
             PutJokeItem allows the client to modify an existing Joke
             </summary>
-            <remarks>This API is restricted.  Users must be authenticated via the Login API</remarks>
+            <remarks>This API is restricted.  Users must be authenticated via the Login API
+            
+            Status != Success returns a standard ApiError object
+            
+                 {
+                    "statusCode": 404,
+                    "statusDescription": "NotFound",
+                    "message": "No Joke found with Id = 123"
+                 }
+            </remarks>
             <param name="id">Id of the joke in the Jokes table</param>
             <param name="jokeItem">A JokeItem object</param>
+            <response code="200">Success: Joke successfully updated</response>
+            <response code="404">NotFound: Unabled to modify the Joke due to validation error</response>
+            <response code="400">BadRequest: Exception occured inside the API method</response>
             <returns>StatusCodes.Status200OK (success), BadRequest (bad data or exception), or NotFound (if the Id does not exist)</returns>
         </member>
         <member name="M:JokesAPI.Controllers.JokesController.PostJokeItem(JokesAPI.Models.JokeItem)">

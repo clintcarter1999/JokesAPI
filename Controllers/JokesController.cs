@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using JokesAPI.ApiErrors;
 using JokesAPI.Models;
@@ -115,13 +116,22 @@ namespace JokesAPI.Controllers
         /// <summary>
         /// PutJokeItem allows the client to modify an existing Joke
         /// </summary>
-        /// <remarks>This API is restricted.  Users must be authenticated via the Login API</remarks>
+        /// <remarks>This API is restricted.  Users must be authenticated via the Login API
+        /// 
+        /// Status != Success returns a standard ApiError object
+        /// 
+        ///      {
+        ///         "statusCode": 404,
+        ///         "statusDescription": "NotFound",
+        ///         "message": "No Joke found with Id = 123"
+        ///      }
+        /// </remarks>
         /// <param name="id">Id of the joke in the Jokes table</param>
         /// <param name="jokeItem">A JokeItem object</param>
+        /// <response code="200">Success: Joke successfully updated</response>
+        /// <response code="404">NotFound: Unabled to modify the Joke due to validation error</response>
+        /// <response code="400">BadRequest: Exception occured inside the API method</response>
         /// <returns>StatusCodes.Status200OK (success), BadRequest (bad data or exception), or NotFound (if the Id does not exist)</returns>
-        // PUT: api/JokeItems/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
-        // more details see https://aka.ms/RazorPagesCRUD.
         [Authorize]
         [Route("{id}")]
         [HttpPut]
@@ -147,7 +157,7 @@ namespace JokesAPI.Controllers
             {
                 _log.LogWarning("The Id and JokeItem.Id must match.  id: {JokeId} != JokeItem.Id: {JokeItemId}", id.ToString(), jokeItem.Id.ToString());
 
-                return BadRequest(new BadRequestError("The Id and JokeItem.Id must match"));
+                return BadRequest(new BadRequestError("The Id and JokeItem.Id must match. Provide the id in the url and the body"));
             }
 
             _jokesContext.Entry(jokeItem).State = EntityState.Modified;

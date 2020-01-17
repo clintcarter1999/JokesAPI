@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using JokesAPI.ApiErrors;
 using JokesAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -48,7 +49,7 @@ namespace JokesAPI.Controllers
 
             if (userInfo == null)
             {
-                return NotFound("A User with Id = " + id.ToString() + " does not exist");
+                return NotFound(new NotFoundError("A User with Id = " + id.ToString() + " does not exist"));
             }
 
             return userInfo;
@@ -67,7 +68,7 @@ namespace JokesAPI.Controllers
 
             if (id != userInfo.Id)
             {
-                return BadRequest("The Ids in the request did not match");
+                return BadRequest(new BadRequestError("The Ids in the request did not match"));
             }
 
             _context.Entry(userInfo).State = EntityState.Modified;
@@ -84,11 +85,11 @@ namespace JokesAPI.Controllers
 
                 if (!UserInfoExists(id))
                 {
-                    return NotFound("The Id = {Id} does not exist" + id.ToString());
+                    return NotFound(new NotFoundError("The Id = {Id} does not exist" + id.ToString()));
                 }
                 else
                 {
-                    return BadRequest("Exception occurred in PutUserInfo: " + ex.Message);
+                    return BadRequest(new BadRequestError("Exception occurred in PutUserInfo: " + ex.Message));
                 }
             }
 
@@ -131,7 +132,7 @@ namespace JokesAPI.Controllers
             {
                 _log.LogInformation("Unable to Delete: User.Id = {Id} does not exist", id.ToString());
 
-                return NotFound("User.Id = " + id.ToString() + " does not exist");
+                return NotFound(new NotFoundError("User.Id = " + id.ToString() + " does not exist"));
             }
 
             _log.LogInformation("Deleting User.Id = {Id}", id.ToString());
