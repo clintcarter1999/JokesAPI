@@ -13,16 +13,7 @@ I would define these as the stakeholder's customer interests.  Each had design d
  - ***Considere Scalability*** 
 	 - *How would your application:*
 		 - handle 2 million Jokes?  
-			 - **Pushback**: 
-					 - How do we measure what is "acceptable?"
-						 - Size of Database (potential cost of storing)
-						 - Responsiveness of API against such a large store? What is the acceptable range of time for each given API?  Ex: Retrieve joke by id: [0, 1] second?
 		 - a slow connection speed?
-			 - **Pushback**: 
-					 - What approach do we want to take here?
-						 - Keep retrying the same command N number of times?
-						 - Fail after the first time?
-						 - Thoughts? Ideas?  
 		 - a spike in requests?
  - ***Design and create RESTful endpoints (CRUD)***
 	 - **Keep in mind things such as:**
@@ -49,29 +40,29 @@ I would define these as the stakeholder's customer interests.  Each had design d
 
 
 ## Learning Curve & Challenges
-There were several knowledge gaps starting this project as well as a learning curve.  I have 1-1.5 weeks to provide a working deliverable.  The project should also represent of my use of good design principles, OOP methodologies, best practices, and and long term vision (scalability, readability, maintainability).  
-
-Challenge accepted!
-
-## **Learning Curve**
-I have 15+years of C# experience. However, I had just a few days of .Net Core experience.  I have 1 to 1.5 weeks to provide a deliverable.  Therefore, I need to move the ball every day with a very limited resource (time).  We are working on a release which is requiring extensive time into the evenings. So I scheduled 5am-7:30am to work on this project.  Win the morning = Win the Day :)  Plus it was pretty fun so Win-Win.
-
-Here is a glympse of how I approached this learning curve.  
-I brain stored all knowledge gaps and then prioritized them according to the following priority:
-  
-| **Urgent + Important**  		|  Do this before anything else |
-| **Important + Not Urgent**	| Important but can wait for Urgent tasks |
-| **Not Important**				  	| Let's tentatively schedule this to discuss in two weeks if your problem has not been resolved :) |
+I have 15+years of C# experience. However, I had just a few days of .Net Core experience.  I have 1 to 1.5 weeks to provide a deliverable. 
 
 ## Design Decisions and Knowlege Gaps
-I brain stormed all the knowledge gaps I had at the start of the project.  Then I prioritized and set out closing them before making a final decisions to make sure my decisions satisfy the stakeholder's customer interests.  There are always "unknown-unknowns" especially when rushing a design like this project.  I am adding them to the list as I come to them.
+I typically take a more collaborative approach.  This includes communicating with all stakeholders to define measurable customer interests, discover the knowledge gaps, setting measurable goals, and working towards the vision of the expected product/service.  ***Stakeholders :*** *customers, product owners, project managers, software leads, other developers, quality assurance/testing, release/build management, etc.*
 
-I typically take a more collaborative approach.  This includes communicating with all stakeholders to define measurable customer interests, discover the knowledge gaps, and setting measurable goals, and working towards the vision and expected product/service.  Stakeholders : customers, product owners, project managers, software leads, other developers, quality assurance/testing, release/build management, etc.
+My knowledge gaps mostly revolved around .Net Core.  However, there were questions how to measure success on a few of the items:
+
+ - **how to handle 2 million Jokes?**  
+	 - **Pushback**:  How do we measure what is "acceptable?"
+				 - Size of Database (potential cost of storing)?
+				 - Type of Database (SQLite vs __________?)
+				 - Responsiveness? (what is acceptable to the client?)
+	
+ - **how to handle a slow connection speed?**  
+	 - **Pushback**: What approach is acceptable to the client?
+				- Keep retrying the same command N number of times?
+				- Fail after the first time and let the user know there is an issue with the network?
+				- Thoughts? Ideas?  
 
 ## Scalability Considerations
-We have to think about scalability both vertically (same server) as well as horizontally (services distributed across multiple servers).   Studying this helped me decide to use the async/await design pattern for my RESTful API.
+I am thinking about scalability both vertically (same server) as well as horizontally (services distributed across multiple servers).   Studying this helped me decide to use the async/await design pattern for my RESTful API.
 
-This is an amazing video explaining how .Net provides scalability via async. 
+This is an amazing video explaining how .Net provides scalability via async.  I really like .Net core's approach here...
 [Best Practices for Buliding Async APIs with ASP.Net Core](https://www.youtube.com/watch?v=_T3kvAxAPpQ)
 
 ### *Vertical Scaling*
@@ -81,13 +72,13 @@ ASP.Net Core's asynchronous capability lends well to scaling vertically on the s
 The stateless architecture of RESTful API lend well to scaling horizontally across multiple servers.  Client information is not stored on the server.  It just receives a single requests and provides a single response.  The issue here is the database.  SQLite is not distributed.
 
 ### *Distributed Cache*
-I came across an interesting url with regard to distributed cache in .Net Core applications.  My quick glimpse of the information shows some powerful ability to add scalability.  Here is the article I want to read first:
+I came across an interesting url with regard to distributed cache in .Net Core applications.  My quick glimpse of the information shows some powerful ability to add scalability.  Here is the article:
  [https://docs.microsoft.com/en-us/aspnet/core/performance/caching/distributed?view=aspnetcore-3.1](https://docs.microsoft.com/en-us/aspnet/core/performance/caching/distributed?view=aspnetcore-3.1)
-If you are reading this then I did not have time to tackle this topic yet.  However, I consider it important in the design.
+I did not have time to tackle this topic yet.  However, I consider it important in the design.
 
 ## Logging Consideration
-I decided to use Serilog because it uses structured logging.  It also supports "enrichers" which provides the ability to add information (such as requestor info) or improve the understandability (perhaps of stack traces).  For now, I am logging to a structured viewer called Seq by Datalust.
-Serilog updates Seq in batches to minimize logging performance bottlenecks.  
+I decided to use Serilog and log it to a structured logging service (Seq by Datalust).  
+Serilog updates Seq in batches to minimize logging performance bottlenecks.
 
 Useful articles: 
 	https://stackify.com/nlog-vs-log4net-vs-serilog/
@@ -96,7 +87,7 @@ Useful articles:
 	[https://nblumhardt.com/2019/10/serilog-in-aspnetcore-3/](https://nblumhardt.com/2019/10/serilog-in-aspnetcore-3/)
 
 ## Testing Considerations
-Manual testing using Postman and Swagger are useful for quick testing of API.  However, it doesn't fit in the continuous integration pipeline.  My goal is to understand the new Microsoft.AspNetCore.Mvc.Testing package.  
+Manual testing using Postman and Swagger are useful for quick testing of API.  However, it doesn't fit in the continuous integration pipeline.  My goal is to understand the new Microsoft.AspNetCore.Mvc.Testing package.  That will have to wait as I am out of time for this first release.  It's now in the backlog :(
 
 Quick Exerpt of the article referenced below:
 *"...The release of ASP.NET Core 2.1 introduced a handy new package in  [Microsoft.AspNetCore.Mvc.Testing](https://blogs.msdn.microsoft.com/webdev/2018/03/05/asp-net-core-2-1-0-preview1-functional-testing-of-mvc-applications). Its primary goal is streamlining end-to-end MVC and Web API testing by hosting the full web stack (database included) in memory while providing a client to test "from the outside in" by issuing http requests to our application.
@@ -115,15 +106,9 @@ I used Java Web Token based authentication. I did not focus on authorization (ro
 **WARNING**
 NOTE: This is NOT a secure implementation.  Currently the HttpGet for all users returns the user's password (Noooooooooo Clint. Say it ain't so!).  
 
-Yep, I did that to make it easy for you to simply query the current users and use their password.    You are welcome to create your own user and password but do NOT use a password you use for personal use!
+Yep, I did that to make it easy for you to simply query the current users and use their password.    You are welcome to create your own user and password. 
 
-Useful article:
-[https://docs.microsoft.com/en-us/aspnet/core/security/authentication/identity?view=aspnetcore-3.1&tabs=visual-studio](https://docs.microsoft.com/en-us/aspnet/core/security/authentication/identity?view=aspnetcore-3.1&tabs=visual-studio)
-
-## Deployment
-I admit that I have not prioritized learning the deployment best practices and considerations.  This is a knowledge gap I would close in real life before making final decisions on design and implementation.
-
-## Database Considerations
+## Database Table Considerations
 I have kept this simple at this time with just a model and controller for Jokes with "id" and "joke" columns.  However, with more time I would add Author, Category, Tags, Rating, and DateAdded.  We might even keep track of how many times a joke is served.  I would likely have a Category Model/Controller as well as a Tags Model/Controller.  
 
 ## Getting Started
@@ -187,26 +172,24 @@ There's probably a way better way to make this happen.  For now, I am simply cli
 ```
 ## Running the tests
 Currently there are no automated tests for this project.  I am using Postman to test the API.
-There are a ton of tutorials on how to use Postman.  I assume the reviewers of this project are familiar.  Most of the API are straight forward.  You can also test those from the Swagger page that comes up by default.
+There are a ton of tutorials on how to use Postman.  I assume the reviewers of this project are familiar.  You can also test from the Swagger page that comes up by default as the landing page.
 
-There is are 3 API that require a authentication (uses JWT) including the Joke API's POST, PUT, and DELETE.
+Here is a link to my Postman Collection.  [Postman Collection of API Tests](!%5BPOSTUsingTokenVariable%5D%28https://user-images.githubusercontent.com/5245897/72574277-11996b00-388e-11ea-84cc-630badf977ee.png%29)  Open Postman, then click on that link to install it into your Postman application.  Note that you may have to change the Port
+
+NOTE: This collection provides login, user management, and bad data validation.
 
 **POSTMan Environment Variables**
-I HIGHLY suggest you learn about using Environment Variables inside Postman.
-This will allow you to login, get the Token, save it to a environment variable, and use that token variable in other commands without having to copy/paste the token string all over the place.
+I HIGHLY suggest you learn about using Environment Variables inside Postman if you are not familiar.
+This will allow you to login, get the web token, save it to a environment variable {{token}}, and use that {{token}} variable in the authentication of other API calls without having to copy/paste the token string (which changes with each login session).
+
 Here is a good article on how to make that happen:  [# Using Postman Environment Variables & Auth Tokens](https://medium.com/@codebyjeff/using-postman-environment-variables-auth-tokens-ea9c4fe9d3d7)
 
-This is my login POSTMan.  You can see where it is setting the system variable "token" with the web token value in the "Tests" area in the bigger rectangle.  The smaller rectangle at the top right is the Environment I created.  I added the "token" variable inside that environment defaulted with some dummy data.
-![PostManLoginWithEnvVariableSetterCode](https://user-images.githubusercontent.com/5245897/72573193-705ce580-388a-11ea-86a1-3632dbe61068.png)
-Run the login command using one of the default users. 
-	UserName = user1
-	Password = user1
+This is my login Postman environment setup:
+![MyPostManSystemEnvSetup](https://user-images.githubusercontent.com/5245897/72614978-3676f800-38f9-11ea-8f05-71e7d7a074e3.png)
 
-**Example POST Request using Environment Variable**
-I ran the code above to login and store the java web token in the {{token}} variable.  Then I opened my POST API and setup the authentication as Type = "Bearer Token".  Then I entered {{token}} in the Token field.  You can see the that the command ran successfully in this screen shot.
-![POSTUsingTokenVariable](https://user-images.githubusercontent.com/5245897/72574277-11996b00-388e-11ea-84cc-630badf977ee.png)
+**Saving away the web token on login**
+![PostmanSavingWebToken](https://user-images.githubusercontent.com/5245897/72615461-5d81f980-38fa-11ea-89bb-a1fb2a5ddc35.png)
 
-Here is a link to my Postman Collection.  [Postman Collection of API Tests](!%5BPOSTUsingTokenVariable%5D%28https://user-images.githubusercontent.com/5245897/72574277-11996b00-388e-11ea-84cc-630badf977ee.png%29)
 
 ## Deployment
 
@@ -246,7 +229,7 @@ This project is licensed under the MIT License - see the  [LICENSE.md](https://g
 -   StackEdit.io for providing a cool online GitHub readme markup editor.
 
 ## Thanks
-I am thankful the chance to dig into learning ASP.Net Core RESTful API.  I recently finished a class on React.js where we used async/promises in a similar manner.  I definitely preferred ASP.Net Core's strongly typed compiled environment over transpiled JavaScript/Node.js .  However, JavaScript is getting pretty powerful!  Definitely some cool stuff there.
+I am thankful the chance to dig into learning ASP.Net Core RESTful API.  I recently finished a class on React.js where we used async/promises in a similar manner.  I definitely preferred ASP.Net Core's strongly typed compiled environment over transpiled JavaScript/Node.js .  However, JavaScript is getting pretty powerful.  Definitely some cool stuff there! I really like the props destructuring!
 
 I added several great 'Dad' jokes to my 'act' during this project!!
 

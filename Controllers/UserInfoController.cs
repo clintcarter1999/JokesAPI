@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using JokesAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace JokesAPI.Controllers
 {
@@ -12,89 +13,134 @@ namespace JokesAPI.Controllers
     public class UserInfoController : ControllerBase
     {
         private readonly JokesContext _context;
+        private readonly ILogger _log;
 
-        public UserInfoController(JokesContext context)
+        public UserInfoController(JokesContext context, ILogger<JokesController> logger)
         {
             _context = context;
+            _log = logger;
         }
 
-        // GET: api/UserInfo
+        /// <summary>
+        /// Gets all users:
+        /// WARNING: Also returns the user's passwords in this first pass.
+        /// </summary>
+        /// <returns>A list of all users in the system</returns>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<UserInfo>>> GetUserInfo()
         {
+            _log.LogInformation("GetUserInfo API called");
+
             return await _context.UserInfo.ToListAsync();
         }
 
-        // GET: api/UserInfo/5
+        /// <summary>
+        /// Gets a specific user by Id
+        /// </summary>
+        /// <param name="id">Id of an exising user</param>
+        /// <returns>Information for the user specified</returns>
         [HttpGet("{id}")]
         public async Task<ActionResult<UserInfo>> GetUserInfo(long id)
         {
+            _log.LogInformation("GetUserInfo by Id = {Id} API called", id.ToString());
+
             var userInfo = await _context.UserInfo.FindAsync(id);
 
             if (userInfo == null)
             {
-                return NotFound();
+                return NotFound("A User with Id = " + id.ToString() + " does not exist");
             }
 
             return userInfo;
         }
 
-        // PUT: api/UserInfo/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
-        // more details see https://aka.ms/RazorPagesCRUD.
+        /// <summary>
+        /// Updates the specified user
+        /// </summary>
+        /// <param name="id">Id of the user to update</param>
+        /// <param name="userInfo">UserInfo Model</param>
+        /// <returns>Ok if successful</returns>
         [HttpPut("{id}")]
         public async Task<IActionResult> PutUserInfo(long id, UserInfo userInfo)
         {
+            _log.LogInformation("PutUserInfo API called, {Id}", id.ToString());
+
             if (id != userInfo.Id)
             {
-                return BadRequest();
+                return BadRequest("The Ids in the request did not match");
             }
 
             _context.Entry(userInfo).State = EntityState.Modified;
 
             try
             {
+                _log.LogInformation("PutUserInfo Saving Changes for Id={Id}", id.ToString());
+
                 await _context.SaveChangesAsync();
             }
-            catch (DbUpdateConcurrencyException)
+            catch (DbUpdateConcurrencyException ex)
             {
+                _log.LogError(ex, "Exception in PutUserInfo");
+
                 if (!UserInfoExists(id))
                 {
-                    return NotFound();
+                    return NotFound("The Id = {Id} does not exist" + id.ToString());
                 }
                 else
                 {
-                    throw;
+                    return BadRequest("Exception occurred in PutUserInfo: " + ex.Message);
                 }
             }
 
-            return NoContent();
+            _log.LogInformation("UserInfo for Id={Id} saved", id.ToString());
+
+            return Ok(userInfo);
         }
 
-        // POST: api/UserInfo
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
-        // more details see https://aka.ms/RazorPagesCRUD.
+        /// <summary>
+        /// Creates a new user
+        /// </summary>
+        /// <param name="userInfo">UserInfo Model</param>
+        /// <returns>The new user's information if successful</returns>
         [HttpPost]
         public async Task<ActionResult<UserInfo>> PostUserInfo(UserInfo userInfo)
         {
+            _log.LogInformation("PostUserInfo API called");
+            
+            _log.LogInformation("Creating new User");
+
             _context.UserInfo.Add(userInfo);
+
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetUserInfo", new { id = userInfo.Id }, userInfo);
         }
 
-        // DELETE: api/UserInfo/5
+        /// <summary>
+        /// Deletes the specified user
+        /// </summary>
+        /// <param name="id">Id of the user to delete</param>
+        /// <returns>That user's info if successful</returns>
         [HttpDelete("{id}")]
         public async Task<ActionResult<UserInfo>> DeleteUserInfo(long id)
         {
+            _log.LogInformation("DeleteUserInfo API called");
+
             var userInfo = await _context.UserInfo.FindAsync(id);
             if (userInfo == null)
             {
-                return NotFound();
+                _log.LogInformation("Unable to Delete: User.Id = {Id} does not exist", id.ToString());
+
+                return NotFound("User.Id = " + id.ToString() + " does not exist");
             }
 
+            _log.LogInformation("Deleting User.Id = {Id}", id.ToString());
+
             _context.UserInfo.Remove(userInfo);
+
             await _context.SaveChangesAsync();
+
+            _log.LogInformation("User.Id = {Id} successfully deleted", id.ToString());
 
             return userInfo;
         }

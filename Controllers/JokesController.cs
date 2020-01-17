@@ -96,7 +96,7 @@ namespace JokesAPI.Controllers
                 {
                     _log.LogInformation("No Joke found with Id = {JokeId}", id.ToString());
 
-                    return NotFound();
+                    return NotFound("No Joke found with Id = " + id.ToString());
                 }
 
                 _log.LogInformation("returning Joke.Id = {JokeId}", id.ToString());
