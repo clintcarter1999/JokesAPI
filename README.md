@@ -108,6 +108,8 @@ Having this test host available means, we can write tests that look and execute 
 Useful article:
 [ Painless Integration Testing with ASP.NET Core Web API](https://fullstackmark.com/post/20/painless-integration-testing-with-aspnet-core-web-api)
 
+**Knowledge Gap:** *I need to research and implement automated testing.*
+
 ## Authentication / Authorization
 I used Java Web Token based authentication. I did not focus on authorization (roles).  In fact, there's not even a logout.  Not proud of it but at least I have something to demo.
 
@@ -115,6 +117,8 @@ I used Java Web Token based authentication. I did not focus on authorization (ro
 NOTE: This is NOT a secure implementation.  Currently the HttpGet for all users returns the user's password (Noooooooooo Clint. Say it ain't so!).  
 
 Yep, I did that to make it easy for you to simply query the current users and use their password.    You are welcome to create your own user and password. 
+
+**Knowledge Gap:** *I need to research this area more deeply to understand roles/permissions based authorization in .Net Core*
 
 ## Database Table Considerations
 I have kept this simple at this time with just a model and controller for Jokes with "id" and "joke" columns.  However, with more time I would add Author, Category, Tags, Rating, and DateAdded.  We might even keep track of how many times a joke is served.  I would likely have a Category Model/Controller as well as a Tags Model/Controller.  
