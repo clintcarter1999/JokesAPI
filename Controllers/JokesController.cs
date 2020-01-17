@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using JokesAPI.ApiErrors;
 using JokesAPI.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -49,7 +50,7 @@ namespace JokesAPI.Controllers
                 {
                     _log.LogWarning("There are no JokeItems. Returning empty");
 
-                    return NotFound("There are no jokes in the database");
+                    return NotFound(new NotFoundError("There are no jokes in the database"));
                 }
 
                 _log.LogDebug("Building the list of jokes to return...");
@@ -59,13 +60,13 @@ namespace JokesAPI.Controllers
                 if (jokes != null)
                     _log.LogInformation("Returning {NumJokes} jokes", jokes.Count<JokeItem>());
                 else
-                    return NotFound("No Jokes found");
+                    return NotFound(new NotFoundError("No Jokes found"));
             }
             catch (Exception ex)
             {
                 _log.LogError(ex, "Exception in GetJokeItems");
 
-                return BadRequest("Exception occurred getting jokes due to exception: " + ex.Message);
+                return BadRequest(new BadRequestError("Exception occurred getting jokes due to exception: " + ex.Message));
             }
 
             return Ok(jokes);
@@ -86,7 +87,7 @@ namespace JokesAPI.Controllers
             try
             {
                 if (id == null)
-                    return NotFound("Parameter 1: Id was not found or is missing. Please provide an id value");
+                    return NotFound(new NotFoundError("Parameter 1: Id was not found or is missing. Please provide an id value"));
 
                 _log.LogInformation("GetJokeItem.Id = {JokeId}", id.ToString());
 
@@ -96,7 +97,7 @@ namespace JokesAPI.Controllers
                 {
                     _log.LogInformation("No Joke found with Id = {JokeId}", id.ToString());
 
-                    return NotFound("No Joke found with Id = " + id.ToString());
+                    return NotFound(new NotFoundError("No Joke found with Id = " + id.ToString()));
                 }
 
                 _log.LogInformation("returning Joke.Id = {JokeId}", id.ToString());
@@ -105,7 +106,7 @@ namespace JokesAPI.Controllers
             {
                 _log.LogError(ex, "Exception getting joke Id = {JokeId}", id.ToString());
 
-                return BadRequest("Exception occurred getting joke id: " + id.ToString() + "\r\n" + ex.Message);
+                return BadRequest(new BadRequestError("Exception occurred getting joke id: " + id.ToString() + "\r\n" + ex.Message));
             }
 
             return Ok(joke);
@@ -130,14 +131,14 @@ namespace JokesAPI.Controllers
             {
                 _log.LogWarning("PutJokeItem: user did not supply id value after the apiEndPoint");
 
-                return NotFound("Parameter 1: Id was not found or is missing. Please provide an id value");
+                return NotFound(new NotFoundError("Parameter 1: Id was not found or is missing. Please provide an id value"));
             }
 
             if (jokeItem == null)
             {
                 _log.LogWarning("PutJokeItem: no JokeItem was found in the parameters");
 
-                return NotFound("Parameter 2: JokeItem was not found or is missing. Please provide a JokeItem");
+                return NotFound(new NotFoundError("Parameter 2: JokeItem was not found or is missing. Please provide a JokeItem"));
             }
 
             _log.LogInformation("PutJokeItem {JokeId}", id);
@@ -146,7 +147,7 @@ namespace JokesAPI.Controllers
             {
                 _log.LogWarning("The Id and JokeItem.Id must match.  id: {JokeId} != JokeItem.Id: {JokeItemId}", id.ToString(), jokeItem.Id.ToString());
 
-                return BadRequest("The Id and JokeItem.Id must match");
+                return BadRequest(new BadRequestError("The Id and JokeItem.Id must match"));
             }
 
             _jokesContext.Entry(jokeItem).State = EntityState.Modified;
@@ -165,13 +166,13 @@ namespace JokesAPI.Controllers
 
                 if (!JokeItemExists(id ?? 0))
                 {
-                    return NotFound();
+                    return NotFound(new NotFoundError("Id = " + id + " does not exist or is missing"));
                 }
                 else
                 {
                     _log.LogError("throwing from PutJokeItem for Id = {JokeId}", id.ToString());
 
-                    return BadRequest("Updating Jokes DB faied due to this exception: " + dbEx.Message);
+                    return BadRequest(new BadRequestError("Updating Jokes DB faied due to this exception: " + dbEx.Message));
                 }
             }
             
@@ -210,7 +211,7 @@ namespace JokesAPI.Controllers
             {
                 _log.LogError(ex, "PostJokeItem threw an exeption");
 
-                return BadRequest("PostJokeItem failed due to exception: " + ex.Message);
+                return BadRequest(new BadRequestError("PostJokeItem failed due to exception: " + ex.Message));
             }
 
             return CreatedAtAction(nameof(GetJokeItem), new { id = jokeItem.Id }, jokeItem);
@@ -236,14 +237,14 @@ namespace JokesAPI.Controllers
                 {
                     _log.LogWarning("PutJokeItem: user did not supply id value after the apiEndPoint");
 
-                    return NotFound("Parameter 1: Id was not found or is missing. Please provide an id value");
+                    return NotFound(new NotFoundError("Parameter 1: Id was not found or is missing. Please provide an id value"));
                 }
 
                 joke = await _jokesContext.JokeItems.FindAsync(id);
 
                 if (joke == null)
                 {
-                    return NotFound("We could not find a joke to delete with Id = " + id.ToString());
+                    return NotFound(new NotFoundError("We could not find a joke to delete with Id = " + id.ToString()));
                 }
 
                 _log.LogInformation("Removing Joke Id = {JokeId}", id.ToString());
@@ -258,7 +259,7 @@ namespace JokesAPI.Controllers
             {
                 _log.LogError(ex, "Exception deleting a joke.id = {JokeId}", id.ToString());
 
-                return BadRequest("Unable to delete Joke Id = " + id.ToString() + "\r\n" + ex.Message);
+                return BadRequest(new BadRequestError("Unable to delete Joke Id = " + id.ToString() + "\r\n" + ex.Message));
             }
 
             return Ok("Joke.Id = " + joke.Id + " was successfully deleted");
@@ -285,10 +286,10 @@ namespace JokesAPI.Controllers
             var jokes = _jokesContext.JokeItems;
 
             if (pageNumber == null)
-                return NotFound("Parameter 1: pageNumber, was not found, mispelled, or missing a value");
+                return NotFound(new NotFoundError("Parameter 1: pageNumber, was not found, mispelled, or missing a value"));
 
             if (pageSize == null)
-                return NotFound("pageSize parameter not found,mispelled, or missing a value");
+                return NotFound(new NotFoundError("pageSize parameter not found,mispelled, or missing a value"));
 
             var currentPageNumber = pageNumber ?? 1;
             var currentPageSize = pageSize ?? 2;
@@ -305,7 +306,7 @@ namespace JokesAPI.Controllers
             {
                 _log.LogError(ex, "Unknown Exception inside PagingJoke {currentPageNumber}, {currentPageSize}", currentPageNumber, currentPageSize);
 
-                return BadRequest("Unable to get page of Jokes due to exception: " + ex.Message);
+                return BadRequest(new BadRequestError("Unable to get page of Jokes due to exception: " + ex.Message));
             }
 
             _log.LogInformation("Returning {Count} Jokes", list.Count<JokeItem>());
@@ -324,7 +325,7 @@ namespace JokesAPI.Controllers
         public async Task<ActionResult<JokeItem>> SearchJokes(string text)
         {
             if (text == null)
-                return NotFound("Parameter 1: text, was not found and is needed to perform a search");
+                return NotFound(new NotFoundError("Parameter 1: text, was not found and is needed to perform a search"));
 
             List<JokeItem> jokes = null;
 
@@ -339,7 +340,7 @@ namespace JokesAPI.Controllers
             {
                 _log.LogError(ex, "Exception searching for {SearchText} Jokes Database", text);
 
-                return BadRequest("Unable to Search the Jokes DB due to this exception: " + ex.Message);
+                return BadRequest(new BadRequestError("Unable to Search the Jokes DB due to this exception: " + ex.Message));
             }
 
             _log.LogInformation("{SearchText} was found {count} times", text, jokes.Count<JokeItem>());
@@ -411,7 +412,7 @@ namespace JokesAPI.Controllers
 
                             _log.LogInformation("We were unable to find a random joke after {RetryAttempts} attempts", retryAttemptsAllowed);
 
-                            return NotFound();
+                            return NotFound(new NotFoundError("we were unabel to find a random joke after = " + retryAttemptsAllowed + " attempts. Please try again."));
                         }
                         else
                         {
@@ -429,7 +430,7 @@ namespace JokesAPI.Controllers
             {
                 _log.LogError(ex, "Exception retrieving a random joke");
 
-                return BadRequest("Unable to retrieve a random Joke: " + ex.Message);
+                return BadRequest(new BadRequestError("Unable to retrieve a random Joke: " + ex.Message));
             }
 
             _log.LogInformation("Random Joke.Id = {JokeId} is being returned", id);
