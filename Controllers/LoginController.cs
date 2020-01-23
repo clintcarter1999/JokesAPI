@@ -17,14 +17,14 @@ namespace JokesAPI.Controllers
     [ApiController]
     public class LoginController : Controller
     {
-        private readonly JokesContext _jokesContext;
+        private readonly AppDbContext _dbContext;
         private IConfiguration _config;
         private readonly ILogger _log;
 
-        public LoginController(IConfiguration config, JokesContext jokesContext, ILogger<JokesController> logger)
+        public LoginController(IConfiguration config, AppDbContext context, ILogger<JokesController> logger)
         {
             _config = config;
-            _jokesContext = jokesContext;
+            _dbContext = context;
             _log = logger;
         }
 
@@ -103,7 +103,7 @@ namespace JokesAPI.Controllers
             try
             {
 
-                List<UserInfo> newUser = _jokesContext.UserInfo.Where<UserInfo>(x => x.UserName == login.UserName && x.Password == login.Password).ToList();
+                List<UserInfo> newUser = _dbContext.UserInfo.Where<UserInfo>(x => x.UserName == login.UserName && x.Password == login.Password).ToList();
 
                 if (newUser.Count != 0)
                 {

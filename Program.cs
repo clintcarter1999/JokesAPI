@@ -39,7 +39,7 @@ namespace JokesAPI
                 ////using (var scope = host.Services.CreateScope())
                 ////{
                 ////    var services = scope.ServiceProvider;
-                ////    var context = services.GetService<JokesContext>();
+                ////    var context = services.GetService<AppDbContext>();
 
 
                 ////    DbHelper.InsertData(context);

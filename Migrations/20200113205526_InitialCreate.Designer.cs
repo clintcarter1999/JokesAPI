@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace JokesAPI.Migrations
 {
-    [DbContext(typeof(JokesContext))]
+    [DbContext(typeof(AppDbContext))]
     [Migration("20200113205526_InitialCreate")]
     partial class InitialCreate
     {

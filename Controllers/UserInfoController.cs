@@ -13,10 +13,10 @@ namespace JokesAPI.Controllers
     [ApiController]
     public class UserInfoController : ControllerBase
     {
-        private readonly JokesContext _context;
+        private readonly AppDbContext _context;
         private readonly ILogger _log;
 
-        public UserInfoController(JokesContext context, ILogger<JokesController> logger)
+        public UserInfoController(AppDbContext context, ILogger<JokesController> logger)
         {
             _context = context;
             _log = logger;

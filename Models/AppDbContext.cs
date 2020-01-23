@@ -2,9 +2,9 @@
 
 namespace JokesAPI.Models
 {
-    public class JokesContext : DbContext
+    public class AppDbContext : DbContext
     {
-        public JokesContext(DbContextOptions<JokesContext> options)
+        public AppDbContext(DbContextOptions<AppDbContext> options)
             : base(options)
         {
         }

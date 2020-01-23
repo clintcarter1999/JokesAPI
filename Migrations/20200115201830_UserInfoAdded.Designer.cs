@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace JokesAPI.Migrations
 {
-    [DbContext(typeof(JokesContext))]
+    [DbContext(typeof(AppDbContext))]
     [Migration("20200115201830_UserInfoAdded")]
     partial class UserInfoAdded
     {

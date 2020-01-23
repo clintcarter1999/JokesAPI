@@ -17,16 +17,16 @@ namespace JokesAPI.Controllers
     [ApiController]
     public class JokesController : ControllerBase
     {
-        private readonly JokesContext _jokesContext;
+        private readonly AppDbContext _dbContext;
         private readonly ILogger _log;
 
-        public JokesController(JokesContext context, ILogger<JokesController> logger)
+        public JokesController(AppDbContext context, ILogger<JokesController> logger)
         {
             _log = logger;
 
             _log.LogInformation("Jokes Controller CTOR"); //TODO: Learn ASP.Net Core's Resource/Localization
 
-            _jokesContext = context;
+            _dbContext = context;
 
         }
 
@@ -39,7 +39,7 @@ namespace JokesAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<JokeItem>>> GetJokeItems()
         {
-            if (_jokesContext.JokeItems == null)
+            if (_dbContext.JokeItems == null)
                 return Ok("The Jokie Jar is empty. Sorry folks");
 
             List<JokeItem> jokes = null;
@@ -47,7 +47,7 @@ namespace JokesAPI.Controllers
             try
             {
 
-                if (_jokesContext.JokeItems == null)
+                if (_dbContext.JokeItems == null)
                 {
                     _log.LogWarning("There are no JokeItems. Returning empty");
 
@@ -56,7 +56,7 @@ namespace JokesAPI.Controllers
 
                 _log.LogDebug("Building the list of jokes to return...");
 
-                jokes = await _jokesContext.JokeItems.ToListAsync();
+                jokes = await _dbContext.JokeItems.ToListAsync();
 
 
                 if (jokes != null)
@@ -93,7 +93,7 @@ namespace JokesAPI.Controllers
 
                 _log.LogInformation("GetJokeItem.Id = {JokeId}", id.ToString());
 
-                joke = await _jokesContext.JokeItems.FindAsync(id);
+                joke = await _dbContext.JokeItems.FindAsync(id);
 
                 if (joke == null)
                 {
@@ -161,13 +161,13 @@ namespace JokesAPI.Controllers
                 return BadRequest(new BadRequestError("The Id and JokeItem.Id must match. Provide the id in the url and the body"));
             }
 
-            _jokesContext.Entry(jokeItem).State = EntityState.Modified;
+            _dbContext.Entry(jokeItem).State = EntityState.Modified;
 
             try
             {
                 _log.LogInformation("Saving new Joke Id = " + id.ToString());
 
-                await _jokesContext.SaveChangesAsync();
+                await _dbContext.SaveChangesAsync();
 
                 _log.LogInformation("Joke Id = {JokeId} saved successfully", id.ToString());
             }
@@ -212,12 +212,12 @@ namespace JokesAPI.Controllers
 
                 _log.LogInformation("Post JokeItem.Id = {JokeId}", jokeItem.Id);
 
-                if (!_jokesContext.JokeItems.Contains<JokeItem>(jokeItem))
-                    _jokesContext.JokeItems.Add(jokeItem);
+                if (!_dbContext.JokeItems.Contains<JokeItem>(jokeItem))
+                    _dbContext.JokeItems.Add(jokeItem);
                 else
                     return Ok("That JokeItem already exists.  Use the PUT to update or choose a unique Id");
 
-                await _jokesContext.SaveChangesAsync();
+                await _dbContext.SaveChangesAsync();
 
                 _log.LogInformation("JokeItem.Id = {JokeId} posted successfully", jokeItem.Id);
             }
@@ -254,7 +254,7 @@ namespace JokesAPI.Controllers
                     return NotFound(new NotFoundError("Parameter 1: Id was not found or is missing. Please provide an id value"));
                 }
 
-                joke = await _jokesContext.JokeItems.FindAsync(id);
+                joke = await _dbContext.JokeItems.FindAsync(id);
 
                 if (joke == null)
                 {
@@ -263,9 +263,9 @@ namespace JokesAPI.Controllers
 
                 _log.LogInformation("Removing Joke Id = {JokeId}", id.ToString());
 
-                _jokesContext.JokeItems.Remove(joke);
+                _dbContext.JokeItems.Remove(joke);
 
-                await _jokesContext.SaveChangesAsync();
+                await _dbContext.SaveChangesAsync();
 
                 _log.LogInformation("Joke Id = {JokeId} deleted successfully", id.ToString());
             }
@@ -281,10 +281,10 @@ namespace JokesAPI.Controllers
 
         private bool JokeItemExists(long id)
         {
-            if (_jokesContext.JokeItems == null)
+            if (_dbContext.JokeItems == null)
                 return false;
 
-            return _jokesContext.JokeItems.Any(e => e.Id == id);
+            return _dbContext.JokeItems.Any(e => e.Id == id);
         }
 
         /// <summary>
@@ -297,7 +297,7 @@ namespace JokesAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<JokeItem>> PagingJoke(int? pageNumber, int? pageSize)
         {
-            var jokes = _jokesContext.JokeItems;
+            var jokes = _dbContext.JokeItems;
 
             if (pageNumber == null)
                 return NotFound(new NotFoundError("Parameter 1: pageNumber, was not found, mispelled, or missing a value"));
@@ -347,7 +347,7 @@ namespace JokesAPI.Controllers
             {
                 _log.LogInformation("Searching for Jokes containing {SearchText}", text);
 
-                jokes = await _jokesContext.JokeItems.Where(j => j.Joke.Contains(text)).ToListAsync();
+                jokes = await _dbContext.JokeItems.Where(j => j.Joke.Contains(text)).ToListAsync();
 
             }
             catch (Exception ex)
@@ -376,7 +376,7 @@ namespace JokesAPI.Controllers
 
             try
             {
-                int max = _jokesContext.JokeItems.Count<JokeItem>();
+                int max = _dbContext.JokeItems.Count<JokeItem>();
 
                 if (max == 0)
                 {
@@ -413,7 +413,7 @@ namespace JokesAPI.Controllers
                 {
                     id = rand.Next(1, max);
 
-                    joke = await _jokesContext.JokeItems.FindAsync((long)id);
+                    joke = await _dbContext.JokeItems.FindAsync((long)id);
 
                     if (joke.Value == null)
                     {

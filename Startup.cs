@@ -27,7 +27,7 @@ namespace JokesAPI
         public void ConfigureServices(IServiceCollection services)
         {
             var connection = Configuration.GetConnectionString("JokesDatabase");
-            services.AddDbContext<JokesContext>(option => option.UseSqlite(connection));
+            services.AddDbContext<AppDbContext>(option => option.UseSqlite(connection));
 
             //TODO: I need to research Cors this further.  
             // https://thecodebuzz.com/enable-cors-asp-net-core/
@@ -81,7 +81,7 @@ namespace JokesAPI
             using (var scope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
             {
                 var services = scope.ServiceProvider;
-                var context = services.GetService<JokesContext>();
+                var context = services.GetService<AppDbContext>();
 
                 context.Database.Migrate();
                 context.EnsureDatabaseSeeded();

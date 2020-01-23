@@ -8,7 +8,7 @@ namespace JokesAPI.Middleware
 {
     public static class AppDbContextExtensions
     {
-        public static void EnsureDatabaseSeeded(this JokesAPI.Models.JokesContext context)
+        public static void EnsureDatabaseSeeded(this JokesAPI.Models.AppDbContext context)
         {
             if (context != null)
             {

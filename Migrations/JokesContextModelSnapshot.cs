@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace JokesAPI.Migrations
 {
-    [DbContext(typeof(JokesContext))]
+    [DbContext(typeof(AppDbContext))]
     partial class JokesContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
