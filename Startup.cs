@@ -80,15 +80,6 @@ namespace JokesAPI
 
             app.EnsureDatabaseIsSeeded();
 
-            //using (var scope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
-            //{
-            //    var services = scope.ServiceProvider;
-            //    var context = services.GetService<AppDbContext>();
-
-            //    context.Database.Migrate();
-            //    context.EnsureDatabaseSeeded();
-            //}
-
             // Handles non-success status codes with empty body
             app.UseStatusCodePagesWithReExecute("/errors/{0}");
 
