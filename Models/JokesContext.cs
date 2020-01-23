@@ -13,5 +13,20 @@ namespace JokesAPI.Models
 
         public DbSet<JokesAPI.Models.UserInfo> UserInfo { get; set; }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            //if (modelBuilder != null)
+            //{
+            //    modelBuilder.Entity<JokeItem>().HasData(
+            //            new JokeItem
+            //            {
+            //                Id = 28,
+            //                Joke = "Joke Number 28 is soooooper funny!"
+            //            }
+            //        );
+            //}
+        }
     }
 }

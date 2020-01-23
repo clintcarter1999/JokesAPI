@@ -64,6 +64,9 @@ namespace JokesAPI
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILogger<Startup> logger)
         {
+            if (app == null)
+                throw new System.Exception("app was null inside Startup.Configure(IApplicationBuilder");
+
             if (env.IsDevelopment())
             {
                 logger.LogInformation("In Dev Environment");
@@ -73,6 +76,15 @@ namespace JokesAPI
             {
                 app.UseExceptionHandler("/Error");
                 app.UseHsts();
+            }
+
+            using (var scope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
+            {
+                var services = scope.ServiceProvider;
+                var context = services.GetService<JokesContext>();
+
+                context.Database.Migrate();
+                context.EnsureDatabaseSeeded();
             }
 
             // Handles non-success status codes with empty body

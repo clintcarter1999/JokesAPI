@@ -43,13 +43,13 @@ namespace JokesAPI.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<UserInfo>> GetUserInfo(long id)
         {
-            _log.LogInformation("GetUserInfo by Id = {Id} API called", id.ToString());
+            _log.LogInformation("GetUserInfo by Id = {Id} API called", id);
 
             var userInfo = await _context.UserInfo.FindAsync(id);
 
             if (userInfo == null)
             {
-                return NotFound(new NotFoundError("A User with Id = " + id.ToString() + " does not exist"));
+                return NotFound(new NotFoundError("A User with Id = " + id + " does not exist"));
             }
 
             return userInfo;
@@ -64,7 +64,10 @@ namespace JokesAPI.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutUserInfo(long id, UserInfo userInfo)
         {
-            _log.LogInformation("PutUserInfo API called, {Id}", id.ToString());
+            _log.LogInformation("PutUserInfo API called, {Id}", id);
+
+            if (userInfo == null)
+                return BadRequest(new BadRequestError("Please provide the UserInfo you wish to modify"));
 
             if (id != userInfo.Id)
             {
@@ -75,7 +78,7 @@ namespace JokesAPI.Controllers
 
             try
             {
-                _log.LogInformation("PutUserInfo Saving Changes for Id={Id}", id.ToString());
+                _log.LogInformation("PutUserInfo Saving Changes for Id={Id}", id);
 
                 await _context.SaveChangesAsync();
             }
@@ -85,7 +88,7 @@ namespace JokesAPI.Controllers
 
                 if (!UserInfoExists(id))
                 {
-                    return NotFound(new NotFoundError("The Id = {Id} does not exist" + id.ToString()));
+                    return NotFound(new NotFoundError("The Id = {Id} does not exist" + id));
                 }
                 else
                 {
@@ -93,7 +96,7 @@ namespace JokesAPI.Controllers
                 }
             }
 
-            _log.LogInformation("UserInfo for Id={Id} saved", id.ToString());
+            _log.LogInformation("UserInfo for Id={Id} saved", id);
 
             return Ok(userInfo);
         }
@@ -106,6 +109,9 @@ namespace JokesAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<UserInfo>> PostUserInfo(UserInfo userInfo)
         {
+            if (userInfo == null)
+                return BadRequest(new BadRequestError("Please provide UserInfo to Post. No UserInfo was found."));
+
             _log.LogInformation("PostUserInfo API called");
             
             _log.LogInformation("Creating new User");
@@ -130,18 +136,18 @@ namespace JokesAPI.Controllers
             var userInfo = await _context.UserInfo.FindAsync(id);
             if (userInfo == null)
             {
-                _log.LogInformation("Unable to Delete: User.Id = {Id} does not exist", id.ToString());
+                _log.LogInformation("Unable to Delete: User.Id = {Id} does not exist", id);
 
                 return NotFound(new NotFoundError("User.Id = " + id.ToString() + " does not exist"));
             }
 
-            _log.LogInformation("Deleting User.Id = {Id}", id.ToString());
+            _log.LogInformation("Deleting User.Id = {Id}", id);
 
             _context.UserInfo.Remove(userInfo);
 
             await _context.SaveChangesAsync();
 
-            _log.LogInformation("User.Id = {Id} successfully deleted", id.ToString());
+            _log.LogInformation("User.Id = {Id} successfully deleted", id);
 
             return userInfo;
         }

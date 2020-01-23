@@ -1,12 +1,15 @@
 using System;
+using JokesAPI.Models;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 
 
 namespace JokesAPI
 {
-    public class Program
+    public static class Program
     {
         public static void Main(string[] args)
         {
@@ -21,7 +24,28 @@ namespace JokesAPI
             {
                 Log.Information("Starting Up Jokes REST API");
 
-                CreateHostBuilder(args).Build().Run();
+                IHost host = CreateHostBuilder(args).Build();
+
+
+                //////
+                ////// If your DB is empty then you can uncomment this section and it will provide seed data.
+                ////// I need to figure out the Seeding method...perhaps moving this into OnModelCreating and using 
+                ////// the modelBuilder.Entity<JokeItems>().HasData( ...new JokeItem { } ... );
+                //////
+                ////// TODO: Figure Entity Frameworks Seeding Model which makes use of Migrations
+                ////// https://docs.microsoft.com/en-us/ef/core/modeling/data-seeding
+                ////// https://www.learnentityframeworkcore.com/migrations/seeding
+                //////
+                ////using (var scope = host.Services.CreateScope())
+                ////{
+                ////    var services = scope.ServiceProvider;
+                ////    var context = services.GetService<JokesContext>();
+
+
+                ////    DbHelper.InsertData(context);
+                ////}
+
+                host.Run();
 
             }
             catch (Exception ex1)
@@ -41,5 +65,6 @@ namespace JokesAPI
                 {
                     webBuilder.UseStartup<Startup>();
                 });
-    }
+
+     }
 }

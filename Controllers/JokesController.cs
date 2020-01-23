@@ -24,7 +24,7 @@ namespace JokesAPI.Controllers
         {
             _log = logger;
 
-            _log.LogInformation("Jokes Controller CTOR");
+            _log.LogInformation("Jokes Controller CTOR"); //TODO: Learn ASP.Net Core's Resource/Localization
 
             _jokesContext = context;
 
@@ -58,8 +58,9 @@ namespace JokesAPI.Controllers
 
                 jokes = await _jokesContext.JokeItems.ToListAsync();
 
+
                 if (jokes != null)
-                    _log.LogInformation("Returning {NumJokes} jokes", jokes.Count<JokeItem>());
+                    _log.LogInformation("Returning {NumJokes} jokes", jokes.Count());
                 else
                     return NotFound(new NotFoundError("No Jokes found"));
             }
@@ -206,7 +207,10 @@ namespace JokesAPI.Controllers
             
             try
             {
-                _log.LogInformation("Post JokeItem.Id = {JokeId}", jokeItem.Id.ToString());
+                if (jokeItem == null)
+                    return BadRequest(new BadRequestError("Please provide a joke.  No joke was found."));
+
+                _log.LogInformation("Post JokeItem.Id = {JokeId}", jokeItem.Id);
 
                 if (!_jokesContext.JokeItems.Contains<JokeItem>(jokeItem))
                     _jokesContext.JokeItems.Add(jokeItem);
@@ -215,7 +219,7 @@ namespace JokesAPI.Controllers
 
                 await _jokesContext.SaveChangesAsync();
 
-                _log.LogInformation("JokeItem.Id = {JokeId} posted successfully", jokeItem.Id.ToString());
+                _log.LogInformation("JokeItem.Id = {JokeId} posted successfully", jokeItem.Id);
             }
             catch (Exception ex)
             {
@@ -319,7 +323,7 @@ namespace JokesAPI.Controllers
                 return BadRequest(new BadRequestError("Unable to get page of Jokes due to exception: " + ex.Message));
             }
 
-            _log.LogInformation("Returning {Count} Jokes", list.Count<JokeItem>());
+            _log.LogInformation("Returning {Count} Jokes", list.Count());
 
             return Ok(list);
         }
@@ -353,7 +357,7 @@ namespace JokesAPI.Controllers
                 return BadRequest(new BadRequestError("Unable to Search the Jokes DB due to this exception: " + ex.Message));
             }
 
-            _log.LogInformation("{SearchText} was found {count} times", text, jokes.Count<JokeItem>());
+            _log.LogInformation("{SearchText} was found {count} times", text, jokes.Count());
 
             return Ok(jokes);
         }

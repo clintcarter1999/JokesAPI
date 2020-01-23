@@ -20,6 +20,8 @@ namespace JokesAPI.Middleware
 
         public async Task Invoke(HttpContext context)
         {
+            if (context == null)
+                throw new Exception("There is no HttpContext in Middleware logging Invoke");
 
             //First, get the incoming request
             var request = await FormatRequest(context.Request);
@@ -76,13 +78,16 @@ namespace JokesAPI.Middleware
             response.Body.Seek(0, SeekOrigin.Begin);
 
             //...and copy it into a string
-            string text = await new StreamReader(response.Body).ReadToEndAsync();
+            using (var sr = new StreamReader(response.Body))
+            {
+                string text = await sr.ReadToEndAsync();
 
-            //We need to reset the reader for the response so that the client can read it.
-            response.Body.Seek(0, SeekOrigin.Begin);
+                //We need to reset the reader for the response so that the client can read it.
+                response.Body.Seek(0, SeekOrigin.Begin);
 
-            //Return the string for the response, including the status code (e.g. 200, 404, 401, etc.)
-            return $"{response.StatusCode}: {text}";
+                //Return the string for the response, including the status code (e.g. 200, 404, 401, etc.)
+                return $"{response.StatusCode}: {text}";
+            }
         }
     }
 }
