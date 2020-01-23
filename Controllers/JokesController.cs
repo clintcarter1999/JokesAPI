@@ -60,7 +60,7 @@ namespace JokesAPI.Controllers
 
 
                 if (jokes != null)
-                    _log.LogInformation("Returning {NumJokes} jokes", jokes.Count());
+                    _log.LogInformation("Returning {NumJokes} jokes", jokes.Count);
                 else
                     return NotFound(new NotFoundError("No Jokes found"));
             }
@@ -323,7 +323,7 @@ namespace JokesAPI.Controllers
                 return BadRequest(new BadRequestError("Unable to get page of Jokes due to exception: " + ex.Message));
             }
 
-            _log.LogInformation("Returning {Count} Jokes", list.Count());
+            _log.LogInformation("Returning {Count} Jokes", list.Count);
 
             return Ok(list);
         }
@@ -357,7 +357,7 @@ namespace JokesAPI.Controllers
                 return BadRequest(new BadRequestError("Unable to Search the Jokes DB due to this exception: " + ex.Message));
             }
 
-            _log.LogInformation("{SearchText} was found {count} times", text, jokes.Count());
+            _log.LogInformation("{SearchText} was found {count} times", text, jokes.Count);
 
             return Ok(jokes);
         }

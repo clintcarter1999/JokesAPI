@@ -78,14 +78,16 @@ namespace JokesAPI
                 app.UseHsts();
             }
 
-            using (var scope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
-            {
-                var services = scope.ServiceProvider;
-                var context = services.GetService<AppDbContext>();
+            app.EnsureDatabaseIsSeeded();
 
-                context.Database.Migrate();
-                context.EnsureDatabaseSeeded();
-            }
+            //using (var scope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
+            //{
+            //    var services = scope.ServiceProvider;
+            //    var context = services.GetService<AppDbContext>();
+
+            //    context.Database.Migrate();
+            //    context.EnsureDatabaseSeeded();
+            //}
 
             // Handles non-success status codes with empty body
             app.UseStatusCodePagesWithReExecute("/errors/{0}");

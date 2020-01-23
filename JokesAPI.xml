@@ -143,5 +143,17 @@
             <param name="id">Id of the user to delete</param>
             <returns>That user's info if successful</returns>
         </member>
+        <member name="M:JokesAPI.Middleware.AppDbContextExtensions.EnsureDatabaseIsSeeded(Microsoft.AspNetCore.Builder.IApplicationBuilder)">
+            <summary>
+            Performs Migration and then seeds the Database with test data if none exists.
+            </summary>
+            <param name="app">IApplicationBuilder</param>
+        </member>
+        <member name="M:JokesAPI.Middleware.AppDbContextExtensions.EnsureDatabaseIsSeeded(JokesAPI.Models.AppDbContext)">
+            <summary>
+            If there are no jokes then this method will seed the database with defaeult joke data.
+            </summary>
+            <param name="context">JokesAPI.Models.AppDbContext</param>
+        </member>
     </members>
 </doc>

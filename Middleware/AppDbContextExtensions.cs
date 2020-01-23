@@ -3,12 +3,37 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using JokesAPI.Models;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace JokesAPI.Middleware
 {
     public static class AppDbContextExtensions
     {
-        public static void EnsureDatabaseSeeded(this JokesAPI.Models.AppDbContext context)
+        /// <summary>
+        /// Performs Migration and then seeds the Database with test data if none exists.
+        /// </summary>
+        /// <param name="app">IApplicationBuilder</param>
+        public static void EnsureDatabaseIsSeeded(this IApplicationBuilder app)
+        {
+            if (app == null) return;
+
+            using (var scope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
+            {
+                var services = scope.ServiceProvider;
+                var context = services.GetService<AppDbContext>();
+
+                context.Database.Migrate();
+                context.EnsureDatabaseIsSeeded();
+            }
+        }
+
+        /// <summary>
+        /// If there are no jokes then this method will seed the database with defaeult joke data.
+        /// </summary>
+        /// <param name="context">JokesAPI.Models.AppDbContext</param>
+        public static void EnsureDatabaseIsSeeded(this JokesAPI.Models.AppDbContext context)
         {
             if (context != null)
             {
