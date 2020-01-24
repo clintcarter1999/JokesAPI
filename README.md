@@ -1,4 +1,5 @@
 ﻿
+
 # Jokes ASP.NET REST API Project
 
 A RESTful API that allows users to anonymously create & read jokes.
@@ -189,7 +190,7 @@ There are a ton of tutorials on how to use Postman.  I assume the reviewers of t
 You can download a copy of Postman here: [Postman Download](https://www.getpostman.com/downloads/)
 
 **Postman Collection**
-Here is a link to my Postman Collection.  [Postman Collection of API Tests](!%5BPOSTUsingTokenVariable%5D%28https://user-images.githubusercontent.com/5245897/72574277-11996b00-388e-11ea-84cc-630badf977ee.png%29)  
+Here is a link to my Postman Collection:  [Clint's Postman Test Collection](https://www.getpostman.com/collections/f3c601e8fec3b44af5a6)
 
 To Use That Link: *Open Postman, then click on that link to install it into your Postman application.  Note that you may have to change the Port...more on that below...*
 
