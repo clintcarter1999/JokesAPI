@@ -5,6 +5,7 @@ using System.Net;
 using System.Threading.Tasks;
 using JokesAPI.ApiErrors;
 using JokesAPI.Models;
+using JokesAPI.Persistence;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -18,6 +19,7 @@ namespace JokesAPI.Controllers
     public class JokesController : ControllerBase
     {
         private readonly AppDbContext _dbContext;
+        private readonly JokeItemRepository _repository;
         private readonly ILogger _log;
 
         public JokesController(AppDbContext context, ILogger<JokesController> logger)
@@ -28,6 +30,8 @@ namespace JokesAPI.Controllers
 
             _dbContext = context;
 
+            _repository = new JokeItemRepository(context);
+
         }
 
         /// <summary>
@@ -37,30 +41,30 @@ namespace JokesAPI.Controllers
         /// Consider using PageJokes as the data grow to maximize client responsiveness for the user</remarks>
         /// <returns>A list of Jokes</returns>
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<JokeItem>>> GetJokeItems()
+       // public async Task<ActionResult<IEnumerable<JokeItem>>> GetJokeItems()
+        public async Task<IActionResult> GetJokeItems()
         {
             if (_dbContext.JokeItems == null)
                 return Ok("The Jokie Jar is empty. Sorry folks");
 
-            List<JokeItem> jokes = null;
-
+            IEnumerable<JokeItem> jokes = null;
+           
             try
             {
+                _log.LogDebug("Building the list of jokes to return...");
 
                 if (_dbContext.JokeItems == null)
                 {
                     _log.LogWarning("There are no JokeItems. Returning empty");
 
                     return NotFound(new NotFoundError("There are no jokes in the database"));
-                }
+                }              
 
-                _log.LogDebug("Building the list of jokes to return...");
-
-                jokes = await _dbContext.JokeItems.ToListAsync();
-
+                jokes = await _repository.GetAll();
+              
 
                 if (jokes != null)
-                    _log.LogInformation("Returning {NumJokes} jokes", jokes.Count);
+                    _log.LogInformation("Returning {NumJokes} jokes", jokes.Count());
                 else
                     return NotFound(new NotFoundError("No Jokes found"));
             }
@@ -93,7 +97,9 @@ namespace JokesAPI.Controllers
 
                 _log.LogInformation("GetJokeItem.Id = {JokeId}", id.ToString());
 
-                joke = await _dbContext.JokeItems.FindAsync(id);
+                joke = await _repository.GetItem((long)id);
+
+                //joke = await _dbContext.JokeItems.FindAsync(id);
 
                 if (joke == null)
                 {
