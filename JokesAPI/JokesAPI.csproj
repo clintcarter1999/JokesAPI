@@ -21,16 +21,10 @@
 
   <ItemGroup>
     <Compile Remove="Controllers\TokenController.cs" />
-    <Compile Remove="Controllers\WeatherForecastController.cs" />
-    <Compile Remove="WeatherForecast.cs" />
   </ItemGroup>
 
   <ItemGroup>
     <Content Remove="Index.cshtml" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Remove="Backup-1-14-2020.zip" />
   </ItemGroup>
 
   <ItemGroup>
