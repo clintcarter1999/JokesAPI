@@ -23,6 +23,12 @@
             </summary>
             <returns>IEnumerable of TEntity</returns>
         </member>
+        <member name="M:JokesAPI.Controllers.JokesController.#ctor(JokesAPI.Persistence.JokeItemRepository)">
+            <summary>
+            This contructor is used for Unit Testing only
+            </summary>
+            <param name="repo"></param>
+        </member>
         <member name="M:JokesAPI.Controllers.JokesController.GetJokeItems">
             <summary>
             GetJokeItems returns all jokes in the database.

@@ -4,12 +4,14 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using JokesAPI.ApiErrors;
+using JokesAPI.Contracts;
 using JokesAPI.Models;
 using JokesAPI.Persistence;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+//using Serilog;
 
 namespace JokesAPI.Controllers
 {
@@ -20,7 +22,7 @@ namespace JokesAPI.Controllers
     {
         private readonly AppDbContext _dbContext;
         private readonly JokeItemRepository _repository;
-        private readonly ILogger _log;
+        private readonly Microsoft.Extensions.Logging.ILogger _log;
 
         public JokesController(AppDbContext context, ILogger<JokesController> logger)
         {
@@ -32,6 +34,29 @@ namespace JokesAPI.Controllers
 
             _repository = new JokeItemRepository(context);
 
+        }
+
+        /// <summary>
+        /// This contructor is used for Unit Testing only
+        /// </summary>
+        /// <param name="repo"></param>
+        public JokesController(JokeItemRepository repo)
+        {
+            _repository = repo;
+
+            //TODO: 911
+            //
+            // Commenting out or now.
+            // Intending to use this constructor for Moq testing.
+            // I don't want to introduce a variable to logging before I have a chance to test this out.
+            //
+            //Log.Logger = new LoggerConfiguration()
+            //    .MinimumLevel.Override("Microsoft.AspNetCore", Serilog.Events.LogEventLevel.Warning)
+            //    .Enrich.FromLogContext()
+            //    .WriteTo.Seq(Environment.GetEnvironmentVariable("SEQ_URL") ?? "http://localhost:5341")
+            //    .CreateLogger();
+
+            //_log = (Microsoft.Extensions.Logging.Logger<JokesController>)Log.Logger;
         }
 
         /// <summary>
