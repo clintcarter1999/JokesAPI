@@ -41,26 +41,22 @@ namespace JokesAPI.Controllers
         /// Consider using PageJokes as the data grow to maximize client responsiveness for the user</remarks>
         /// <returns>A list of Jokes</returns>
         [HttpGet]
-       // public async Task<ActionResult<IEnumerable<JokeItem>>> GetJokeItems()
         public async Task<IActionResult> GetJokeItems()
         {
-            if (_dbContext.JokeItems == null)
-                return Ok("The Jokie Jar is empty. Sorry folks");
-
             IEnumerable<JokeItem> jokes = null;
            
             try
             {
                 _log.LogDebug("Building the list of jokes to return...");
 
-                if (_dbContext.JokeItems == null)
+                if (_repository.DataBaseContext.JokeItems == null)
                 {
-                    _log.LogWarning("There are no JokeItems. Returning empty");
+                    _log.LogWarning("There are no JokeItems in the system");
 
                     return NotFound(new NotFoundError("There are no jokes in the database"));
                 }              
 
-                jokes = await _repository.GetAll();
+                jokes = await _repository.GetAllAsync();
               
 
                 if (jokes != null)
@@ -97,9 +93,7 @@ namespace JokesAPI.Controllers
 
                 _log.LogInformation("GetJokeItem.Id = {JokeId}", id.ToString());
 
-                joke = await _repository.GetItem((long)id);
-
-                //joke = await _dbContext.JokeItems.FindAsync(id);
+                joke = await _repository.GetItemAsync((long)id);
 
                 if (joke == null)
                 {
@@ -167,29 +161,32 @@ namespace JokesAPI.Controllers
                 return BadRequest(new BadRequestError("The Id and JokeItem.Id must match. Provide the id in the url and the body"));
             }
 
-            _dbContext.Entry(jokeItem).State = EntityState.Modified;
-
-            try
+            using (UnitOfWorkEntity<JokeItem> unitOfWork = new UnitOfWorkEntity<JokeItem>(_dbContext))
             {
-                _log.LogInformation("Saving new Joke Id = " + id.ToString());
-
-                await _dbContext.SaveChangesAsync();
-
-                _log.LogInformation("Joke Id = {JokeId} saved successfully", id.ToString());
-            }
-            catch (DbUpdateConcurrencyException dbEx)
-            {
-                _log.LogError(dbEx, "DbUpdateConcurrencyException");
-
-                if (!JokeItemExists(id ?? 0))
+                try
                 {
-                    return NotFound(new NotFoundError("Id = " + id + " does not exist or is missing"));
+                    _log.LogInformation("Saving new Joke Id = " + id.ToString());
+
+                    unitOfWork.SetState(jokeItem, EntityState.Modified);
+
+                    await unitOfWork.Complete();
+
+                    _log.LogInformation("Joke Id = {JokeId} saved successfully", id.ToString());
                 }
-                else
+                catch (DbUpdateConcurrencyException dbEx)
                 {
-                    _log.LogError("throwing from PutJokeItem for Id = {JokeId}", id.ToString());
+                    _log.LogError(dbEx, "DbUpdateConcurrencyException");
 
-                    return BadRequest(new BadRequestError("Updating Jokes DB faied due to this exception: " + dbEx.Message));
+                    if (!JokeItemExists(id ?? 0))
+                    {
+                        return NotFound(new NotFoundError("Id = " + id + " does not exist or is missing"));
+                    }
+                    else
+                    {
+                        _log.LogError("throwing from PutJokeItem for Id = {JokeId}", id.ToString());
+
+                        return BadRequest(new BadRequestError("Updating Jokes DB faied due to this exception: " + dbEx.Message));
+                    }
                 }
             }
             
@@ -209,8 +206,6 @@ namespace JokesAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<JokeItem>> PostJokeItem(JokeItem jokeItem)
         {
-            // I would prefer to use an Identity column so that the user does not have to pass an id.
-            
             try
             {
                 if (jokeItem == null)
@@ -218,12 +213,19 @@ namespace JokesAPI.Controllers
 
                 _log.LogInformation("Post JokeItem.Id = {JokeId}", jokeItem.Id);
 
-                if (!_dbContext.JokeItems.Contains<JokeItem>(jokeItem))
-                    _dbContext.JokeItems.Add(jokeItem);
-                else
-                    return Ok("That JokeItem already exists.  Use the PUT to update or choose a unique Id");
+                using (UnitOfWorkEntity<JokeItem> work = new UnitOfWorkEntity<JokeItem>(_dbContext))
+                {
+                    RepositoryStatus retVal = work.JokeItems.Add(jokeItem);
 
-                await _dbContext.SaveChangesAsync();
+                    if (retVal.Success == false)
+                    {
+                        _log.LogWarning("Post JokeItem.Id = {JokeId} already exists. New Joke not created.", jokeItem.Id);
+                        
+                        return Ok(retVal.Message ?? "A joke already exists with that Id");
+                    }
+
+                    await work.Complete(); // unit of work is complete (saved)
+                }
 
                 _log.LogInformation("JokeItem.Id = {JokeId} posted successfully", jokeItem.Id);
             }
@@ -260,7 +262,7 @@ namespace JokesAPI.Controllers
                     return NotFound(new NotFoundError("Parameter 1: Id was not found or is missing. Please provide an id value"));
                 }
 
-                joke = await _dbContext.JokeItems.FindAsync(id);
+                joke = await _repository.GetItemAsync((long)id);
 
                 if (joke == null)
                 {
@@ -269,9 +271,12 @@ namespace JokesAPI.Controllers
 
                 _log.LogInformation("Removing Joke Id = {JokeId}", id.ToString());
 
-                _dbContext.JokeItems.Remove(joke);
+                using (UnitOfWorkEntity<JokeItem> work = new UnitOfWorkEntity<JokeItem>(_dbContext))
+                {
+                    work.JokeItems.Remove(joke);
 
-                await _dbContext.SaveChangesAsync();
+                    await work.Complete(); // unit of work is complete
+                }
 
                 _log.LogInformation("Joke Id = {JokeId} deleted successfully", id.ToString());
             }
@@ -287,10 +292,13 @@ namespace JokesAPI.Controllers
 
         private bool JokeItemExists(long id)
         {
-            if (_dbContext.JokeItems == null)
+            //TODO: Move this into the Repository class
+            IEnumerable<JokeItem>item = _repository.Find(e => e.Id == id);
+
+            if (item == null)
                 return false;
 
-            return _dbContext.JokeItems.Any(e => e.Id == id);
+            return item.Any();
         }
 
         /// <summary>
@@ -303,7 +311,6 @@ namespace JokesAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<JokeItem>> PagingJoke(int? pageNumber, int? pageSize)
         {
-            var jokes = _dbContext.JokeItems;
 
             if (pageNumber == null)
                 return NotFound(new NotFoundError("Parameter 1: pageNumber, was not found, mispelled, or missing a value"));
@@ -316,11 +323,11 @@ namespace JokesAPI.Controllers
 
             _log.LogInformation("Returning currentPageNumber = {currentPageNumber}, pageSize {currentPageSize}", currentPageNumber, currentPageSize);
 
-            List<JokeItem> list = null;
+            IEnumerable<JokeItem> list = null;
 
             try
             {
-                list = await jokes.Skip((currentPageNumber - 1) * currentPageSize).Take(currentPageSize).ToListAsync();
+                list = await _repository.GetJokesPage(currentPageNumber, currentPageSize);
             }
             catch (Exception ex)
             {
@@ -329,7 +336,7 @@ namespace JokesAPI.Controllers
                 return BadRequest(new BadRequestError("Unable to get page of Jokes due to exception: " + ex.Message));
             }
 
-            _log.LogInformation("Returning {Count} Jokes", list.Count);
+            _log.LogInformation("Returning {Count} Jokes", (list != null ? list.Count().ToString() : "0"));
 
             return Ok(list);
         }
@@ -347,13 +354,16 @@ namespace JokesAPI.Controllers
             if (text == null)
                 return NotFound(new NotFoundError("Parameter 1: text, was not found and is needed to perform a search"));
 
-            List<JokeItem> jokes = null;
+            IEnumerable<JokeItem> jokes = null;
+           // List<JokeItem> jokes = null;
 
             try
             {
                 _log.LogInformation("Searching for Jokes containing {SearchText}", text);
 
-                jokes = await _dbContext.JokeItems.Where(j => j.Joke.Contains(text)).ToListAsync();
+                jokes = await _repository.Contains(text);
+
+               // jokes = await _dbContext.JokeItems.Where(j => j.Joke.Contains(text)).ToListAsync();
 
             }
             catch (Exception ex)
@@ -363,7 +373,7 @@ namespace JokesAPI.Controllers
                 return BadRequest(new BadRequestError("Unable to Search the Jokes DB due to this exception: " + ex.Message));
             }
 
-            _log.LogInformation("{SearchText} was found {count} times", text, jokes.Count);
+            _log.LogInformation("{SearchText} was found {count} times", text, jokes.Count().ToString());
 
             return Ok(jokes);
         }
@@ -382,7 +392,7 @@ namespace JokesAPI.Controllers
 
             try
             {
-                int max = _dbContext.JokeItems.Count<JokeItem>();
+                int max = _repository.Count;
 
                 if (max == 0)
                 {
@@ -419,7 +429,7 @@ namespace JokesAPI.Controllers
                 {
                     id = rand.Next(1, max);
 
-                    joke = await _dbContext.JokeItems.FindAsync((long)id);
+                    joke = await _repository.GetItemAsync(id);
 
                     if (joke.Value == null)
                     {

@@ -9,6 +9,6 @@ namespace JokesAPI.Contracts
     {
         IJokeItemRepository JokeItems { get; }
 
-        int Complete(); // could call this Save.  We are "completing" a Unit of Work
+        Task<int> Complete(); // could call this Save.  We are "completing" a Unit of Work
     }
 }

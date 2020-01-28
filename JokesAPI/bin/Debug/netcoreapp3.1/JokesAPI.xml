@@ -4,6 +4,25 @@
         <name>JokesAPI</name>
     </assembly>
     <members>
+        <member name="T:JokesAPI.Contracts.IRepository`1">
+            <summary>
+            Use as the base repository interface for each Model's Repository Interface.
+            </summary>
+            <typeparam name="TEntity"></typeparam>
+        </member>
+        <member name="M:JokesAPI.Contracts.IRepository`1.GetItemAsync(System.Int64)">
+            <summary>
+            Get a single item from the repository by Id
+            </summary>
+            <param name="id">Id of the item in the repository/table</param>
+            <returns>TEntity</returns>
+        </member>
+        <member name="M:JokesAPI.Contracts.IRepository`1.GetAllAsync">
+            <summary>
+            Get all items in the respository for the given type TEntity
+            </summary>
+            <returns>IEnumerable of TEntity</returns>
+        </member>
         <member name="M:JokesAPI.Controllers.JokesController.GetJokeItems">
             <summary>
             GetJokeItems returns all jokes in the database.
@@ -154,6 +173,61 @@
             If there are no jokes then this method will seed the database with defaeult joke data.
             </summary>
             <param name="context">JokesAPI.Models.AppDbContext</param>
+        </member>
+        <member name="P:JokesAPI.Persistence.Repository`1.Count">
+            <summary>
+            Returns the count of items held by the TEntity object
+            </summary>
+        </member>
+        <member name="M:JokesAPI.Persistence.Repository`1.Add(`0)">
+            <summary>
+            NOTE: I do not advocate using Tuple as a return type.
+            I would prefer to use a Class
+            </summary>
+            <param name="entity"></param>
+            <returns></returns>
+        </member>
+        <member name="M:JokesAPI.Persistence.Repository`1.AddRange(System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            Adds a Range of TEntity.  Mostly used for UnitTesting.
+            </summary>
+            <param name="entities">IEnumerable of TEntity</param>
+        </member>
+        <member name="M:JokesAPI.Persistence.Repository`1.Remove(`0)">
+            <summary>
+            Removes an item from the Repository
+            </summary>
+            <param name="entity">TEntity</param>
+        </member>
+        <member name="M:JokesAPI.Persistence.Repository`1.RemoveRange(System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            Removes a range of items from the Repository
+            </summary>
+            <param name="entities"></param>
+        </member>
+        <member name="T:JokesAPI.Persistence.RepositoryStatus">
+            <summary>
+            There are some cases where there are multiple failure modes.
+            This class provides a standard return package indicating success/error and a message.
+            </summary>
+        </member>
+        <member name="P:JokesAPI.Persistence.RepositoryStatus.Success">
+            <summary>
+            Returns True if successful.  False if not successful.
+            </summary>
+        </member>
+        <member name="P:JokesAPI.Persistence.RepositoryStatus.Message">
+            <summary>
+            Holds the message if applicable.
+            Mostly used to hold the error message
+            </summary>
+        </member>
+        <member name="M:JokesAPI.Persistence.UnitOfWorkEntity`1.SetState(`0,Microsoft.EntityFrameworkCore.EntityState)">
+            <summary>
+            Set the State of the Entity (Modified, Saved, Deleted, etc)
+            </summary>
+            <param name="item">TEntity</param>
+            <param name="state">EntityState</param>
         </member>
     </members>
 </doc>
