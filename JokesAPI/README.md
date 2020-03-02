@@ -1,4 +1,4 @@
-﻿
+
 # Jokes ASP.NET REST API Project
 
 I created this project as a learning exercise for ASP.Net MVC Core 3+.
