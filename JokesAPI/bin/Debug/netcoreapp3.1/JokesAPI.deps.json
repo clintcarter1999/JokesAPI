@@ -325,11 +325,6 @@
         "runtime": {
           "JokesAPI.dll": {}
         },
-        "resources": {
-          "en-US/JokesAPI.resources.dll": {
-            "locale": "en-US"
-          }
-        },
         "compile": {
           "JokesAPI.dll": {}
         }

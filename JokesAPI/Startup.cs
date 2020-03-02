@@ -1,6 +1,7 @@
 using System.Text;
 using JokesAPI.Middleware;
 using JokesAPI.Models;
+using JokesAPI.Persistence;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -28,6 +29,8 @@ namespace JokesAPI
         {
             var connection = Configuration.GetConnectionString("JokesDatabase");
             services.AddDbContext<AppDbContext>(option => option.UseSqlite(connection));
+
+            services.AddScoped<IJokesRepository, JokesRepository>();
 
             //TODO: I need to research Cors this further.  
             // https://thecodebuzz.com/enable-cors-asp-net-core/

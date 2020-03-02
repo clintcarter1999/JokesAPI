@@ -155,7 +155,6 @@ C:\Users\Administrator\source\repos\JokesAPI\JokesAPI\bin\Debug\netcoreapp3.1\Jo
 C:\Users\Administrator\source\repos\JokesAPI\JokesAPI\bin\Debug\netcoreapp3.1\JokesAPI.runtimeconfig.dev.json
 C:\Users\Administrator\source\repos\JokesAPI\JokesAPI\bin\Debug\netcoreapp3.1\JokesAPI.dll
 C:\Users\Administrator\source\repos\JokesAPI\JokesAPI\bin\Debug\netcoreapp3.1\JokesAPI.pdb
-C:\Users\Administrator\source\repos\JokesAPI\JokesAPI\bin\Debug\netcoreapp3.1\en-US\JokesAPI.resources.dll
 C:\Users\Administrator\source\repos\JokesAPI\JokesAPI\bin\Debug\netcoreapp3.1\JokesAPI.Views.dll
 C:\Users\Administrator\source\repos\JokesAPI\JokesAPI\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Authentication.JwtBearer.dll
 C:\Users\Administrator\source\repos\JokesAPI\JokesAPI\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Razor.Language.dll
@@ -281,13 +280,10 @@ C:\Users\Administrator\source\repos\JokesAPI\JokesAPI\bin\Debug\netcoreapp3.1\ru
 C:\Users\Administrator\source\repos\JokesAPI\JokesAPI\obj\Debug\netcoreapp3.1\JokesAPI.csprojAssemblyReference.cache
 C:\Users\Administrator\source\repos\JokesAPI\JokesAPI\obj\Debug\netcoreapp3.1\staticwebassets\JokesAPI.StaticWebAssets.Manifest.cache
 C:\Users\Administrator\source\repos\JokesAPI\JokesAPI\obj\Debug\netcoreapp3.1\staticwebassets\JokesAPI.StaticWebAssets.xml
-C:\Users\Administrator\source\repos\JokesAPI\JokesAPI\obj\Debug\netcoreapp3.1\JokesAPI.Resources.ErrorMessages.en-US.resources
-C:\Users\Administrator\source\repos\JokesAPI\JokesAPI\obj\Debug\netcoreapp3.1\JokesAPI.csproj.GenerateResource.cache
 C:\Users\Administrator\source\repos\JokesAPI\JokesAPI\obj\Debug\netcoreapp3.1\JokesAPI.MvcApplicationPartsAssemblyInfo.cs
 C:\Users\Administrator\source\repos\JokesAPI\JokesAPI\obj\Debug\netcoreapp3.1\JokesAPI.MvcApplicationPartsAssemblyInfo.cache
 C:\Users\Administrator\source\repos\JokesAPI\JokesAPI\obj\Debug\netcoreapp3.1\JokesAPI.AssemblyInfoInputs.cache
 C:\Users\Administrator\source\repos\JokesAPI\JokesAPI\obj\Debug\netcoreapp3.1\JokesAPI.AssemblyInfo.cs
-C:\Users\Administrator\source\repos\JokesAPI\JokesAPI\obj\Debug\netcoreapp3.1\en-US\JokesAPI.resources.dll
 C:\Users\Administrator\source\repos\JokesAPI\JokesAPI\obj\Debug\netcoreapp3.1\JokesAPI.RazorTargetAssemblyInfo.cache
 C:\Users\Administrator\source\repos\JokesAPI\JokesAPI\obj\Debug\netcoreapp3.1\JokesAPI.csproj.CopyComplete
 C:\Users\Administrator\source\repos\JokesAPI\JokesAPI\obj\Debug\netcoreapp3.1\JokesAPI.dll

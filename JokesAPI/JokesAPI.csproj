@@ -21,6 +21,8 @@
 
   <ItemGroup>
     <Compile Remove="Controllers\TokenController.cs" />
+    <Compile Remove="Data\UnitOfWorkBase.cs" />
+    <Compile Remove="Data\UnitOfWorkEntity.cs" />
   </ItemGroup>
 
   <ItemGroup>

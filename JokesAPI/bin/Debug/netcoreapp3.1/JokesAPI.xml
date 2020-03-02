@@ -4,34 +4,9 @@
         <name>JokesAPI</name>
     </assembly>
     <members>
-        <member name="T:JokesAPI.Contracts.IRepository`1">
+        <member name="M:JokesAPI.Controllers.JokesController.GetAllJokesAsync">
             <summary>
-            Use as the base repository interface for each Model's Repository Interface.
-            </summary>
-            <typeparam name="TEntity"></typeparam>
-        </member>
-        <member name="M:JokesAPI.Contracts.IRepository`1.GetItemAsync(System.Int64)">
-            <summary>
-            Get a single item from the repository by Id
-            </summary>
-            <param name="id">Id of the item in the repository/table</param>
-            <returns>TEntity</returns>
-        </member>
-        <member name="M:JokesAPI.Contracts.IRepository`1.GetAllAsync">
-            <summary>
-            Get all items in the respository for the given type TEntity
-            </summary>
-            <returns>IEnumerable of TEntity</returns>
-        </member>
-        <member name="M:JokesAPI.Controllers.JokesController.#ctor(JokesAPI.Persistence.JokeItemRepository)">
-            <summary>
-            This contructor is used for Unit Testing only
-            </summary>
-            <param name="repo"></param>
-        </member>
-        <member name="M:JokesAPI.Controllers.JokesController.GetJokeItems">
-            <summary>
-            GetJokeItems returns all jokes in the database.
+            GetAllJokesAsync returns all jokes in the database.
             </summary>
             <remarks>This returns all jokes. This is fine while the database is small.
             Consider using PageJokes as the data grow to maximize client responsiveness for the user</remarks>
@@ -168,17 +143,37 @@
             <param name="id">Id of the user to delete</param>
             <returns>That user's info if successful</returns>
         </member>
-        <member name="M:JokesAPI.Middleware.AppDbContextExtensions.EnsureDatabaseIsSeeded(Microsoft.AspNetCore.Builder.IApplicationBuilder)">
+        <member name="T:JokesAPI.Persistence.IRepository`1">
             <summary>
-            Performs Migration and then seeds the Database with test data if none exists.
+            Use as the base repository interface for each Model's Repository Interface.
             </summary>
-            <param name="app">IApplicationBuilder</param>
+            <typeparam name="TEntity"></typeparam>
         </member>
-        <member name="M:JokesAPI.Middleware.AppDbContextExtensions.EnsureDatabaseIsSeeded(JokesAPI.Models.AppDbContext)">
+        <member name="M:JokesAPI.Persistence.IRepository`1.GetItemAsync(System.Int64)">
             <summary>
-            If there are no jokes then this method will seed the database with defaeult joke data.
+            Get a single item from the repository by Id
             </summary>
-            <param name="context">JokesAPI.Models.AppDbContext</param>
+            <param name="id">Id of the item in the repository/table</param>
+            <returns>TEntity</returns>
+        </member>
+        <member name="M:JokesAPI.Persistence.IRepository`1.GetAllAsync">
+            <summary>
+            Asynchronously Get all items in the respository for the given type TEntity
+            </summary>
+            <returns>IEnumerable of TEntity</returns>
+        </member>
+        <member name="M:JokesAPI.Persistence.IRepository`1.Find(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
+            <summary>
+            Find an item in the repository
+            </summary>
+            <param name="predicate"></param>
+            <returns></returns>
+        </member>
+        <member name="M:JokesAPI.Persistence.Repository`1.GetAll">
+            <summary>
+            Temporary non-async version to test Mock
+            </summary>
+            <returns></returns>
         </member>
         <member name="P:JokesAPI.Persistence.Repository`1.Count">
             <summary>
@@ -211,6 +206,13 @@
             </summary>
             <param name="entities"></param>
         </member>
+        <member name="M:JokesAPI.Persistence.Repository`1.SetState(`0,Microsoft.EntityFrameworkCore.EntityState)">
+            <summary>
+            Set the State of the Entity (Modified, Saved, Deleted, etc)
+            </summary>
+            <param name="item">TEntity</param>
+            <param name="state">EntityState</param>
+        </member>
         <member name="T:JokesAPI.Persistence.RepositoryStatus">
             <summary>
             There are some cases where there are multiple failure modes.
@@ -228,12 +230,17 @@
             Mostly used to hold the error message
             </summary>
         </member>
-        <member name="M:JokesAPI.Persistence.UnitOfWorkEntity`1.SetState(`0,Microsoft.EntityFrameworkCore.EntityState)">
+        <member name="M:JokesAPI.Middleware.AppDbContextExtensions.EnsureDatabaseIsSeeded(Microsoft.AspNetCore.Builder.IApplicationBuilder)">
             <summary>
-            Set the State of the Entity (Modified, Saved, Deleted, etc)
+            Performs Migration and then seeds the Database with test data if none exists.
             </summary>
-            <param name="item">TEntity</param>
-            <param name="state">EntityState</param>
+            <param name="app">IApplicationBuilder</param>
+        </member>
+        <member name="M:JokesAPI.Middleware.AppDbContextExtensions.EnsureDatabaseIsSeeded(JokesAPI.Models.AppDbContext)">
+            <summary>
+            If there are no jokes then this method will seed the database with defaeult joke data.
+            </summary>
+            <param name="context">JokesAPI.Models.AppDbContext</param>
         </member>
     </members>
 </doc>

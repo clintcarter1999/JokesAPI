@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
 using JokesAPI.ApiErrors;
-using JokesAPI.Contracts;
 using JokesAPI.Models;
 using JokesAPI.Persistence;
 using Microsoft.AspNetCore.Authorization;
@@ -20,66 +18,33 @@ namespace JokesAPI.Controllers
     [ApiController]
     public class JokesController : ControllerBase
     {
-        private readonly AppDbContext _dbContext;
-        private readonly JokeItemRepository _repository;
+        private readonly IJokesRepository _repository;
         private readonly Microsoft.Extensions.Logging.ILogger _log;
 
-        public JokesController(AppDbContext context, ILogger<JokesController> logger)
+        public JokesController(IJokesRepository repository, ILogger<JokesController> logger)
         {
+            logger.LogInformation("Jokes Controller CTOR"); //TODO: Learn ASP.Net Core's Resource/Localization
+
             _log = logger;
 
-            _log.LogInformation("Jokes Controller CTOR"); //TODO: Learn ASP.Net Core's Resource/Localization
-
-            _dbContext = context;
-
-            _repository = new JokeItemRepository(context);
-
+            _repository = repository;
         }
 
-        /// <summary>
-        /// This contructor is used for Unit Testing only
-        /// </summary>
-        /// <param name="repo"></param>
-        public JokesController(JokeItemRepository repo)
-        {
-            _repository = repo;
-
-            //TODO: 911
-            //
-            // Commenting out or now.
-            // Intending to use this constructor for Moq testing.
-            // I don't want to introduce a variable to logging before I have a chance to test this out.
-            //
-            //Log.Logger = new LoggerConfiguration()
-            //    .MinimumLevel.Override("Microsoft.AspNetCore", Serilog.Events.LogEventLevel.Warning)
-            //    .Enrich.FromLogContext()
-            //    .WriteTo.Seq(Environment.GetEnvironmentVariable("SEQ_URL") ?? "http://localhost:5341")
-            //    .CreateLogger();
-
-            //_log = (Microsoft.Extensions.Logging.Logger<JokesController>)Log.Logger;
-        }
 
         /// <summary>
-        /// GetJokeItems returns all jokes in the database.
+        /// GetAllJokesAsync returns all jokes in the database.
         /// </summary>
         /// <remarks>This returns all jokes. This is fine while the database is small.
         /// Consider using PageJokes as the data grow to maximize client responsiveness for the user</remarks>
         /// <returns>A list of Jokes</returns>
         [HttpGet]
-        public async Task<IActionResult> GetJokeItems()
+        public async Task<IActionResult> GetAllJokesAsync()
         {
             IEnumerable<JokeItem> jokes = null;
            
             try
             {
                 _log.LogDebug("Building the list of jokes to return...");
-
-                if (_repository.DataBaseContext.JokeItems == null)
-                {
-                    _log.LogWarning("There are no JokeItems in the system");
-
-                    return NotFound(new NotFoundError("There are no jokes in the database"));
-                }              
 
                 jokes = await _repository.GetAllAsync();
               
@@ -91,7 +56,7 @@ namespace JokesAPI.Controllers
             }
             catch (Exception ex)
             {
-                _log.LogError(ex, "Exception in GetJokeItems");
+                _log.LogError(ex, "Exception in GetAllJokesAsync");
 
                 return BadRequest(new BadRequestError("Exception occurred getting jokes due to exception: " + ex.Message));
             }
@@ -178,6 +143,7 @@ namespace JokesAPI.Controllers
             }
 
             _log.LogInformation("PutJokeItem {JokeId}", id);
+            
 
             if (id != jokeItem.Id)
             {
@@ -186,32 +152,28 @@ namespace JokesAPI.Controllers
                 return BadRequest(new BadRequestError("The Id and JokeItem.Id must match. Provide the id in the url and the body"));
             }
 
-            using (UnitOfWorkEntity<JokeItem> unitOfWork = new UnitOfWorkEntity<JokeItem>(_dbContext))
+            try
             {
-                try
+                _log.LogInformation("Saving new Joke Id = " + id.ToString());
+
+                _repository.SetState(jokeItem, EntityState.Modified);
+                await _repository.Commit();
+
+                _log.LogInformation("Joke Id = {JokeId} saved successfully", id.ToString());
+            }
+            catch (DbUpdateConcurrencyException dbEx)
+            {
+                _log.LogError(dbEx, "DbUpdateConcurrencyException");
+
+                if (!JokeItemExists(id ?? 0))
                 {
-                    _log.LogInformation("Saving new Joke Id = " + id.ToString());
-
-                    unitOfWork.SetState(jokeItem, EntityState.Modified);
-
-                    await unitOfWork.Complete();
-
-                    _log.LogInformation("Joke Id = {JokeId} saved successfully", id.ToString());
+                    return NotFound(new NotFoundError("Id = " + id + " does not exist or is missing"));
                 }
-                catch (DbUpdateConcurrencyException dbEx)
+                else
                 {
-                    _log.LogError(dbEx, "DbUpdateConcurrencyException");
+                    _log.LogError("throwing from PutJokeItem for Id = {JokeId}", id.ToString());
 
-                    if (!JokeItemExists(id ?? 0))
-                    {
-                        return NotFound(new NotFoundError("Id = " + id + " does not exist or is missing"));
-                    }
-                    else
-                    {
-                        _log.LogError("throwing from PutJokeItem for Id = {JokeId}", id.ToString());
-
-                        return BadRequest(new BadRequestError("Updating Jokes DB faied due to this exception: " + dbEx.Message));
-                    }
+                    return BadRequest(new BadRequestError("Updating Jokes DB faied due to this exception: " + dbEx.Message));
                 }
             }
             
@@ -238,19 +200,16 @@ namespace JokesAPI.Controllers
 
                 _log.LogInformation("Post JokeItem.Id = {JokeId}", jokeItem.Id);
 
-                using (UnitOfWorkEntity<JokeItem> work = new UnitOfWorkEntity<JokeItem>(_dbContext))
+                RepositoryStatus retVal = _repository.Add(jokeItem);
+
+                if (retVal.Success == false)
                 {
-                    RepositoryStatus retVal = work.JokeItems.Add(jokeItem);
+                    _log.LogWarning("Post JokeItem.Id = {JokeId} already exists. New Joke not created.", jokeItem.Id);
 
-                    if (retVal.Success == false)
-                    {
-                        _log.LogWarning("Post JokeItem.Id = {JokeId} already exists. New Joke not created.", jokeItem.Id);
-                        
-                        return Ok(retVal.Message ?? "A joke already exists with that Id");
-                    }
-
-                    await work.Complete(); // unit of work is complete (saved)
+                    return BadRequest(new BadRequestError(retVal.Message ?? "A joke already exists with that Id"));
                 }
+
+                await _repository.Commit();
 
                 _log.LogInformation("JokeItem.Id = {JokeId} posted successfully", jokeItem.Id);
             }
@@ -296,12 +255,9 @@ namespace JokesAPI.Controllers
 
                 _log.LogInformation("Removing Joke Id = {JokeId}", id.ToString());
 
-                using (UnitOfWorkEntity<JokeItem> work = new UnitOfWorkEntity<JokeItem>(_dbContext))
-                {
-                    work.JokeItems.Remove(joke);
+                _repository.Remove(joke);
 
-                    await work.Complete(); // unit of work is complete
-                }
+                await _repository.Commit();
 
                 _log.LogInformation("Joke Id = {JokeId} deleted successfully", id.ToString());
             }
@@ -379,16 +335,18 @@ namespace JokesAPI.Controllers
             if (text == null)
                 return NotFound(new NotFoundError("Parameter 1: text, was not found and is needed to perform a search"));
 
-            IEnumerable<JokeItem> jokes = null;
-           // List<JokeItem> jokes = null;
-
             try
             {
                 _log.LogInformation("Searching for Jokes containing {SearchText}", text);
 
-                jokes = await _repository.Contains(text);
+                IEnumerable<JokeItem> jokes = await _repository.Contains(text);
 
-               // jokes = await _dbContext.JokeItems.Where(j => j.Joke.Contains(text)).ToListAsync();
+                if (jokes.Any())
+                {
+                    _log.LogInformation("{SearchText} was found {count} times", text, jokes.Count().ToString());
+
+                    return Ok(jokes);
+                }
 
             }
             catch (Exception ex)
@@ -398,9 +356,7 @@ namespace JokesAPI.Controllers
                 return BadRequest(new BadRequestError("Unable to Search the Jokes DB due to this exception: " + ex.Message));
             }
 
-            _log.LogInformation("{SearchText} was found {count} times", text, jokes.Count().ToString());
-
-            return Ok(jokes);
+            return BadRequest();
         }
 
         /// <summary>
