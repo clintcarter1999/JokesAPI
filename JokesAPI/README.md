@@ -1,17 +1,16 @@
 ﻿
-
 # Jokes ASP.NET REST API Project
 
-A RESTful API that allows users to anonymously create & read jokes.
+I created this project as a learning exercise for ASP.Net MVC Core 3+.
 
 ## Coding Challenge
-Develop a RESTful API that allows users to anonymously create & read jokes.
+Develop a RESTful API that allows users to anonymously create, modify, read, and delete jokes.  This is a fun coding challenge I accepted.  I much prefer learning by creating something real. 
 
 ### Requirements and Considerations
-I would define these as the stakeholder's customer interests.  Each had design decisions impacting the release of phase 1 of this project. There are trade-offs that I cannot make without further information.  I would push back to get more information.
+I would define these as the stakeholder's customer interests.  Each had design decisions impacting the release of phase 1 of this project. There are trade-offs that I cannot make without further information from the stakeholders.  I would push back to get more information.
 
  - **Build the web application in C#, .NET Core**
- - ***Considere Scalability*** 
+ - ***Consider Scalability*** 
 	 - *How would your application:*
 		 - handle 2 million Jokes?  
 		 - a slow connection speed?
@@ -30,20 +29,11 @@ I would define these as the stakeholder's customer interests.  Each had design d
  - **Provide Swagger documentation**
 
 ## Bonus
- - Docker-ize your application - (*Todo*)
  - Add the ability to filter/search jokes - (*done*)
  - Authorization (on modify data routes) - (*done*)
-
-
-## Learning Curve & Challenges
-I have 15+years of C# experience. However, I had just a few days of .Net Core experience.  I have 1 to 1.5 weeks to provide a deliverable. 
+ - Docker-ize your application - (*Todo*)
 
 ## Design Decisions and Knowlege Gaps
-I typically take a more collaborative approach.  This includes communicating with all stakeholders to define measurable customer interests, discover the knowledge gaps, setting measurable goals, and working towards the vision of the expected product/service.  ***Stakeholders :*** *customers, product owners, project managers, software leads, other developers, quality assurance/testing, release/build management, etc.*
-
-My knowledge gaps mostly revolved around .Net Core and Docker.  There was a lot to learn.
-
-However, there were questions on how to measure success on a few of the items:
 
  - **how to handle 2 million Jokes?**  
 	 - **Pushback**:  How do we measure success? what is "acceptable?"
@@ -59,17 +49,18 @@ However, there were questions on how to measure success on a few of the items:
 				
 **Knowledge Gap**: I did not directly address slow connections or request spikes...at least not purposefully.  More research is needed to understand solutions and how to setup the testing.
 
-Useful Articles:
-[ASP.Net Core Performance Best Practices](https://docs.microsoft.com/en-us/aspnet/core/performance/performance-best-practices?view=aspnetcore-3.1)
-[Reducing Latency by Pre-building Singletons in Asp.Net Core](https://andrewlock.net/reducing-latency-by-pre-building-singletons-in-asp-net-core/)
-[Maximizing .Net Core API Performance](https://medium.com/asos-techblog/maximising-net-core-api-performance-11ad883436c)
-[ASP.Net Core Load/Stress Testing](https://docs.microsoft.com/en-us/aspnet/core/test/load-tests?view=aspnetcore-3.1)
-[Top 7 .Net Application Performance Problems](https://www.eginnovations.com/blog/top-7-net-application-performance-problems/)
+**Useful Articles:**
+
+ - [ASP.Net Core Performance Best Practices](https://docs.microsoft.com/en-us/aspnet/core/performance/performance-best-practices?view=aspnetcore-3.1)
+ - [Reducing Latency by Pre-building Singletons in Asp.Net Core](https://andrewlock.net/reducing-latency-by-pre-building-singletons-in-asp-net-core/)
+ - [Maximizing .Net Core API Performance](https://medium.com/asos-techblog/maximising-net-core-api-performance-11ad883436c)
+ - [ASP.Net Core Load/Stress Testing](https://docs.microsoft.com/en-us/aspnet/core/test/load-tests?view=aspnetcore-3.1)
+ - [Top 7 .Net Application Performance Problems](https://www.eginnovations.com/blog/top-7-net-application-performance-problems/)
 ## Scalability Considerations
 I am thinking about scalability both vertically (same server) as well as horizontally (services distributed across multiple servers).   Studying this helped me decide to use the async/await design pattern for my RESTful API.
 
 This is an amazing video explaining how .Net provides scalability via async.  I really like .Net core's approach here...
-[Best Practices for Buliding Async APIs with ASP.Net Core](https://www.youtube.com/watch?v=_T3kvAxAPpQ)
+ - [Best Practices for Buliding Async APIs with ASP.Net Core](https://www.youtube.com/watch?v=_T3kvAxAPpQ)
 
 ### *Vertical Scaling*
 ASP.Net Core's asynchronous capability lends well to scaling vertically on the same server.  The asyc/await design allows the application to make effective use of the handles/threads available.  The .Net Core Async design allows applications to make us of increasing resources (adding hard-drive space, memory, cpu, cache).
@@ -79,7 +70,7 @@ The stateless architecture of RESTful API lend well to scaling horizontally acro
 
 ### *Distributed Cache*
 I came across an interesting url with regard to distributed cache in .Net Core applications.  My quick glimpse of the information shows some powerful ability to add scalability.  Here is the article:
- [https://docs.microsoft.com/en-us/aspnet/core/performance/caching/distributed?view=aspnetcore-3.1](https://docs.microsoft.com/en-us/aspnet/core/performance/caching/distributed?view=aspnetcore-3.1)
+ -  [https://docs.microsoft.com/en-us/aspnet/core/performance/caching/distributed?view=aspnetcore-3.1](https://docs.microsoft.com/en-us/aspnet/core/performance/caching/distributed?view=aspnetcore-3.1)
 
 **Knowledge Gap:** *I did not have time to research and implement distributed caching.  However, I consider it important in the design.*
 
@@ -87,11 +78,11 @@ I came across an interesting url with regard to distributed cache in .Net Core a
 I decided to use Serilog and log it to a structured logging service (Seq by Datalust).  
 Serilog updates Seq in batches to minimize logging performance bottlenecks.
 
-Useful articles: 
-	https://stackify.com/nlog-vs-log4net-vs-serilog/
-	https://blog.elmah.io/serilog-vs-nlog/
-	[https://docs.datalust.co/docs/using-serilog](https://docs.datalust.co/docs/using-serilog)
-	[https://nblumhardt.com/2019/10/serilog-in-aspnetcore-3/](https://nblumhardt.com/2019/10/serilog-in-aspnetcore-3/)
+Useful articles: 	 
+ - https://stackify.com/nlog-vs-log4net-vs-serilog/
+ -  https://blog.elmah.io/serilog-vs-nlog/
+ -  [https://docs.datalust.co/docs/using-serilog](https://docs.datalust.co/docs/using-serilog)
+ - [https://nblumhardt.com/2019/10/serilog-in-aspnetcore-3/](https://nblumhardt.com/2019/10/serilog-in-aspnetcore-3/)
 
 **NOTE**: 
 *I have years of experience supporting enterprise software. This has taught me to be a defensive logger.  I like to log as much potentially helpful information without degrading performance where possible.  This allows our company to more quickly provide solutions for customers.*
@@ -100,29 +91,34 @@ Useful articles:
 I used a lot of hard-coded strings in this example.  It is not localizable at this point.
 
 ## Testing Considerations
-I used Postman and Swagger for manual testing of the API.  My goal is to understand the new Microsoft.AspNetCore.Mvc.Testing package which would fit into the CI/CD pipeline.  That will have to wait...I am out of time for this first release.  It's now in the backlog :(
+
+ - I used Postman and Swagger for manual testing of the API. 
+ - I used xUnit / Moq to test the repository / api (See the JokesAPI.Tests Project)
+
+Goal: To study the Microsoft.AspNetCore.Mvc.Testing package.
 
 Quick Exerpt of the article referenced below:
 *"...The release of ASP.NET Core 2.1 introduced a handy new package in  [Microsoft.AspNetCore.Mvc.Testing](https://blogs.msdn.microsoft.com/webdev/2018/03/05/asp-net-core-2-1-0-preview1-functional-testing-of-mvc-applications). Its primary goal is streamlining end-to-end MVC and Web API testing by hosting the full web stack (database included) in memory while providing a client to test "from the outside in" by issuing http requests to our application.
 Having this test host available means, we can write tests that look and execute quickly like unit tests but exercise almost all layers of our code without the need for any network or database - rad! 😎 ..."*
 
 Useful article:
-[ Painless Integration Testing with ASP.NET Core Web API](https://fullstackmark.com/post/20/painless-integration-testing-with-aspnet-core-web-api)
-
-**Knowledge Gap:** *I need to research and implement automated testing. *
+ - [ Painless Integration Testing with ASP.NET Core Web API](https://fullstackmark.com/post/20/painless-integration-testing-with-aspnet-core-web-api)
 
 ## Authentication / Authorization
 I used Java Web Token based authentication. I did not focus on authorization (roles).  In fact, there's not even a logout.  Not proud of it but at least I have something to demo.
+
+**Knowledge Gap:** *I need to research this area more deeply to understand roles/permissions based authorization in .Net Core*
 
 **WARNING**
 NOTE: This is NOT a secure implementation.  Currently the HttpGet for all users returns the user's password (Noooooooooo Clint. Say it ain't so!).  
 
 Yep, I did that to make it easy for you to simply query the current users and use their password.    You are welcome to create your own user and password. 
 
-**Knowledge Gap:** *I need to research this area more deeply to understand roles/permissions based authorization in .Net Core*
+TODO: Add automapper to map entity model to presentation model (so we don't pass around things like passwords) :-)
+
 
 ## Database Table Considerations
-I have kept this simple at this time with just a model and controller for Jokes with "id" and "joke" columns.  However, with more time I would add Author, Category, Tags, Rating, and DateAdded.  We might even keep track of how many times a joke is served.  I would likely have a Category Model/Controller as well as a Tags Model/Controller.  
+I have kept this simple at this time with just a model and controller for Jokes with "id" and "joke" columns.  However, with more time I would add Author, Category, Tags, Rating, MinAgeAppropriate, and DateAdded.  We might even keep track of how many times a joke is served.  I would likely have a Category Model/Controller as well as a Tags Model/Controller.  
 
 ## Getting Started
 
@@ -136,8 +132,8 @@ Here are things you may need to install and how to install them:
    This is a free installation - [https://visualstudio.microsoft.com/downloads/](https://visualstudio.microsoft.com/downloads/)
 - Get the latest code from my GitHub Repository and open that in Visual Studio 2019 Community Edition.  
 
-  **Note**: I  Visual Studio's GitHub interface. It worked fairly well.
-
+  **Note**: I used Visual Studio's GitHub interface and GitBash CLI. It worked fairly well.  
+  
 - Next, you need to install several packages (for Entity Framework, Sqlite, Serilog, and Seq).
 
 	**I used the Visual Studio NuGet Package Manager to install:**
@@ -179,18 +175,30 @@ There's probably a way better way to make this happen.  For now, I am simply cli
 **SQLite Database**
   Next, you'll need to install Sqlite 
 
-  - **Sqlite for Windows**.  Here is a tutorial on that: [https://www.sqlitetutorial.net/download-install-sqlite/](https://www.sqlitetutorial.net/download-install-sqlite/)
+ - **Sqlite for Windows**.  Here is a tutorial on that: [https://www.sqlitetutorial.net/download-install-sqlite/](https://www.sqlitetutorial.net/download-install-sqlite/)
  *Note: You need to set a System Environment Variable for Sqlite3 to the folder where you place the Sqlite files.*
 ```
 ```
 ## Running the tests
-Currently there are no automated tests for this project.  I am using Postman to test the API.
-There are a ton of tutorials on how to use Postman.  I assume the reviewers of this project are familiar.  You can also test from the Swagger page that comes up by default as the landing page.
+
+**AUTOMATED TESTS**
+There is a test project inside the solution called JokesAPI.Tests
+You will need to add the following Nuget packages to that project:
+ - Moq, by Daniel Cazzulino, kzu, Version 4.13.1
+ - xunit by James Newkirk, Brad Wilson v2.4.0, v.2.4.1
+ - xunit.runner.visualstudio by  James Newkirk, Brad Wilson v2.4.0, v.2.4.1
+
+**MANUAL TESTING**
+I am using Postman to test the API against a real repository/db source.
+
+There are a ton of tutorials on how to use Postman.  I assume the reviewers of this project are familiar.  
+
+Note: You can also test from the Swagger page that comes up by default as the landing page.
 
 You can download a copy of Postman here: [Postman Download](https://www.getpostman.com/downloads/)
 
 **Postman Collection**
-Here is a link to my Postman Collection:  [Clint's Postman Test Collection](https://www.getpostman.com/collections/f3c601e8fec3b44af5a6)
+Here is a link to my Postman Collection.  [Postman Collection of API Tests](!%5BPOSTUsingTokenVariable%5D%28https://user-images.githubusercontent.com/5245897/72574277-11996b00-388e-11ea-84cc-630badf977ee.png%29)  
 
 To Use That Link: *Open Postman, then click on that link to install it into your Postman application.  Note that you may have to change the Port...more on that below...*
 
