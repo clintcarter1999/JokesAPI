@@ -107,19 +107,25 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:JokesAPI.Controllers.UserInfoController.GetUserInfo">
+        <member name="M:JokesAPI.Controllers.UserInfoController.GetUsers">
             <summary>
-            Gets all users:
-            WARNING: Also returns the user's passwords in this first pass.
+            Gets all users and their non-proteced information
             </summary>
             <returns>A list of all users in the system</returns>
         </member>
+        <member name="M:JokesAPI.Controllers.UserInfoController.GetUsersSecure">
+            <summary>
+            Returns all users including protected data such as passwords.
+            Must be logged in and provide a JSON Web Token
+            </summary>
+            <returns>List of UserInfo objects</returns>
+        </member>
         <member name="M:JokesAPI.Controllers.UserInfoController.GetUserInfo(System.Int64)">
             <summary>
-            Gets a specific user by Id
+            Gets a specific user by Id.  Does not return protected information such as Password
             </summary>
             <param name="id">Id of an exising user</param>
-            <returns>Information for the user specified</returns>
+            <returns>UserInfoDTO</returns>
         </member>
         <member name="M:JokesAPI.Controllers.UserInfoController.PutUserInfo(System.Int64,JokesAPI.Models.UserInfo)">
             <summary>

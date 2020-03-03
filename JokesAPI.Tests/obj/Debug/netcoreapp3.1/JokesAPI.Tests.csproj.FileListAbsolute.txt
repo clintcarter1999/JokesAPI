@@ -220,3 +220,5 @@ C:\Users\Administrator\source\repos\JokesAPI\JokesAPI.Tests\bin\Debug\netcoreapp
 C:\Users\Administrator\source\repos\JokesAPI\JokesAPI.Tests\bin\Debug\netcoreapp3.1\JokesAPI.pdb
 C:\Users\Administrator\source\repos\JokesAPI\JokesAPI.Tests\obj\Debug\netcoreapp3.1\JokesAPI.Tests.dll
 C:\Users\Administrator\source\repos\JokesAPI\JokesAPI.Tests\obj\Debug\netcoreapp3.1\JokesAPI.Tests.pdb
+C:\Users\Administrator\source\repos\JokesAPI\JokesAPI.Tests\bin\Debug\netcoreapp3.1\AutoMapper.dll
+C:\Users\Administrator\source\repos\JokesAPI\JokesAPI.Tests\bin\Debug\netcoreapp3.1\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
