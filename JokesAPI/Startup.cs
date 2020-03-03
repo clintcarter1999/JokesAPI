@@ -1,4 +1,5 @@
 using System.Text;
+using AutoMapper;
 using JokesAPI.Middleware;
 using JokesAPI.Models;
 using JokesAPI.Persistence;
@@ -59,8 +60,12 @@ namespace JokesAPI
 
 
             services.AddMvc();
+            
+            services.AddAutoMapper(typeof(Startup));
 
             services.AddSwagger();
+
+
 
         }
 
@@ -90,6 +95,8 @@ namespace JokesAPI
 
             app.UseRouting();
 
+            app.UseStaticFiles();
+
             app.UseAuthentication();
 
             app.UseAuthorization();
@@ -104,6 +111,9 @@ namespace JokesAPI
             // app.UseMiddleware<RequestResponseLoggingMiddleware>();
 
             app.UseCustomSwagger();
+
+      
+
 
             app.UseEndpoints(endpoints =>
             {

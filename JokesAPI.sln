@@ -6,11 +6,12 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{4766B91B-1C55-4EFD-A10E-447ECAB1A3E3}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
+		README.md = README.md
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JokesAPI", "JokesAPI\JokesAPI.csproj", "{CD1C2319-66CC-4146-B911-40CBA1AEAF3C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JokesAPI.Tests", "JokesAPI.Tests\JokesAPI.Tests.csproj", "{99BECA0D-FB1E-402F-B24F-F8064E3EAFC9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JokesAPI.Tests", "JokesAPI.Tests\JokesAPI.Tests.csproj", "{99BECA0D-FB1E-402F-B24F-F8064E3EAFC9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
