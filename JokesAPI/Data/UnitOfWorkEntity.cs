@@ -6,7 +6,7 @@ using JokesAPI.Data;
 using JokesAPI.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace JokesAPI.Persistence
+namespace JokesAPI.Data
 {
     public class UnitOfWorkEntity<TEntity> : UnitOfWorkBase 
     {

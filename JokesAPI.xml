@@ -236,7 +236,7 @@
             Mostly used to hold the error message
             </summary>
         </member>
-        <member name="M:JokesAPI.Persistence.UnitOfWorkEntity`1.SetState(`0,Microsoft.EntityFrameworkCore.EntityState)">
+        <member name="M:JokesAPI.Data.UnitOfWorkEntity`1.SetState(`0,Microsoft.EntityFrameworkCore.EntityState)">
             <summary>
             Set the State of the Entity (Modified, Saved, Deleted, etc)
             </summary>
