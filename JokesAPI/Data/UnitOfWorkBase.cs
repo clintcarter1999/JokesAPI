@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Threading.Tasks;
-using JokesAPI.Contracts;
+using JokesAPI.Data.Interfaces;
+using JokesAPI.Data.Repositories;
 using JokesAPI.Models;
-using Microsoft.EntityFrameworkCore;
 
-namespace JokesAPI.Persistence
+namespace JokesAPI.Data
 {
     public class UnitOfWorkBase : IUnitOfWork, IDisposable
     {
         private readonly AppDbContext _context;
-        public IJokeItemRepository JokeItems { get; private set; }
+        public IJokesRepository JokeItems { get; private set; }
         
         // Note: You can add other IRepository derived interfaces here.
         // This will allow building of complex relationships between Models/Domains
@@ -17,7 +17,7 @@ namespace JokesAPI.Persistence
         public UnitOfWorkBase(AppDbContext context)
         {
             _context = context;
-            JokeItems = new JokeItemRepository(_context);
+            JokeItems = new JokesRepository(_context);
 
         }
 

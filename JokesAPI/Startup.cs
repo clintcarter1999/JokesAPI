@@ -1,8 +1,9 @@
 using System.Text;
 using AutoMapper;
+using JokesAPI.Data.Interfaces;
+using JokesAPI.Data.Repositories;
 using JokesAPI.Middleware;
 using JokesAPI.Models;
-using JokesAPI.Persistence;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;

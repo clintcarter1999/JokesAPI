@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using JokesAPI.Data;
 using JokesAPI.Models;
 using Microsoft.EntityFrameworkCore;
 

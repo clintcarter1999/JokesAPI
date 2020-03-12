@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using JokesAPI.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace JokesAPI.Persistence
+namespace JokesAPI.Data.Interfaces
 {
     public interface IJokesRepository : IRepository<JokeItem>
     {

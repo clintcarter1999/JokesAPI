@@ -9,7 +9,7 @@
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DocumentationFile>C:\Users\Administrator\source\repos\JokesAPI\JokesAPI.xml</DocumentationFile>
-    <NoWarn>1701;1702; 1591; 1303; CA2007; CA1303; CA1822</NoWarn>
+    <NoWarn>1701;1702; 1591; 1303; CA2007; CA1303; CA1822; CA1051</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
@@ -21,8 +21,6 @@
 
   <ItemGroup>
     <Compile Remove="Controllers\TokenController.cs" />
-    <Compile Remove="Data\UnitOfWorkBase.cs" />
-    <Compile Remove="Data\UnitOfWorkEntity.cs" />
   </ItemGroup>
 
   <ItemGroup>

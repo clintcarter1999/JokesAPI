@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using JokesAPI.Data.Interfaces;
 using JokesAPI.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace JokesAPI.Persistence
+namespace JokesAPI.Data.Repositories
 {
     public class JokesRepository : Repository<JokeItem>, IJokesRepository
     {

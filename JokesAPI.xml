@@ -149,44 +149,44 @@
             <param name="id">Id of the user to delete</param>
             <returns>That user's info if successful</returns>
         </member>
-        <member name="T:JokesAPI.Persistence.IRepository`1">
+        <member name="T:JokesAPI.Data.Interfaces.IRepository`1">
             <summary>
             Use as the base repository interface for each Model's Repository Interface.
             </summary>
             <typeparam name="TEntity"></typeparam>
         </member>
-        <member name="M:JokesAPI.Persistence.IRepository`1.GetItemAsync(System.Int64)">
+        <member name="M:JokesAPI.Data.Interfaces.IRepository`1.GetItemAsync(System.Int64)">
             <summary>
             Get a single item from the repository by Id
             </summary>
             <param name="id">Id of the item in the repository/table</param>
             <returns>TEntity</returns>
         </member>
-        <member name="M:JokesAPI.Persistence.IRepository`1.GetAllAsync">
+        <member name="M:JokesAPI.Data.Interfaces.IRepository`1.GetAllAsync">
             <summary>
             Asynchronously Get all items in the respository for the given type TEntity
             </summary>
             <returns>IEnumerable of TEntity</returns>
         </member>
-        <member name="M:JokesAPI.Persistence.IRepository`1.Find(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
+        <member name="M:JokesAPI.Data.Interfaces.IRepository`1.Find(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
             <summary>
             Find an item in the repository
             </summary>
             <param name="predicate"></param>
             <returns></returns>
         </member>
-        <member name="M:JokesAPI.Persistence.Repository`1.GetAll">
+        <member name="M:JokesAPI.Data.Repositories.Repository`1.GetAll">
             <summary>
             Temporary non-async version to test Mock
             </summary>
             <returns></returns>
         </member>
-        <member name="P:JokesAPI.Persistence.Repository`1.Count">
+        <member name="P:JokesAPI.Data.Repositories.Repository`1.Count">
             <summary>
             Returns the count of items held by the TEntity object
             </summary>
         </member>
-        <member name="M:JokesAPI.Persistence.Repository`1.Add(`0)">
+        <member name="M:JokesAPI.Data.Repositories.Repository`1.Add(`0)">
             <summary>
             NOTE: I do not advocate using Tuple as a return type.
             I would prefer to use a Class
@@ -194,47 +194,54 @@
             <param name="entity"></param>
             <returns></returns>
         </member>
-        <member name="M:JokesAPI.Persistence.Repository`1.AddRange(System.Collections.Generic.IEnumerable{`0})">
+        <member name="M:JokesAPI.Data.Repositories.Repository`1.AddRange(System.Collections.Generic.IEnumerable{`0})">
             <summary>
             Adds a Range of TEntity.  Mostly used for UnitTesting.
             </summary>
             <param name="entities">IEnumerable of TEntity</param>
         </member>
-        <member name="M:JokesAPI.Persistence.Repository`1.Remove(`0)">
+        <member name="M:JokesAPI.Data.Repositories.Repository`1.Remove(`0)">
             <summary>
             Removes an item from the Repository
             </summary>
             <param name="entity">TEntity</param>
         </member>
-        <member name="M:JokesAPI.Persistence.Repository`1.RemoveRange(System.Collections.Generic.IEnumerable{`0})">
+        <member name="M:JokesAPI.Data.Repositories.Repository`1.RemoveRange(System.Collections.Generic.IEnumerable{`0})">
             <summary>
             Removes a range of items from the Repository
             </summary>
             <param name="entities"></param>
         </member>
-        <member name="M:JokesAPI.Persistence.Repository`1.SetState(`0,Microsoft.EntityFrameworkCore.EntityState)">
+        <member name="M:JokesAPI.Data.Repositories.Repository`1.SetState(`0,Microsoft.EntityFrameworkCore.EntityState)">
             <summary>
             Set the State of the Entity (Modified, Saved, Deleted, etc)
             </summary>
             <param name="item">TEntity</param>
             <param name="state">EntityState</param>
         </member>
-        <member name="T:JokesAPI.Persistence.RepositoryStatus">
+        <member name="T:JokesAPI.Data.Repositories.RepositoryStatus">
             <summary>
             There are some cases where there are multiple failure modes.
             This class provides a standard return package indicating success/error and a message.
             </summary>
         </member>
-        <member name="P:JokesAPI.Persistence.RepositoryStatus.Success">
+        <member name="P:JokesAPI.Data.Repositories.RepositoryStatus.Success">
             <summary>
             Returns True if successful.  False if not successful.
             </summary>
         </member>
-        <member name="P:JokesAPI.Persistence.RepositoryStatus.Message">
+        <member name="P:JokesAPI.Data.Repositories.RepositoryStatus.Message">
             <summary>
             Holds the message if applicable.
             Mostly used to hold the error message
             </summary>
+        </member>
+        <member name="M:JokesAPI.Persistence.UnitOfWorkEntity`1.SetState(`0,Microsoft.EntityFrameworkCore.EntityState)">
+            <summary>
+            Set the State of the Entity (Modified, Saved, Deleted, etc)
+            </summary>
+            <param name="item">TEntity</param>
+            <param name="state">EntityState</param>
         </member>
         <member name="M:JokesAPI.Middleware.AppDbContextExtensions.EnsureDatabaseIsSeeded(Microsoft.AspNetCore.Builder.IApplicationBuilder)">
             <summary>

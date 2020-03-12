@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using JokesAPI.Data.Repositories;
 using JokesAPI.Models;
-using JokesAPI.Persistence;
 using Microsoft.EntityFrameworkCore;
 
-namespace JokesAPI.Persistence
+namespace JokesAPI.Data.Interfaces
 {
     /// <summary>
     /// Use as the base repository interface for each Model's Repository Interface.
