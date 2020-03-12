@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using JokesAPI.ApiErrors;
+using JokesAPI.Data;
 using JokesAPI.Data.Interfaces;
 using JokesAPI.Data.Repositories;
 using JokesAPI.Models;
@@ -155,10 +156,16 @@ namespace JokesAPI.Controllers
 
             try
             {
-                _log.LogInformation("Saving new Joke Id = " + id.ToString());
+                using (UnitOfWorkEntity<JokeItem> work = new UnitOfWorkEntity<JokeItem>(_repository.DataBaseContext))
+                {
+                    work.SetState(jokeItem, EntityState.Modified);
 
-                _repository.SetState(jokeItem, EntityState.Modified);
-                await _repository.Commit();
+                    _log.LogInformation("Saving new Joke Id = " + id.ToString());
+
+                    await work.Complete();
+                }
+                //_repository.SetState(jokeItem, EntityState.Modified);
+                //await _repository.Commit();
 
                 _log.LogInformation("Joke Id = {JokeId} saved successfully", id.ToString());
             }
@@ -210,7 +217,10 @@ namespace JokesAPI.Controllers
                     return BadRequest(new BadRequestError(retVal.Message ?? "A joke already exists with that Id"));
                 }
 
-                await _repository.Commit();
+                using (UnitOfWorkEntity<JokeItem> work = new UnitOfWorkEntity<JokeItem>(_repository.DataBaseContext))
+                {
+                    await work.Complete(); // unit of work is complete (saved)
+                }
 
                 _log.LogInformation("JokeItem.Id = {JokeId} posted successfully", jokeItem.Id);
             }
@@ -258,7 +268,10 @@ namespace JokesAPI.Controllers
 
                 _repository.Remove(joke);
 
-                await _repository.Commit();
+                using (UnitOfWorkEntity<JokeItem> work = new UnitOfWorkEntity<JokeItem>(_repository.DataBaseContext))
+                {
+                    await work.Complete(); // unit of work is complete
+                }
 
                 _log.LogInformation("Joke Id = {JokeId} deleted successfully", id.ToString());
             }
