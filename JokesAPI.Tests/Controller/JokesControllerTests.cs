@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using JokesAPI.Controllers;
+using JokesAPI.Data.Interfaces;
+using JokesAPI.Data.Repositories;
 using JokesAPI.Models;
 using JokesAPI.Persistence;
 using Microsoft.AspNetCore.Mvc;
