@@ -37,7 +37,7 @@ namespace JokesAPI.Controllers
         [HttpGet]
         public IActionResult Login(string username, string password)
         {
-            IActionResult response = Unauthorized();
+            IActionResult response = new UnauthorizedObjectResult("User name and/or password is not valid");
 
             try
             {
@@ -52,6 +52,7 @@ namespace JokesAPI.Controllers
                     var tokenStr = GenerateJSONWebToken(user);
                     response = Ok(new { token = tokenStr });
                 }
+
             }
             catch (Exception ex)
             {
