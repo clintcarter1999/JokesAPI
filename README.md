@@ -73,7 +73,7 @@ The stateless architecture of RESTful API lend well to scaling horizontally acro
 I came across an interesting url with regard to distributed cache in .Net Core applications.  My quick glimpse of the information shows some powerful ability to add scalability.  Here is the article:
  -  [https://docs.microsoft.com/en-us/aspnet/core/performance/caching/distributed?view=aspnetcore-3.1](https://docs.microsoft.com/en-us/aspnet/core/performance/caching/distributed?view=aspnetcore-3.1)
 
-**Knowledge Gap:** *I did not have time to research and implement distributed caching.  However, I consider it important in the design.*
+**Knowledge Gap:** *I did not have time to research and implement distributed caching.  Looks interesting.*
 
 ## Logging Consideration
 I decided to use Serilog and log it to a structured logging service (Seq by Datalust).  
@@ -111,12 +111,9 @@ I used Java Web Token based authentication. I did not focus on authorization (ro
 **Knowledge Gap:** *I need to research this area more deeply to understand roles/permissions based authorization in .Net Core*
 
 **WARNING**
-NOTE: This is NOT a secure implementation.  Currently the HttpGet for all users returns the user's password (Noooooooooo Clint. Say it ain't so!).  
-
-Yep, I did that to make it easy for you to simply query the current users and use their password.    You are welcome to create your own user and password. 
-
-TODO: Add automapper to map entity model to presentation model (so we don't pass around things like passwords) :-)
-
+NOTE: This is NOT a secure implementation.  I am not encrypting passwords coming from the client.
+I created a DTO Object for requesting user information minus the password field.
+That gave me a chance to work with AutoMapper between my UserDTO and User classes.
 
 ## Database Table Considerations
 I have kept this simple at this time with just a model and controller for Jokes with "id" and "joke" columns.  However, with more time I would add Author, Category, Tags, Rating, MinAgeAppropriate, and DateAdded.  We might even keep track of how many times a joke is served.  I would likely have a Category Model/Controller as well as a Tags Model/Controller.  
