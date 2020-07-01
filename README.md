@@ -1,7 +1,10 @@
 
 # Jokes ASP.NET REST API Project
 
-I created this project as a learning exercise for ASP.Net MVC Core 3+.
+I created this project as a learning exercise for ASP.Net MVC Core 3+ and Entity Framework Core.  
+Creating something with a deadline helps me learn faster.
+I gave myself one week working in the evenings and the weekend.
+Rather than continuing this project I am starting a new REST API for a personal project.
 
 ## Coding Challenge
 Develop a RESTful API that allows users to anonymously create, modify, read, and delete jokes.  This is a fun coding challenge I accepted.  I much prefer learning by creating something real. 
@@ -9,9 +12,8 @@ Develop a RESTful API that allows users to anonymously create, modify, read, and
 ### Requirements and Considerations
 I would define these as the stakeholder's customer interests.  Each had design decisions impacting the release of phase 1 of this project. There are trade-offs that I cannot make without further information from the stakeholders.  I would push back to get more information.
 
- - **Build the web application in C#, .NET Core**
  - ***Consider Scalability*** 
-	 - *How would your application:*
+	 - *How would this REST API:*
 		 - handle 2 million Jokes?  
 		 - a slow connection speed?
 		 - a spike in requests?
@@ -110,11 +112,10 @@ I used Java Web Token based authentication. I did not focus on authorization (ro
 **Knowledge Gap:** *I need to research this area more deeply to understand roles/permissions based authorization in .Net Core*
 
 **WARNING**
-NOTE: This is NOT a secure implementation.  Currently the HttpGet for all users returns the user's password (Noooooooooo Clint. Say it ain't so!).  
+NOTE: This is NOT a secure implementation.  You are welcome to create your own user and password. 
+I am not encryping the password on transmission.  
 
-Yep, I did that to make it easy for you to simply query the current users and use their password.    You are welcome to create your own user and password. 
-
-TODO: Add automapper to map entity model to presentation model (so we don't pass around things like passwords) :-)
+I used a DTO object to pass user info minus the password (using AutoMapper).
 
 
 ## Database Table Considerations
@@ -240,19 +241,15 @@ For the versions available, see the  [tags on this repository](https://github.co
 This project is licensed under the MIT License - see the  [LICENSE.md](https://gist.github.com/PurpleBooth/LICENSE.md)  file for details
 
 ## Acknowledgments
-
- -   Hat tip to BorrowWorks for providing this very fun coding assignment.  It is way easier to learn when you have an actual project.
- - Laurie Sutherlin ([https://www.linkedin.com/in/laurie-sutherlin-95814132/](https://www.linkedin.com/in/laurie-sutherlin-95814132/)) (*Technology Business Development Manager at System Soft Technologies*).  Laurie makes a personal investment in learning as much about the resource before matching them with opportunities.  I am thankful for the opportunity she provided here.
-
+ 
  -   Thanks to all the people who have taken time to produce excellent articles, blocks, tutorials, and videos for 
 	 - ASP.Net Core 3.0 REST API with a Sqlite DB, 
 	 - Serilog vs default Microsoft Logging, 
-	 - Automapper
 	 - Structured Logging, 
 	 - Using Middleware, 
 	 - Async Best Design Practices, 
-	 - StackEdit.io for providing a cool online GitHub readme markup editor.
 	 - Robert Glazer's book [Elevate by Robert Glazer](https://www.amazon.com/Elevate-Beyond-Limits-Success-Yourself/dp/1492691488/ref=sr_1_1?crid=3TFVPOMG2U6MV&keywords=elevate%20by%20robert%20glazer&qid=1579027201&sprefix=Elevate%20by%20Rober,aps,154&sr=8-1) for heping me win the morning (get more done!)
+-   StackEdit.io for providing a cool online GitHub readme markup editor.
 
 ## Thanks
 I am thankful the chance to dig into learning ASP.Net Core RESTful API.  I recently finished a class on React.js where we used async/promises in a similar manner.  I definitely preferred ASP.Net Core's strongly typed compiled environment over transpiled JavaScript/Node.js .  However, JavaScript is getting pretty powerful.  Definitely some cool stuff there! I really like the props destructuring!
@@ -261,9 +258,9 @@ I added several great 'Dad' jokes to my 'act' during this project!!
 
 **My 3 favorites:**
 
- - How do you catch a UNIQUE rabbit?  *Unique up on him!*
- - How do you catch a TAME rabbit? **Tame way, unique up on him!*
- - What do you call a nose without a body? *Nobody Nose!* 
+How do you catch a UNIQUE rabbit?  *Unique up on him!*
+How do you catch a TAME rabbit? **Tame way, unique up on him!*
+What do you call a nose without a body? *Nobody Nose!* 
 
 ![Picture of Clint Carter ](https://media-exp2.licdn.com/dms/image/C4E03AQGN2o3h3XtNAg/profile-displayphoto-shrink_200_200/0?e=1584576000&v=beta&t=fOdGtATS_XFihlBXQ6BU8WYYT5Gmo31O_jx2zeNrxi8)
 Clint Carter is a Senior .Net Full-Stack Developer.  Over 20 years of experience of exceeding expectations and delivering quality software in multiple industries (Oil & Gas, Telcom, Medical, Engineering Design, Software Developer Tools (Visual Basic IDE Power Tools)).  I love solving hard problems, continous learning, and making a difference/helping people.  
