@@ -1,10 +1,10 @@
 
 # Jokes ASP.NET REST API Project
 
-I created this project as a learning exercise for ASP.Net MVC Core 3+.
+I created this project as a learning exercise for ASP.Net MVC Core 3+ and Entity Framework Core.
 
 ## Coding Challenge
-Develop a RESTful API that allows users to anonymously create, modify, read, and delete jokes.  This is a fun coding challenge I accepted.  I much prefer learning by creating something real. 
+Develop a RESTful API that allows users to anonymously create, modify, read, and delete jokes.  I much prefer learning by creating something real.
 
 ### Requirements and Considerations
 I would define these as the stakeholder's customer interests.  Each had design decisions impacting the release of phase 1 of this project. There are trade-offs that I cannot make without further information from the stakeholders.  I would push back to get more information.
@@ -28,7 +28,7 @@ I would define these as the stakeholder's customer interests.  Each had design d
 	 - Pre-population of Joke Data
  - **Provide Swagger documentation**
 
-## Bonus
+## ALSO ---
  - Add the ability to filter/search jokes - (*done*)
  - Authorization (on modify data routes) - (*done*)
  - Docker-ize your application - (*Todo*)
@@ -38,7 +38,7 @@ I would define these as the stakeholder's customer interests.  Each had design d
  - **how to handle 2 million Jokes?**  
 	 - **Pushback**:  How do we measure success? what is "acceptable?"
 				 - Size of Database (potential cost of storing)?
-				 - Type of Database (SQLite vs __________?)
+				 - Type of Database (SQLite vs __________?) - This coding challenge specified SQLite...
 				 - Responsiveness? (what is acceptable to the client?)
 	
  - **how to handle a slow connection speed?**  
@@ -47,7 +47,8 @@ I would define these as the stakeholder's customer interests.  Each had design d
 				- Fail after the first time and let the user know there is an issue with the network?
 				- Thoughts? Ideas?  
 				
-**Knowledge Gap**: I did not directly address slow connections or request spikes...at least not purposefully.  More research is needed to understand solutions and how to setup the testing.
+**Knowledge Gap**: I did not directly address slow connections or request spikes yet...at least not purposefully.  
+More research is needed to understand solutions and how to setup the testing.
 
 **Useful Articles:**
 
