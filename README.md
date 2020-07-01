@@ -4,7 +4,7 @@
 I created this project as a learning exercise for ASP.Net MVC Core 3+ and Entity Framework Core.
 
 ## Coding Challenge
-Develop a RESTful API that allows users to anonymously create, modify, read, and delete jokes.  I much prefer learning by creating something real.
+Develop a RESTful API that allows users to create, modify, read, and delete jokes.
 
 ### Requirements and Considerations
 I would define these as the stakeholder's customer interests.  Each had design decisions impacting the release of phase 1 of this project. There are trade-offs that I cannot make without further information from the stakeholders.  I would push back to get more information.
