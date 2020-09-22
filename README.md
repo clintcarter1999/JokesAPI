@@ -239,9 +239,6 @@ This project is licensed under the MIT License - see the  [LICENSE.md](https://g
 
 ## Acknowledgments
 
- -   Hat tip to BorrowWorks for providing this very fun coding assignment.  It is way easier to learn when you have an actual project.
- - Laurie Sutherlin ([https://www.linkedin.com/in/laurie-sutherlin-95814132/](https://www.linkedin.com/in/laurie-sutherlin-95814132/)) (*Technology Business Development Manager at System Soft Technologies*).  Laurie makes a personal investment in learning as much about the resource before matching them with opportunities.  I am thankful for the opportunity she provided here.
-
  -   Thanks to all the people who have taken time to produce excellent articles, blocks, tutorials, and videos for 
 	 - ASP.Net Core 3.0 REST API with a Sqlite DB, 
 	 - Serilog vs default Microsoft Logging, 
@@ -252,8 +249,7 @@ This project is licensed under the MIT License - see the  [LICENSE.md](https://g
 	 - StackEdit.io for providing a cool online GitHub readme markup editor.
 	 - Robert Glazer's book [Elevate by Robert Glazer](https://www.amazon.com/Elevate-Beyond-Limits-Success-Yourself/dp/1492691488/ref=sr_1_1?crid=3TFVPOMG2U6MV&keywords=elevate%20by%20robert%20glazer&qid=1579027201&sprefix=Elevate%20by%20Rober,aps,154&sr=8-1) for heping me win the morning (get more done!)
 
-## Thanks
-I am thankful the chance to dig into learning ASP.Net Core RESTful API.  I recently finished a class on React.js where we used async/promises in a similar manner.  I definitely preferred ASP.Net Core's strongly typed compiled environment over transpiled JavaScript/Node.js .  However, JavaScript is getting pretty powerful.  Definitely some cool stuff there! I really like the props destructuring!
+## Dad Jokes!
 
 I added several great 'Dad' jokes to my 'act' during this project!!
 
